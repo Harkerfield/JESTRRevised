@@ -1,0 +1,44 @@
+.collapsible-header {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+    align-items: center;
+
+}
+
+.collapsible-header .toggle-btn {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.collapsible-header .toggle-btn:hover {
+    background-color: #666;
+}
+
+.collapsible-header .header-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.collapsible-header .option-btn {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 5px;
+}
+
+.collapsible-header .option-btn:hover {
+    background-color: #666;
+}
