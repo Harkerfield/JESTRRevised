@@ -25,7 +25,7 @@ function App() {
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('Name copied to clipboard!');
+      alert('Ccopied to clipboard!');
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }

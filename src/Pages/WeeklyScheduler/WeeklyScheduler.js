@@ -4,11 +4,12 @@ import SchedulerForm from '../../Components/SchedulerForm/SchedulerForm.js';
 import MapComponent from '../../Components/Map/MapComponent.js';
 import WeekSelector from '../../Components/WeekSelector/WeekSelector.js';
 import TimeSelector from '../../Components/TimeSelector/TimeSelector.js';
+import Modal from '../../Components/Modal/Modal.js';
 
 function App() {
   const [selectedThreatData, setselectedThreatData] = useState([]);
-  const [userTimes, setUserTimes] = useState([['0100-0500'], ['1200-1300']]);
-  const [selectedWeek, setSelectedWeek] = useState(null);
+  const [userTimes, setUserTimes] = useState([]);
+  const [selectedWeek, setSelectedWeek] = useState([]);
   const [userData, setUserData] = useState([{
     name: 'Joseph Hartsfield',
     dsn: '377-3211',
@@ -19,9 +20,46 @@ function App() {
     setselectedThreatData(selectedRows);
   };
 
+  const handleTimeIntervalsChange = (intervals) => {
+    setUserTimes(intervals);
+  };
+
   const handleSelectedDays = (days) => {
     setSelectedWeek(days);
   }
+
+
+  const [rowData, setRowData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSaveData = (data) => {
+    setRowData(data);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handlePushData = () => {
+    fetch('YOUR_API_ENDPOINT', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(rowData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        handleCloseModal();
+      })
+      .catch(error => {
+        console.error('Error pushing data:', error);
+      });
+  };
+
+
 
   function ColumnFilter({
     column: { filterValue, setFilter, filteredRows, id }
@@ -40,7 +78,7 @@ function App() {
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('Name copied to clipboard!');
+      alert('Copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -243,9 +281,16 @@ function App() {
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <WeekSelector onWeekSelected={handleSelectedDays} />
-        <TimeSelector />
+        <TimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} />
       </div>
-      <SchedulerForm selectedThreatData={selectedThreatData} selectedWeek={selectedWeek} />
+      <SchedulerForm selectedThreatData={selectedThreatData} selectedWeek={selectedWeek} userTimes={userTimes} onSaveData={handleSaveData} />
+      {isModalOpen && (
+        <Modal
+          data={rowData}
+          onClose={handleCloseModal}
+          onPush={handlePushData}
+        />
+      )}
     </div>
   );
 }

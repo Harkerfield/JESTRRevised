@@ -1,55 +1,48 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useTable } from 'react-table';
+import Dropdown from '../Dropdown/Dropdown.js';
 import "./SchedulerForm.css"
 //https://tanstack.com/table/v8/docs/examples/
 
-const SchedulerForm = ({ selectedThreatData,  selectedWeek}) => {
+const SchedulerForm = ({ selectedThreatData, selectedWeek, userTimes, onSaveData }) => {
   // userTimes, userData, selectedWeek
   const [data, setData] = useState([]);
+  const [dropdownSelections, setDropdownSelections] = useState({});
 
   useEffect(() => {
-
     setData(selectedThreatData)
-  },[selectedThreatData])
+  }, [selectedThreatData])
 
-  
+  const handleDropdownChange = (day, selectedValue) => {
+    setDropdownSelections(prevState => ({ ...prevState, [day]: selectedValue }));
+  };
+
   const columns = useMemo(
     () => [
       { Header: 'Name', accessor: 'name' },
-      { Header: 'Serial Number', accessor: 'serialNumber' },
+      { Header: 'Serial Number', accessor: 'location' },
       { Header: 'System Type', accessor: 'systemType' },
-      {
-        Header: 'Mon', accessor: 'mon',
-        Cell: () => {
-          return (<>dropdown</>)
+      ...selectedWeek.map((item) => {
+        return {
+          Header: `${item['date']}`, accessor: `${item['day']}`,
+          Cell: ({ row }) => {
+            const day = item['day']; // Directly use item['day']
+            return (
+              <Dropdown
+                options={['NONE', 'All', ...userTimes.map(time => `${time.start} - ${time.end}`)]}
+                placeholder="Time Selector"
+                onChange={(selected) => {
+                  console.log(selected);
+                  handleDropdownChange(day, selected);
+                }}
+                value={dropdownSelections[day]}
+              />
+            );
+          }
         }
-      },
-      {
-        Header: 'Tue', accessor: 'Tue',
-        Cell: () => {
-          return (<>dropdown</>)
-        }
-      },
-      {
-        Header: 'Wed', accessor: 'wed',
-        Cell: () => {
-          return (<>dropdown</>)
-        }
-      },
-      {
-        Header: 'Thu', accessor: 'Thu',
-        Cell: () => {
-          return (<>dropdown</>)
-        }
-      },
-      {
-        Header: 'Fri', accessor: 'fri',
-        Cell: () => {
-          return (<>dropdown</>)
-        }
-      },
+      })
     ],
-    []
+    [selectedWeek, userTimes]
   );
 
   const {
@@ -59,6 +52,34 @@ const SchedulerForm = ({ selectedThreatData,  selectedWeek}) => {
     rows,
     prepareRow,
   } = useTable({ columns, data });
+
+  const saveTableAsJSON = (columns) => {
+
+    const rowData = data.map(row => {
+        let obj = {};
+        columns.forEach((column, idx) => {
+            if (selectedWeek.some(item => item['day'] === column.accessor)) {
+                obj[column.Header] = dropdownSelections[column.accessor] || null;
+            } else {
+                obj[column.Header] = row[column.accessor];
+            }
+        });
+        return obj;
+    });
+
+    onSaveData(rowData);  // passing the rowData to the parent component
+}
+
+
+
+  useEffect(() => {
+    let initialDropdownValues = {};
+    selectedWeek.forEach(item => {
+      const day = item['day'];
+      initialDropdownValues[day] = 'NONE';
+    });
+    setDropdownSelections(initialDropdownValues);
+  }, [selectedWeek]);
 
   return (
     <div className="tableContainer">
@@ -89,6 +110,9 @@ const SchedulerForm = ({ selectedThreatData,  selectedWeek}) => {
           })}
         </tbody>
       </table>
+
+      <button onClick={() => saveTableAsJSON(columns)}>Save as JSON</button>
+
     </div>
   );
 }

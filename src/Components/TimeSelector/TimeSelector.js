@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const TimeSelector = () => {
+const TimeSelector = ({ onTimeIntervalsChange }) => {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
-    const [timeIntervals, setTimeIntervals] = useState([]);
+    const [timeIntervals, setTimeIntervals] = useState([
+        {
+            "start": "09:00",
+            "end": "11:00"
+        },
+        {
+            "start": "14:00",
+            "end": "16:00"
+        }
+    ]);
 
     const addTimeInterval = () => {
         if (startTime && endTime && startTime < endTime) {
             setTimeIntervals([...timeIntervals, { start: startTime, end: endTime }]);
-        } else{
-            alert('tiems are incorrect')
+        } else {
+            alert('times are incorrect')
         }
     };
 
     const deleteTimeInterval = (index) => {
         setTimeIntervals(timeIntervals.filter((_, i) => i !== index));
     };
+
+    useEffect(() => {
+        // Notify parent component of the updated time intervals
+        if (onTimeIntervalsChange) {
+            onTimeIntervalsChange(timeIntervals);
+        }
+    }, [timeIntervals, onTimeIntervalsChange]);
 
     return (
         <div>
@@ -37,9 +53,6 @@ const TimeSelector = () => {
                     </li>
                 ))}
             </ul>
-
-            {/* For demonstration purposes: */}
-            <pre>{JSON.stringify(timeIntervals, null, 2)}</pre>
         </div>
     );
 };

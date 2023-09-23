@@ -3,6 +3,7 @@ import MapAndTools from './Pages/MapAndTools/MapAndTools.js'
 import WeeklyScheduler from './Pages/WeeklyScheduler/WeeklyScheduler.js'
 import ThreatsListEdit from './Pages/EditList/EditLists.js'
 import CollapsibleHeader from './Components/CollapsibleHeader/CollapsibleHeader.js';
+import Metrics from './Pages/Metrics/Metrics.js';
 
 
 const App = () => {
@@ -51,7 +52,7 @@ const App = () => {
       )}
       {activeSection === 'part6' && (
         <div>
-          <h2>Part 5</h2>
+         <Metrics />
         </div>
       )}
       {activeSection === 'part7' && (
