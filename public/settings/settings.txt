@@ -1,0 +1,7 @@
+{
+    "apiBaseUrl": "sites/354RANS/hafi/",
+    "folderLocation" : "tester",
+    "radarList": "radarList",
+    "staticList": "threatList",
+    "debug": true
+}

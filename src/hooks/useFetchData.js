@@ -1,9 +1,11 @@
 // hooks/useFetchData.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { ConfigContext } from '../Provider/Context.js';
 
 const useFetchData = (url) => {
+    const config = useContext(ConfigContext);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -26,4 +28,4 @@ const useFetchData = (url) => {
     return { data, loading, error };
 };
 
-export default useFetchData;
+export {useFetchData};
