@@ -8,16 +8,17 @@
     "@testing-library/user-event": "^13.5.0",
     "geolib": "^3.3.4",
     "git": "^0.1.5",
+    "moment": "^2.29.4",
     "ol": "^8.1.0",
     "react": "^18.2.0",
     "react-data-table-component": "^7.5.4",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
     "styled-components": "^6.0.8",
     "web-vitals": "^2.1.4"
   },
-  
   "scripts": {
     "start": "react-app-rewired start",
     "build": "set PUBLIC_URL=/sites/354RANS/hafi/tester&& react-app-rewired build",

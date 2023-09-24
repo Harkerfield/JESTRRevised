@@ -1,10 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
-import MapAndTools from './Pages/MapAndTools/MapAndTools.js'
-import WeeklyScheduler from './Pages/WeeklyScheduler/WeeklyScheduler.js'
 import CollapsibleHeader from './Components/CollapsibleHeader/CollapsibleHeader.js';
+
+import EmitterScheduling from './Pages/EmitterScheduling/EmitterScheduling.js'
+// otherScheduling
+import ScheduledEmitters from './Pages/ScheduledEmitters/ScheduledEmitters.js'
+import MapTools from './Pages/MapTools/MapTools.js'
 import Metrics from './Pages/Metrics/Metrics.js';
-import { ConfigContext } from './Provider/Context.js';
 import Admin from './Pages/Admin/Admin.js'
+// debug
+
+import { ConfigContext } from './Provider/Context.js';
 
 const App = () => {
   const config = useContext(ConfigContext);
@@ -15,7 +20,7 @@ const App = () => {
     console.log("config", config)
     setSettings(config)
   }, [config])
-  
+
   if (!settings) { return }
   return (
     <div>
@@ -42,22 +47,22 @@ const App = () => {
       )}
       {activeSection === 'emitterScheduling' && (
         <div>
-          <WeeklyScheduler />
+          <EmitterScheduling />
         </div>
       )}
       {activeSection === 'otherScheduling' && (
         <div>
-          Part 2
+          otherScheduling
         </div>
       )}
       {activeSection === 'scheduledEmitters' && (
         <div>
-          <h2>Part 3</h2>
+          <ScheduledEmitters />
         </div>
       )}
       {activeSection === 'mapTools' && (
         <div>
-          <MapAndTools />
+          <MapTools />
         </div>
       )}
       {activeSection === 'metrics' && (

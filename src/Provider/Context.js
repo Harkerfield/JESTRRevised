@@ -51,7 +51,9 @@ export const ConfigProvider = ({ children }) => {
         );
       })
       .catch(error => console.error('Error fetching config:', error));
-  }, [settings]);
+  }, []);
+
+  //this might be an error
 
   const checkAdminStatus = (OnSuccess, OnError) => {
     try {
