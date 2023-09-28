@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import CollapsibleHeader from './Components/CollapsibleHeader/CollapsibleHeader.js';
+import CollapsibleHeader from './Components/CollapsibleHeaderVertical/CollapsibleHeaderVertical.js';
 
 import EmitterScheduling from './Pages/EmitterScheduling/EmitterScheduling.js'
 // otherScheduling
@@ -15,6 +15,7 @@ const App = () => {
   const config = useContext(ConfigContext);
   const [settings, setSettings] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
+  const [defaultCollapsed, setDefaultCollapsed] = useState(false);
 
   useEffect(() => {
     console.log("config", config)
@@ -23,12 +24,11 @@ const App = () => {
 
   if (!settings) { return }
   return (
-    <div>
-      {JSON.stringify(settings)}
-      <CollapsibleHeader>
+    <div style={{display:'flex'}}>
+      {/* {JSON.stringify(settings)} */}
+      <CollapsibleHeader show={'Menu'} hide={'Hide Menu'} defaultCollapsed={defaultCollapsed}>
         <button onClick={() => setActiveSection('emitterScheduling')}>Emitter Scheduling</button>
         <button onClick={() => setActiveSection('otherScheduling')}>SAM/MANPAD Scheduling</button>
-
         <button onClick={() => setActiveSection('scheduledEmitters')}>View Scheduled Emitters Calendar</button>
         <button onClick={() => setActiveSection('mapTools')}>Map and Tools</button>
         <button onClick={() => setActiveSection('metrics')}>Metrics</button>

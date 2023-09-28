@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext, useEffect } from 'react';
 import ThreatList from '../../Components/ThreatList/ThreatList.js';
 import SchedulerForm from '../../Components/SchedulerForm/SchedulerForm.js';
 import MapComponent from '../../Components/Map/MapComponent.js';
@@ -6,7 +6,12 @@ import WeekSelector from '../../Components/WeekSelector/WeekSelector.js';
 import TimeSelector from '../../Components/TimeSelector/TimeSelector.js';
 import Modal from '../../Components/Modal/Modal.js';
 
+import { useFetchData } from '../../hooks/useFetchData.js';
+import { ConfigContext } from '../../Provider/Context.js';
+
+
 function EmitterScheduling() {
+  const config = useContext(ConfigContext);
   const [selectedThreatData, setselectedThreatData] = useState([]);
   const [userTimes, setUserTimes] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState([]);
@@ -15,6 +20,8 @@ function EmitterScheduling() {
     dsn: '377-3211',
     squadron: '354th RANS',
   }]);
+
+
 
   const handleSelectedRowsChange = (selectedRows) => {
     setselectedThreatData(selectedRows);
@@ -123,7 +130,7 @@ function EmitterScheduling() {
   };
 
 
-  const data = useMemo(
+  const backupData = useMemo(
     () => [
       {
         name: "CERU5",
@@ -133,82 +140,14 @@ function EmitterScheduling() {
         location: "Zulu-3 / OP 28.5",
         latitude: '63.834875',
         longitude: '-145.820617',
-        type: "TK1",
+        deviceType: "TK1",
         threat: "SA6",
-        maintenanceCondition: "RED",
+        mxCondition: "RED",
         status: "A/W Helo",
         ETIC: "30-Sep-23",
         remarks: "CEAR Will not power up. Intermittent Communications",
         statusChangeDate: "Down 15 Aug 23",
         operationalStatus: "RED"
-      },
-      {
-        name: "CERU2",
-        serialNumber: "CERU2(SN2)",
-        systemType: "UMTE",
-        schedulableItem: "Yes",
-        location: "DEPOT",
-        latitude: '64.3171',
-        longitude: '-146.4416',
-        type: "TK1",
-        threat: "SA6",
-        maintenanceCondition: "DEPOT",
-        status: "",
-        ETIC: "Unknown",
-        remarks: "Awaiting shipment from Depot back to Eielson",
-        statusChangeDate: "",
-        operationalStatus: "DEPOT"
-      },
-      {
-        name: "CERU8",
-        serialNumber: "CERU8(SN3)",
-        systemType: "UMTE",
-        schedulableItem: "Yes",
-        location: "Eielson Bldg 2509",
-        latitude: '64.3171',
-        longitude: '-146.4416',
-        type: "TK2",
-        threat: "SA8",
-        maintenanceCondition: "GREEN",
-        status: "",
-        ETIC: "",
-        remarks: "",
-        statusChangeDate: "",
-        operationalStatus: "GREEN"
-      },
-      {
-        name: "CERU4",
-        serialNumber: "CERU4(SN1)",
-        systemType: "UMTE",
-        schedulableItem: "No",
-        location: "Eielson Bldg 2509",
-        latitude: '64.3171',
-        longitude: '-146.4416',
-        type: "TK2",
-        threat: "SA8",
-        maintenanceCondition: "GREEN",
-        status: "",
-        ETIC: "",
-        remarks: "",
-        statusChangeDate: "",
-        operationalStatus: "GREEN"
-      },
-      {
-        name: "CERU1",
-        serialNumber: "CERU1(SN4)",
-        systemType: "UMTE",
-        schedulableItem: "Yes",
-        location: "Zulu-8A",
-        latitude: '64.3171',
-        longitude: '-146.4416',
-        type: "TK3",
-        threat: "SA3",
-        maintenanceCondition: "GREEN",
-        status: "",
-        ETIC: "",
-        remarks: "",
-        statusChangeDate: "",
-        operationalStatus: "GREEN"
       }
     ].filter(data => data.schedulableItem === "Yes"),
     []
@@ -218,14 +157,14 @@ function EmitterScheduling() {
 
   const columns = useMemo(
     () => [
-      { Header: 'Name', accessor: 'name', Filter: ColumnFilter },
+      { Header: 'Title', accessor: 'Title', Filter: ColumnFilter },
       { Header: 'Serial Number', accessor: 'serialNumber', Filter: ColumnFilter },
       { Header: 'System Type', accessor: 'systemType', Filter: ColumnFilter },
       { Header: 'Schedulable Item', accessor: 'schedulableItem', Filter: ColumnFilter },
       { Header: 'Location', accessor: 'location', Filter: ColumnFilter },
       {
         Header: 'Lat/Long',
-        accessor: d => `${convertDDtoDDM(d.latitude, 'lat')}, ${convertDDtoDDM(d.longitude, 'lon')}`,  // Use an accessor function to get both values.
+        accessor: d => `${convertDDtoDDM(d.pointLocationLat, 'lat')}, ${convertDDtoDDM(d.pointLocationLon, 'lon')}`,  // Use an accessor function to get both values.
         Filter: ColumnFilter,
         Cell: ({ value }) => (
           <>
@@ -239,17 +178,17 @@ function EmitterScheduling() {
           </>
         )
       },
-      // { Header: 'Latitude', accessor: 'latitude', Filter: ColumnFilter },
-      // { Header: 'Longitude', accessor: 'longitude', Filter: ColumnFilter },
-      { Header: 'Type', accessor: 'type', Filter: ColumnFilter },
+      { Header: 'Device Type', accessor: 'deviceType', Filter: ColumnFilter },
       { Header: 'Threat', accessor: 'threat', Filter: ColumnFilter },
       {
-        Header: 'Maintenance Condition', accessor: 'maintenanceCondition', Filter: ColumnFilter, Cell: ({ value }) => (
-          <div style={{
+        Header: 'Maintenance Condition', accessor: 'mxCondition', Filter: ColumnFilter, Cell: ({ value }) => (
+          value ? <div style={{
             backgroundColor: value.toLowerCase(),
             padding: '0.5rem',
-            color: value.toLowerCase() === 'red' || value.toLowerCase() === 'green' || value.toLowerCase() === 'orange' ? 'white' : 'black'
+            color: value.toLowerCase() === 'red' || value.toLowerCase() === 'green' ? 'white' : 'black'
           }}>
+            {value}
+          </div> : <div>
             {value}
           </div>
         )
@@ -260,11 +199,13 @@ function EmitterScheduling() {
       { Header: 'Status Change Date', accessor: 'statusChangeDate', Filter: ColumnFilter },
       {
         Header: 'Operational Status', accessor: 'operationalStatus', Filter: ColumnFilter, Cell: ({ value }) => (
-          <div style={{
+          value ? <div style={{
             backgroundColor: value.toLowerCase(),
             padding: '0.5rem',
             color: value.toLowerCase() === 'red' || value.toLowerCase() === 'green' ? 'white' : 'black'
           }}>
+            {value}
+          </div> : <div>
             {value}
           </div>
         )
@@ -273,11 +214,29 @@ function EmitterScheduling() {
     []
   );
 
+  const { data, loading, error } = useFetchData(config.threatList);
+
+
+
   return (
     <div>
+      {/* {data.map(item => (
+        <div key={item.Id}>{item.Title}</div>
+      ))} */}
+
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ThreatList columns={columns} data={data} onSelectedRowsChange={handleSelectedRowsChange} />
-        <MapComponent points={selectedThreatData} />
+        <div style={{ width: '45vw' }}>
+          {loading ? <>Loading...</> : error ? <>
+            Error! {error}
+            <ThreatList columns={columns} data={backupData.filter((data)=>data.schedulableItem === 'Yes')} onSelectedRowsChange={handleSelectedRowsChange} />
+          </> : <>
+            <ThreatList columns={columns} data={data.filter((data)=>data.schedulableItem === 'Yes')} onSelectedRowsChange={handleSelectedRowsChange} />
+          </>}
+
+        </div>
+        <div style={{ width: '50vw' }}>
+          <MapComponent points={selectedThreatData} />
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <WeekSelector onWeekSelected={handleSelectedDays} />
@@ -291,6 +250,9 @@ function EmitterScheduling() {
           onPush={handlePushData}
         />
       )}
+
+
+
     </div>
   );
 }

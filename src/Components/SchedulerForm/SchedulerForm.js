@@ -19,7 +19,7 @@ const SchedulerForm = ({ selectedThreatData, selectedWeek, userTimes, onSaveData
 
   const columns = useMemo(
     () => [
-      { Header: 'Name', accessor: 'name' },
+      { Header: 'Title', accessor: 'Title' },
       { Header: 'Serial Number', accessor: 'location' },
       { Header: 'System Type', accessor: 'systemType' },
       ...selectedWeek.map((item) => {

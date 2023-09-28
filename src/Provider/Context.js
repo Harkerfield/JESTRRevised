@@ -21,7 +21,7 @@ export const ConfigProvider = ({ children }) => {
   useEffect(() => {
 
     const settingsPath = process.env.NODE_ENV === 'production'
-    ? `sites/354RANS/hafi/tester/settings/settings.txt`
+    ? `/sites/354RANS/hafi/tester/settings/settings.txt`
     : './settings/settings.txt'
 
     

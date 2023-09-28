@@ -1,49 +1,179 @@
-import React, { useState } from 'react';
-import moment from 'moment';
-import Modal from 'react-modal';
+import React, { useState, useRef, useEffect } from 'react';
+import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
+import "./CalendarStyles.css";
 
-// Assume data is an array of event objects with a date, startTime, endTime, title, and location properties.
-function Calendar({ data }) {
-  const [view, setView] = useState('week');
-  const [selectedEvent, setSelectedEvent] = useState(null);
+const styles = {
+  wrap: {
+    display: "flex"
+  },
+  left: {
+    marginRight: "10px"
+  },
+  main: {
+    flexGrow: "1"
+  }
+};
 
-  const renderDayView = () => {
-    // ... render logic for day view
+const Calendar = () => {
+  const calendarRef = useRef();
+  
+    const editEvent = async (e) => {
+    const dp = calendarRef.current.control;
+    const modal = await DayPilot.Modal.prompt("Update event text:", e.text());
+    if (!modal.result) { return; }
+    e.data.text = modal.result;
+    dp.events.update(e);
   };
 
-  const renderWeekView = () => {
-    // ... render logic for week view
-  };
+  const [calendarConfig, setCalendarConfig] = useState({
+    viewType: "Week",
+    durationBarVisible: false,
+    timeRangeSelectedHandling: "Enabled",
+    onTimeRangeSelected: async args => {
+      const dp = calendarRef.current.control;
+      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
+      dp.clearSelection();
+      if (!modal.result) { return; }
+      dp.events.add({
+        start: args.start,
+        end: args.end,
+        id: DayPilot.guid(),
+        text: modal.result
+      });
+    },
+    onEventClick: async args => {
+      await editEvent(args.e);
+    },
+    contextMenu: new DayPilot.Menu({
+      items: [
+        {
+          text: "Delete",
+          onClick: async args => {
+            const dp = calendarRef.current.control;
+            dp.events.remove(args.source);
+          },
+        },
+        {
+          text: "-"
+        },
+        {
+          text: "Edit...",
+          onClick: async args => {
+            await editEvent(args.source);
+          }
+        }
+      ]
+    }),
+    onBeforeEventRender: args => {
+      args.data.areas = [
+        {
+          top: 3,
+          right: 3,
+          width: 20,
+          height: 20,
+          symbol: "icons/daypilot.svg#minichevron-down-2",
+          fontColor: "#fff",
+          toolTip: "Show context menu",
+          action: "ContextMenu",
+        },
+        {
+          top: 3,
+          right: 25,
+          width: 20,
+          height: 20,
+          symbol: "icons/daypilot.svg#x-circle",
+          fontColor: "#fff",
+          action: "None",
+          toolTip: "Delete event",
+          onClick: async args => {
+            const dp = calendarRef.current.control;
+            dp.events.remove(args.source);
+          }
+        }
+      ];
 
-  const renderMonthView = () => {
-    // ... render logic for month view
-  };
 
-  const onEventClick = (event) => {
-    setSelectedEvent(event);
-  };
+      const participants = args.data.participants;
+      if (participants > 0) {
+        // show one icon for each participant
+        for (let i = 0; i < participants; i++) {
+          args.data.areas.push({
+            bottom: 5,
+            right: 5 + i * 30,
+            width: 24,
+            height: 24,
+            action: "None",
+            image: `https://picsum.photos/24/24?random=${i}`,
+            style: "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
+          });
+        }
+      }
+    }
+  });
 
-  const closeModal = () => {
-    setSelectedEvent(null);
-  };
+  useEffect(() => {
+    const events = [
+      {
+        id: 1,
+        text: "Event 1",
+        start: "2023-10-02T10:30:00",
+        end: "2023-10-02T13:00:00",
+        participants: 2,
+      },
+      {
+        id: 2,
+        text: "Event 2",
+        start: "2023-10-03T09:30:00",
+        end: "2023-10-03T11:30:00",
+        backColor: "#6aa84f",
+        participants: 1,
+      },
+      {
+        id: 3,
+        text: "Event 3",
+        start: "2024-10-03T12:00:00",
+        end: "2024-10-03T15:00:00",
+        backColor: "#f1c232",
+        participants: 3,
+      },
+      {
+        id: 4,
+        text: "Event 4",
+        start: "2024-06-01T11:30:00",
+        end: "2024-10-01T14:30:00",
+        backColor: "#cc4125",
+        participants: 4,
+      },
+    ];
+
+    const startDate = new Date();
+
+   calendarRef.current.control.update({startDate, events});
+  }, []);
 
   return (
-    <div className="calendar">
-      <button onClick={() => setView('day')}>Day</button>
-      <button onClick={() => setView('week')}>Week</button>
-      <button onClick={() => setView('month')}>Month</button>
-      {view === 'day' && renderDayView()}
-      {view === 'week' && renderWeekView()}
-      {view === 'month' && renderMonthView()}
-      {selectedEvent && (
-        <Modal isOpen onRequestClose={closeModal}>
-          <h1>{selectedEvent.title}</h1>
-          <p>{moment(selectedEvent.startTime).format('LT')} - {moment(selectedEvent.endTime).format('LT')}</p>
-          <p>Location: {selectedEvent.location}</p>
-          <button>Edit</button>
-          <button>Approve</button>
-        </Modal>
-      )}
+    <div style={styles.wrap}>
+      <div style={styles.left}>
+        <DayPilotNavigator
+          selectMode={"Week"}
+          showMonths={3}
+          skipMonths={3}
+          startDate={new Date()}
+          selectionDay={new Date()}
+          onTimeRangeSelected={ args => {
+            calendarRef.current.control.update({
+              startDate: args.day
+            });
+          }}
+        />
+      </div>
+      <div style={styles.main}>
+
+        <DayPilotCalendar
+          {...calendarConfig}
+          ref={calendarRef}
+        />
+      </div>
     </div>
   );
 }

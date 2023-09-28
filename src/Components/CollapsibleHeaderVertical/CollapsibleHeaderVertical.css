@@ -1,0 +1,98 @@
+.container {
+    display: flex;
+}
+
+.collapsible-header-vertical {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, width 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    width: 10px;
+    height: 100vh;
+    z-index: 9999;
+    /* A high z-index value to ensure the component stays on top */
+    cursor: pointer;
+    /* This line is added to indicate clickable area */
+}
+
+.collapsible-header-vertical:not(.collapsed) {
+    width: 250px;
+    /* or whatever width you desire */
+}
+
+.collapsible-header-vertical:not(.collapsed) .toggle-btn {
+    transform: none;
+    /* Reset transform when expanded */
+}
+
+.collapsible-header-vertical:not(.collapsed) .toggle-text {
+    transform: none;
+    /* Reset transform when expanded */
+}
+
+.collapsible-header-vertical .toggle-text {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #fff;
+    transform: rotate(-90deg);
+    position: absolute;
+    align-items: center;
+    white-space: nowrap;
+    margin: auto;
+    width: 50%;
+
+}
+
+.collapsible-header-vertical .toggle-btn {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.collapsible-header-vertical .toggle-btn:hover {
+    background-color: #666;
+    transform: rotate(-90deg);
+    transform-origin: left bottom;
+    width: 30px;
+    /* Adjust this value as needed */
+}
+
+.collapsible-header-vertical .header-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.collapsible-header-vertical .option-btn {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 5px;
+}
+
+.collapsible-header-vertical .option-btn:hover {
+    background-color: #666;
+}
+
+.content-right {
+    flex-grow: 1;
+    padding-left: 10px;
+    /* optional: for some spacing between the header and content */
+}

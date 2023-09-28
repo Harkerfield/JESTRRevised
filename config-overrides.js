@@ -1,7 +1,7 @@
 module.exports = function override(config, env) {
     if (env === 'production') {
         // Production-specific configuration
-        config.output.publicPath = '/sites/354RANS/hafi/tester/';
+        config.output.publicPath = '/sites/354RANS/hafi/tester';
     } else {
         // Development-specific configuration
         config.output.publicPath = '/';

@@ -16,7 +16,7 @@ const labelStyle = feature => {
   return new Style({
     geometry: feature.getGeometry(),
     text: new Text({
-      text: feature.get('name'),
+      text: feature.get('Title'),
       fill: new Fill({ color: 'black' }),
       stroke: new Stroke({ color: 'white', width: 3 }),
       offsetX: 10,
@@ -69,9 +69,10 @@ const MapComponent = ({ points }) => {
 
     // Convert JSON points to OpenLayers Features and add them to the map
     const pointFeatures = points.map(point => {
+      
       const feature = new Feature({
-        geometry: new Point(fromLonLat([point.longitude, point.latitude])),
-        name: point.name,
+        geometry: new Point(fromLonLat([point.pointLocationLon, point.pointLocationLat])),
+        name: point.Title,
       });
       return feature;
     });
