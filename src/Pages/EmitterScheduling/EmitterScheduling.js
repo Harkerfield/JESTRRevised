@@ -228,9 +228,9 @@ function EmitterScheduling() {
         <div style={{ width: '45vw' }}>
           {loading ? <>Loading...</> : error ? <>
             Error! {error}
-            <ThreatList columns={columns} data={backupData.filter((data)=>data.schedulableItem === 'Yes')} onSelectedRowsChange={handleSelectedRowsChange} />
+            <ThreatList columns={columns} data={backupData} onSelectedRowsChange={handleSelectedRowsChange} />
           </> : <>
-            <ThreatList columns={columns} data={data.filter((data)=>data.schedulableItem === 'Yes')} onSelectedRowsChange={handleSelectedRowsChange} />
+            <ThreatList columns={columns} data={data} onSelectedRowsChange={handleSelectedRowsChange} />
           </>}
 
         </div>
