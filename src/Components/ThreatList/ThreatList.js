@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { useTable, useRowSelect, useFilters, useSortBy } from 'react-table';
-import "./ThreatList.css"
+import React, { useState, useMemo } from "react";
+import { useTable, useRowSelect, useFilters, useSortBy } from "react-table";
+import "./ThreatList.css";
 //https://tanstack.com/table/v8/docs/examples/react/column-ordering
 
 const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
@@ -12,16 +12,16 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     headerGroups,
     rows,
     prepareRow,
-    state: { selectedRowIds }
+    state: { selectedRowIds },
   } = useTable(
     { columns, data },
     useFilters,
     useSortBy,
     useRowSelect,
     (hooks) => {
-      hooks.visibleColumns.push(columns => [
+      hooks.visibleColumns.push((columns) => [
         {
-          id: 'selection',
+          id: "selection",
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <>
               <input type="checkbox" {...getToggleAllRowsSelectedProps()} />
@@ -29,16 +29,18 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
               <button onClick={deselectAll}>Deselect All</button> */}
             </>
           ),
-          Cell: ({ row }) => <input type="checkbox" {...row.getToggleRowSelectedProps()} />,
+          Cell: ({ row }) => (
+            <input type="checkbox" {...row.getToggleRowSelectedProps()} />
+          ),
         },
         ...columns,
-      ])
-    }
+      ]);
+    },
   );
 
   React.useEffect(() => {
     const newSelectedRows = [];
-    rows.forEach(row => {
+    rows.forEach((row) => {
       if (selectedRowIds[row.id]) {
         newSelectedRows.push(row.original);
       }
@@ -48,7 +50,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
 
   React.useEffect(() => {
     const newSelectedRows = [];
-    rows.forEach(row => {
+    rows.forEach((row) => {
       if (selectedRowIds[row.id]) {
         newSelectedRows.push(row.original);
       }
@@ -62,36 +64,47 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     // }, [selectedRowIds, rows, onSelectedRowsChange]);
   }, [selectedRowIds, rows]);
 
-
   return (
     <div className="tableContainer">
-      <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  style={{ borderBottom: 'solid 2px red', background: 'aliceblue', color: 'black', fontWeight: 'bold' }}
+                  style={{
+                    borderBottom: "solid 2px red",
+                    background: "aliceblue",
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
                 >
-                  {column.render('Header')}
+                  {column.render("Header")}
                   <span>
-                    {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? " 🔽"
+                        : " 🔼"
+                      : ""}
                   </span>
-                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                  <div>{column.canFilter ? column.render("Filter") : null}</div>
                 </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
+          {rows.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()} style={{ padding: '10px', border: 'solid 1px gray' }}>
-                    {cell.render('Cell')}
+                {row.cells.map((cell) => (
+                  <td
+                    {...cell.getCellProps()}
+                    style={{ padding: "10px", border: "solid 1px gray" }}
+                  >
+                    {cell.render("Cell")}
                   </td>
                 ))}
               </tr>
@@ -101,6 +114,6 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
       </table>
     </div>
   );
-}
+};
 
 export default ThreatList;

@@ -1,26 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { DayPilot, DayPilotCalendar, DayPilotNavigator } from "@daypilot/daypilot-lite-react";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  DayPilot,
+  DayPilotCalendar,
+  DayPilotNavigator,
+} from "@daypilot/daypilot-lite-react";
 import "./CalendarStyles.css";
 
 const styles = {
   wrap: {
-    display: "flex"
+    display: "flex",
   },
   left: {
-    marginRight: "10px"
+    marginRight: "10px",
   },
   main: {
-    flexGrow: "1"
-  }
+    flexGrow: "1",
+  },
 };
 
 const Calendar = () => {
   const calendarRef = useRef();
-  
-    const editEvent = async (e) => {
+
+  const editEvent = async (e) => {
     const dp = calendarRef.current.control;
     const modal = await DayPilot.Modal.prompt("Update event text:", e.text());
-    if (!modal.result) { return; }
+    if (!modal.result) {
+      return;
+    }
     e.data.text = modal.result;
     dp.events.update(e);
   };
@@ -29,42 +35,47 @@ const Calendar = () => {
     viewType: "Week",
     durationBarVisible: false,
     timeRangeSelectedHandling: "Enabled",
-    onTimeRangeSelected: async args => {
+    onTimeRangeSelected: async (args) => {
       const dp = calendarRef.current.control;
-      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
+      const modal = await DayPilot.Modal.prompt(
+        "Create a new event:",
+        "Event 1",
+      );
       dp.clearSelection();
-      if (!modal.result) { return; }
+      if (!modal.result) {
+        return;
+      }
       dp.events.add({
         start: args.start,
         end: args.end,
         id: DayPilot.guid(),
-        text: modal.result
+        text: modal.result,
       });
     },
-    onEventClick: async args => {
+    onEventClick: async (args) => {
       await editEvent(args.e);
     },
     contextMenu: new DayPilot.Menu({
       items: [
         {
           text: "Delete",
-          onClick: async args => {
+          onClick: async (args) => {
             const dp = calendarRef.current.control;
             dp.events.remove(args.source);
           },
         },
         {
-          text: "-"
+          text: "-",
         },
         {
           text: "Edit...",
-          onClick: async args => {
+          onClick: async (args) => {
             await editEvent(args.source);
-          }
-        }
-      ]
+          },
+        },
+      ],
     }),
-    onBeforeEventRender: args => {
+    onBeforeEventRender: (args) => {
       args.data.areas = [
         {
           top: 3,
@@ -85,13 +96,12 @@ const Calendar = () => {
           fontColor: "#fff",
           action: "None",
           toolTip: "Delete event",
-          onClick: async args => {
+          onClick: async (args) => {
             const dp = calendarRef.current.control;
             dp.events.remove(args.source);
-          }
-        }
+          },
+        },
       ];
-
 
       const participants = args.data.participants;
       if (participants > 0) {
@@ -104,11 +114,12 @@ const Calendar = () => {
             height: 24,
             action: "None",
             image: `https://picsum.photos/24/24?random=${i}`,
-            style: "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
+            style:
+              "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
           });
         }
       }
-    }
+    },
   });
 
   useEffect(() => {
@@ -148,7 +159,7 @@ const Calendar = () => {
 
     const startDate = new Date();
 
-   calendarRef.current.control.update({startDate, events});
+    calendarRef.current.control.update({ startDate, events });
   }, []);
 
   return (
@@ -160,22 +171,18 @@ const Calendar = () => {
           skipMonths={3}
           startDate={new Date()}
           selectionDay={new Date()}
-          onTimeRangeSelected={ args => {
+          onTimeRangeSelected={(args) => {
             calendarRef.current.control.update({
-              startDate: args.day
+              startDate: args.day,
             });
           }}
         />
       </div>
       <div style={styles.main}>
-
-        <DayPilotCalendar
-          {...calendarConfig}
-          ref={calendarRef}
-        />
+        <DayPilotCalendar {...calendarConfig} ref={calendarRef} />
       </div>
     </div>
   );
-}
+};
 
 export default Calendar;

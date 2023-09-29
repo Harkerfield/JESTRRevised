@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Dropdown({ options, placeholder, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ function Dropdown({ options, placeholder, onChange }) {
     <div className="dropdown-container">
       <div className="dropdown-header" onClick={toggleDropdown}>
         {selectedOption || placeholder}
-        <span>{isOpen ? '▲' : '▼'}</span>
+        <span>{isOpen ? "▲" : "▼"}</span>
       </div>
       {isOpen && (
         <ul className="dropdown-list">

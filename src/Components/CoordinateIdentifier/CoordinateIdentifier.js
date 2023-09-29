@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const CoordinateIdentifier = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [format, setFormat] = useState('');
-  const [feedback, setFeedback] = useState('');
+  const [inputValue, setInputValue] = useState("");
+  const [format, setFormat] = useState("");
+  const [feedback, setFeedback] = useState("");
   const [convertedDD, setConvertedDD] = useState(null);
 
   const dmsToDD = (dms) => {
@@ -16,28 +16,29 @@ const CoordinateIdentifier = () => {
     const direction = matches[4];
 
     let dd = degrees + minutes / 60 + seconds / 3600;
-    if (direction === 'S' || direction === 'W') dd = -dd;
+    if (direction === "S" || direction === "W") dd = -dd;
 
     return dd;
   };
 
   const identifyAndConvert = (input) => {
-    const dmsPattern = /^(\d{1,3}°\d{1,2}'\d{1,2}"[NS]),\s*(\d{1,3}°\d{1,2}'\d{1,2}"[EW])$/;
+    const dmsPattern =
+      /^(\d{1,3}°\d{1,2}'\d{1,2}"[NS]),\s*(\d{1,3}°\d{1,2}'\d{1,2}"[EW])$/;
 
     if (dmsPattern.test(input)) {
-      const [latDMS, lonDMS] = input.split(',');
+      const [latDMS, lonDMS] = input.split(",");
       const latDD = dmsToDD(latDMS);
       const lonDD = dmsToDD(lonDMS);
 
       if (latDD !== null && lonDD !== null) {
         setConvertedDD([latDD, lonDD]);
-        return 'Degrees, Minutes, Seconds (DMS)';
+        return "Degrees, Minutes, Seconds (DMS)";
       }
     }
-    
+
     // ... Other patterns ...
 
-    return 'Unknown';
+    return "Unknown";
   };
 
   const handleChange = (e) => {
@@ -56,7 +57,9 @@ const CoordinateIdentifier = () => {
       />
       <div>Format: {format}</div>
       {convertedDD && (
-        <div>Converted to DD: {convertedDD[0]}, {convertedDD[1]}</div>
+        <div>
+          Converted to DD: {convertedDD[0]}, {convertedDD[1]}
+        </div>
       )}
       <div>{feedback}</div>
     </div>

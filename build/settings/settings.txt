@@ -1,14 +1,87 @@
 {
     "apiBaseUrl": "/sites/354RANS/hafi/",
-    "folderLocation" : "tester",
-    "threatList": "threatList",
+    "folderLocation": "tester",
+    "lists": {
+        "threatList": "threatList",
+        "scheduleList": "scheduleList"
+    },
+    "listColumn": [
+        {
+            "threatList": [
+                {
+                    "title": "serialNumber",
+                    "data": "<Field Type='Text' DisplayName='serialNumber' Name='serialNumber' />"
+                },
+                {
+                    "title": "systemType",
+                    "data": "<Field Type='Text' DisplayName='systemType' Name='systemType' />"
+                },
+                {
+                    "title": "schedulableItem",
+                    "data": "<Field Type='Text' DisplayName='schedulableItem' Name='schedulableItem' />"
+                },
+                {
+                    "title": "location",
+                    "data": "<Field Type='Text' DisplayName='location' Name='location' />"
+                },
+                {
+                    "title": "pointLocationLat",
+                    "data": "<Field Type='Text' DisplayName='pointLocationLat' Name='pointLocationLat' />"
+                },
+                {
+                    "title": "pointLocationLon",
+                    "data": "<Field Type='Text' DisplayName='pointLocationLon' Name='pointLocationLon' />"
+                },
+                {
+                    "title": "deviceType",
+                    "data": "<Field Type='Text' DisplayName='deviceType' Name='deviceType' />"
+                },
+                {
+                    "title": "threat",
+                    "data": "<Field Type='Text' DisplayName='threat' Name='threat' />"
+                },
+                {
+                    "title": "mxCondition",
+                    "data": "<Field Type='Text' DisplayName='mxCondition' Name='mxCondition' />"
+                },
+                {
+                    "title": "status",
+                    "data": "<Field Type='Text' DisplayName='status' Name='status' />"
+                },
+                {
+                    "title": "ETIC",
+                    "data": "<Field Type='Text' DisplayName='ETIC' Name='ETIC' />"
+                },
+                {
+                    "title": "remarks",
+                    "data": "<Field Type='Text' DisplayName='remarks' Name='remarks' />"
+                },
+                {
+                    "title": "statusChangeDate",
+                    "data": "<Field Type='Text' DisplayName='statusChangeDate' Name='statusChangeDate' />"
+                },
+                {
+                    "title": "operationalStatus",
+                    "data": "<Field Type='Text' DisplayName='operationalStatus' Name='operationalStatus' />"
+                }
+            ]
+        },
+        {
+            "scheduleList": [
+                {
+                    "title": "serialNumber",
+                    "data": "<Field Type='Text' DisplayName='serialNumber' Name='serialNumber' />"
+                }
+            ]
+        }
+    ],
     "debug": true,
     "mainInfo": "",
-    "emmiterSchedulingInfo" :"",
-    "otherSchedulingInfo" :"",
-    "viewScheduledEmittersInfo" :"",
-    "mapAndToolsInfo" :"",
-    "metricsInfo" :"",
-    "adminInfo" :"",
-    "debugInfo" :""
+    "emmiterSchedulingInfo": "",
+    "otherSchedulingInfo": "",
+    "viewScheduledEmittersInfo": "",
+    "mapAndToolsInfo": "",
+    "metricsInfo": "",
+    "adminInfo": "",
+    "debugInfo": ""
 }
