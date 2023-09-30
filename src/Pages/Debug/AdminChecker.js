@@ -5,16 +5,17 @@ import { useIsCurrentUserSiteAdmin } from "../../hooks/useIsCurrentUserSiteAdmin
 const YourComponent = () => {
   const { isCurrentUserSiteAdmin } = useIsCurrentUserSiteAdmin();
 
-  const checkAdminStatus = () => {
+  const checkAdminStatus = (event) => {
+     event.preventDefault();
     isCurrentUserSiteAdmin(
-      (isAdmin) => console.log(isAdmin),
+      (isAdmin) => isAdmin,
       (sender, args) => console.log("An error occurred: " + args.get_message()),
     );
   };
 
   return (
     <div>
-      <button onClick={checkAdminStatus}>Check Admin Status</button>
+      Is Admin: {checkAdminStatus}
     </div>
   );
 };

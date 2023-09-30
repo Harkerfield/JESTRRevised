@@ -2,6 +2,7 @@ import React from "react";
 import ListChecker from "./ListChecker.js";
 import ListCreateList from "./ListCreateList.js";
 import AdminChecker from "./AdminChecker.js";
+import SharePointData from "./SharePointData.js";
 
 const Debug = () => {
   return (
@@ -9,6 +10,7 @@ const Debug = () => {
       <ListChecker />
       <ListCreateList />
       <AdminChecker />
+      <SharePointData/>
     </div>
   );
 };

@@ -59,7 +59,7 @@ const App = () => {
     return;
   }
   return (
-    <div className="App" style={{ display: "flex" }}>
+    <div className="App contentwrapper" style={{ display: "flex" }}>
       {scriptLoaded && <SharePointData />}
       {/* {JSON.stringify(settings)} */}
       <CollapsibleHeader

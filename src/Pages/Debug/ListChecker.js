@@ -18,6 +18,7 @@ const ListChecker = () => {
 
   return (
     <div>
+      List of lists: {JSON.stringify(config.lists)}
       {Object.keys(listExistenceMap).map((listTitle) => (
         <div key={listTitle} style={{ marginBottom: "10px" }}>
           <span>{listTitle}</span>

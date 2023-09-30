@@ -8,7 +8,8 @@ const ListCreateList = () => {
 
   const colInfo = config.lists; // your column info array
 
-  const handleCreateList = () => {
+  const handleCreateList = (event) => {
+    event.preventDefault();
     createList("threatList", colInfo);
   };
 
