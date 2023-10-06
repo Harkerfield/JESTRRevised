@@ -4,7 +4,7 @@ import CollapsibleHeader from "./Components/CollapsibleHeaderVertical/Collapsibl
 import SharePointData from "./hooks/SPdata/SharePointData.js";
 
 import EmitterScheduling from "./Pages/EmitterScheduling/EmitterScheduling.js";
-// otherScheduling
+import OtherScheduling from "./Pages/OtherScheduling/OtherScheduling.js";
 import ScheduledEmitters from "./Pages/ScheduledEmitters/ScheduledEmitters.js";
 import MapTools from "./Pages/MapTools/MapTools.js";
 import Metrics from "./Pages/Metrics/Metrics.js";
@@ -12,6 +12,7 @@ import Admin from "./Pages/Admin/Admin.js";
 import Debug from "./Pages/Debug/Debug.js";
 
 import { ConfigContext } from "./Provider/Context.js";
+import "./App.css";
 
 function loadScript(url, callback) {
   var script = document.createElement("script");
@@ -59,7 +60,7 @@ const App = () => {
     return;
   }
   return (
-    <div className="App contentwrapper" style={{ display: "flex" }}>
+    <div className="app-container" style={{ display: "flex" }}>
       {scriptLoaded && <SharePointData />}
       {/* {JSON.stringify(settings)} */}
       <CollapsibleHeader
@@ -98,7 +99,11 @@ const App = () => {
           <EmitterScheduling />
         </div>
       )}
-      {activeSection === "otherScheduling" && <div>otherScheduling</div>}
+      {activeSection === "otherScheduling" && (
+        <div>
+          <OtherScheduling />
+        </div>
+      )}
       {activeSection === "scheduledEmitters" && (
         <div>
           <ScheduledEmitters />

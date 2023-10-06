@@ -31,7 +31,8 @@ function WeekSelector({ onWeekSelected }) {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const weeks = getWeeksInMonth(currentMonth, currentYear);
 
-  const changeMonth = (offset) => {
+  const changeMonth = (event, offset) => {
+    event.preventDefault()
     let newMonth = currentMonth + offset;
     let newYear = currentYear;
 
@@ -47,7 +48,8 @@ function WeekSelector({ onWeekSelected }) {
     setCurrentYear(newYear);
   };
 
-  const selectWeek = (week) => {
+  const selectWeek = (event, week) => {
+    event.preventDefault()
     const selectedDays = [];
     let currentDay = new Date(week.start);
 
@@ -68,18 +70,18 @@ function WeekSelector({ onWeekSelected }) {
 
   return (
     <div className="week-selector">
-      <button onClick={() => changeMonth(-1)}>Prev Month</button>
+      <button onClick={(e) => changeMonth(e, -1)}>Prev Month</button>
       <span>
         {new Date(currentYear, currentMonth).toLocaleString("default", {
           month: "long",
         })}{" "}
         {currentYear}
       </span>
-      <button onClick={() => changeMonth(1)}>Next Month</button>
+      <button onClick={(e) => changeMonth(e, 1)}>Next Month</button>
 
       <div className="weeks">
         {weeks.map((week, index) => (
-          <button key={index} onClick={() => selectWeek(week)}>
+          <button key={index} onClick={(e) => selectWeek(e, week)}>
             {`${formatDateWithoutYear(week.start)} - ${formatDateWithoutYear(
               week.end,
             )}`}

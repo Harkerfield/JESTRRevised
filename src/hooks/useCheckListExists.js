@@ -18,7 +18,8 @@ const useCheckListExists = () => {
       await new Promise((resolve, reject) => {
         clientContext.executeQueryAsync(
           () => {
-            listTitles.forEach((title) => {
+            Object.keys(listTitles).forEach(key => {
+              let title = listTitles[key];
               let listExists = false;
               const listEnumerator = lists.getEnumerator();
               while (listEnumerator.moveNext()) {

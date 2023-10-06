@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { useTable, useRowSelect, useFilters, useSortBy } from "react-table";
 import "./ThreatList.css";
 //https://tanstack.com/table/v8/docs/examples/react/column-ordering

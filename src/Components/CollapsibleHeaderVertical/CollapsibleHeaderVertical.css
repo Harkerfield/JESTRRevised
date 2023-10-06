@@ -18,7 +18,7 @@
   align-items: center;
   overflow-y: auto;
   width: 10px;
-  height: 100vh;
+  height: 100%;
   z-index: 9999;
   /* A high z-index value to ensure the component stays on top */
   cursor: pointer;

@@ -13,6 +13,7 @@ const useCreateList = () => {
     var oWeb = clientContext.get_web();
     var listCreation = new SP.ListCreationInformation();
     listCreation.set_title(listTitle);
+    
     listCreation.set_templateType(SP.ListTemplateType.genericList);
     var mySpList = oWeb.get_lists().add(listCreation);
     var fieldCol = mySpList.get_fields();

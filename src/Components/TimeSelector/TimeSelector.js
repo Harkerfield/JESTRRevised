@@ -14,7 +14,8 @@ const TimeSelector = ({ onTimeIntervalsChange }) => {
     },
   ]);
 
-  const addTimeInterval = () => {
+  const addTimeInterval = (event) => {
+    event.preventDefault()
     if (startTime && endTime && startTime < endTime) {
       setTimeIntervals([...timeIntervals, { start: startTime, end: endTime }]);
     } else {
@@ -22,7 +23,8 @@ const TimeSelector = ({ onTimeIntervalsChange }) => {
     }
   };
 
-  const deleteTimeInterval = (index) => {
+  const deleteTimeInterval = (event, index) => {
+    event.preventDefault()
     setTimeIntervals(timeIntervals.filter((_, i) => i !== index));
   };
 
@@ -51,13 +53,13 @@ const TimeSelector = ({ onTimeIntervalsChange }) => {
           onChange={(e) => setEndTime(e.target.value)}
         />
       </label>
-      <button onClick={addTimeInterval}>Add Time Interval</button>
+      <button onClick={(e) => addTimeInterval(e)}>Add Time Interval</button>
 
       <ul>
         {timeIntervals.map((interval, index) => (
           <li key={index}>
             {interval.start} to {interval.end}
-            <button onClick={() => deleteTimeInterval(index)}>X</button>
+            <button onClick={(e) => deleteTimeInterval(e, index)}>X</button>
           </li>
         ))}
       </ul>

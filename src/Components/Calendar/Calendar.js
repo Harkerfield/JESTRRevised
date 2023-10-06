@@ -1,188 +1,99 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  DayPilot,
-  DayPilotCalendar,
-  DayPilotNavigator,
-} from "@daypilot/daypilot-lite-react";
-import "./CalendarStyles.css";
+import React, { useContext } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { ConfigContext } from "../../Provider/Context.js";
 
-const styles = {
-  wrap: {
-    display: "flex",
-  },
-  left: {
-    marginRight: "10px",
-  },
-  main: {
-    flexGrow: "1",
-  },
-};
+const localizer = momentLocalizer(moment); // Create a localizer using moment
 
-const Calendar = () => {
-  const calendarRef = useRef();
+const CalendarComponent = () => {
+  const { admin } = useContext(ConfigContext);
 
-  const editEvent = async (e) => {
-    const dp = calendarRef.current.control;
-    const modal = await DayPilot.Modal.prompt("Update event text:", e.text());
-    if (!modal.result) {
-      return;
+  const events = [
+    {
+      title: 'Event 1',
+      start: moment().set({ hour: 9, minute: 0 }).toDate(),
+      end: moment().set({ hour: 11, minute: 30 }).toDate(),
+      equipmentRequested: 'Equipment A',
+      typeOfThreat: 'Type X',
+      range: '100m',
+      location: 'Location Y',
+      requestStatus: 'Pending',
+      notes: 'Notes for event 1',
+      pocName: 'John Doe',
+      pocNumber: '123-456-7890',
+      pocEmail: 'johndoe@example.com',
+      pocSquadron: 'Squadron Z',
+    },
+    {
+      title: 'Event 2',
+      start: moment().set({ hour: 10, minute: 0 }).toDate(),
+      end: moment().set({ hour: 12, minute: 0 }).toDate(),
+      equipmentRequested: 'Equipment B',
+      typeOfThreat: 'Type Y',
+      range: '200m',
+      location: 'Location Z',
+      requestStatus: 'Approved',
+      notes: 'Notes for event 2',
+      pocName: 'Jane Smith',
+      pocNumber: '987-654-3210',
+      pocEmail: 'janesmith@example.com',
+      pocSquadron: 'Squadron A',
+    },
+    {
+      title: 'Event 3',
+      start: moment().set({ hour: 12, minute: 30 }).toDate(),
+      end: moment().set({ hour: 14, minute: 0 }).toDate(),
+      equipmentRequested: 'Equipment C',
+      typeOfThreat: 'Type Z',
+      range: '300m',
+      location: 'Location A',
+      requestStatus: 'On-hold',
+      notes: 'Notes for event 3',
+      pocName: 'Sam Brown',
+      pocNumber: '456-123-7890',
+      pocEmail: 'sambrown@example.com',
+      pocSquadron: 'Squadron B',
+    },
+    {
+      title: 'Event 4',
+      start: moment().add(1, 'days').set({ hour: 10, minute: 0 }).toDate(),
+      end: moment().add(1, 'days').set({ hour: 11, minute: 0 }).toDate(),
+      equipmentRequested: 'Equipment D',
+      typeOfThreat: 'Type A',
+      range: '400m',
+      location: 'Location B',
+      requestStatus: 'Completed',
+      notes: 'Notes for event 4',
+      pocName: 'Lucy Green',
+      pocNumber: '321-654-9870',
+      pocEmail: 'lucygreen@example.com',
+      pocSquadron: 'Squadron C',
+    },
+  ];
+
+
+
+  const handleSelectEvent = (event) => {
+    if (admin) {
+      // Logic for admins to edit/delete time
+    } else if (event.creator) { // Assuming there's a creator property on events to check
+      // Logic for event creators to edit title
     }
-    e.data.text = modal.result;
-    dp.events.update(e);
   };
 
-  const [calendarConfig, setCalendarConfig] = useState({
-    viewType: "Week",
-    durationBarVisible: false,
-    timeRangeSelectedHandling: "Enabled",
-    onTimeRangeSelected: async (args) => {
-      const dp = calendarRef.current.control;
-      const modal = await DayPilot.Modal.prompt(
-        "Create a new event:",
-        "Event 1",
-      );
-      dp.clearSelection();
-      if (!modal.result) {
-        return;
-      }
-      dp.events.add({
-        start: args.start,
-        end: args.end,
-        id: DayPilot.guid(),
-        text: modal.result,
-      });
-    },
-    onEventClick: async (args) => {
-      await editEvent(args.e);
-    },
-    contextMenu: new DayPilot.Menu({
-      items: [
-        {
-          text: "Delete",
-          onClick: async (args) => {
-            const dp = calendarRef.current.control;
-            dp.events.remove(args.source);
-          },
-        },
-        {
-          text: "-",
-        },
-        {
-          text: "Edit...",
-          onClick: async (args) => {
-            await editEvent(args.source);
-          },
-        },
-      ],
-    }),
-    onBeforeEventRender: (args) => {
-      args.data.areas = [
-        {
-          top: 3,
-          right: 3,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#minichevron-down-2",
-          fontColor: "#fff",
-          toolTip: "Show context menu",
-          action: "ContextMenu",
-        },
-        {
-          top: 3,
-          right: 25,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#x-circle",
-          fontColor: "#fff",
-          action: "None",
-          toolTip: "Delete event",
-          onClick: async (args) => {
-            const dp = calendarRef.current.control;
-            dp.events.remove(args.source);
-          },
-        },
-      ];
-
-      const participants = args.data.participants;
-      if (participants > 0) {
-        // show one icon for each participant
-        for (let i = 0; i < participants; i++) {
-          args.data.areas.push({
-            bottom: 5,
-            right: 5 + i * 30,
-            width: 24,
-            height: 24,
-            action: "None",
-            image: `https://picsum.photos/24/24?random=${i}`,
-            style:
-              "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
-          });
-        }
-      }
-    },
-  });
-
-  useEffect(() => {
-    const events = [
-      {
-        id: 1,
-        text: "Event 1",
-        start: "2023-10-02T10:30:00",
-        end: "2023-10-02T13:00:00",
-        participants: 2,
-      },
-      {
-        id: 2,
-        text: "Event 2",
-        start: "2023-10-03T09:30:00",
-        end: "2023-10-03T11:30:00",
-        backColor: "#6aa84f",
-        participants: 1,
-      },
-      {
-        id: 3,
-        text: "Event 3",
-        start: "2024-10-03T12:00:00",
-        end: "2024-10-03T15:00:00",
-        backColor: "#f1c232",
-        participants: 3,
-      },
-      {
-        id: 4,
-        text: "Event 4",
-        start: "2024-06-01T11:30:00",
-        end: "2024-10-01T14:30:00",
-        backColor: "#cc4125",
-        participants: 4,
-      },
-    ];
-
-    const startDate = new Date();
-
-    calendarRef.current.control.update({ startDate, events });
-  }, []);
-
   return (
-    <div style={styles.wrap}>
-      <div style={styles.left}>
-        <DayPilotNavigator
-          selectMode={"Week"}
-          showMonths={3}
-          skipMonths={3}
-          startDate={new Date()}
-          selectionDay={new Date()}
-          onTimeRangeSelected={(args) => {
-            calendarRef.current.control.update({
-              startDate: args.day,
-            });
-          }}
-        />
-      </div>
-      <div style={styles.main}>
-        <DayPilotCalendar {...calendarConfig} ref={calendarRef} />
-      </div>
+    <div style={{width:'100vh'}}>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+        onSelectEvent={handleSelectEvent}
+      />
     </div>
   );
 };
 
-export default Calendar;
+export default CalendarComponent;

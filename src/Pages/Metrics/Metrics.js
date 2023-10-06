@@ -75,7 +75,7 @@ const Metrics = () => {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  <td className="borderStyle" {...cell.getCellProps()}>{cell.render("Cell")}</td>
                 ))}
               </tr>
             );

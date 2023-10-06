@@ -21,6 +21,7 @@ function MapTools() {
       <input
         value={filterValue || ""}
         onChange={(e) => {
+          e.preventDefault()
           setFilter(e.target.value || undefined);
         }}
         placeholder={`Search ${id}...`}
@@ -28,7 +29,8 @@ function MapTools() {
     );
   }
 
-  const handleCopy = async (text) => {
+  const handleCopy = async (event, text) => {
+    event.preventDefault()
     try {
       await navigator.clipboard.writeText(text);
       alert("Ccopied to clipboard!");
@@ -126,7 +128,7 @@ function MapTools() {
             {value}
             <button
               style={{ marginLeft: "5px" }}
-              onClick={() => handleCopy(value)}
+              onClick={(e) => handleCopy(e, value)}
             >
               Copy
             </button>

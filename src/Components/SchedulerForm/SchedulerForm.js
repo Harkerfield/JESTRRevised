@@ -28,7 +28,7 @@ const SchedulerForm = ({
   const columns = useMemo(
     () => [
       { Header: "Title", accessor: "Title" },
-      { Header: "Serial Number", accessor: "location" },
+      { Header: "Serial Number", accessor: "serialNumber" },
       { Header: "System Type", accessor: "systemType" },
       ...selectedWeek.map((item) => {
         return {
@@ -61,7 +61,8 @@ const SchedulerForm = ({
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
-  const saveTableAsJSON = (columns) => {
+  const saveTableAsJSON = (event, columns) => {
+    event.preventDefault()
     const rowData = data.map((row) => {
       let obj = {};
       columns.forEach((column, idx) => {
@@ -127,7 +128,7 @@ const SchedulerForm = ({
         </tbody>
       </table>
 
-      <button onClick={() => saveTableAsJSON(columns)}>Save as JSON</button>
+      <button onClick={(e) => saveTableAsJSON(e, columns)}>Save as JSON</button>
     </div>
   );
 };

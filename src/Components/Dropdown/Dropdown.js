@@ -8,7 +8,8 @@ function Dropdown({ options, placeholder, onChange }) {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (event, option) => {
+    event.preventDefault()
     setSelectedOption(option);
     setIsOpen(false);
     if (onChange) {
@@ -27,7 +28,7 @@ function Dropdown({ options, placeholder, onChange }) {
           {options.map((option, index) => (
             <li
               key={index}
-              onClick={() => handleOptionClick(option)}
+              onClick={(e) => handleOptionClick(e, option)}
               className="dropdown-list-item"
             >
               {option}

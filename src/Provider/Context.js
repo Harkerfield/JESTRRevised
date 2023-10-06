@@ -38,7 +38,7 @@ export const ConfigProvider = ({ children }) => {
           },
           (error) => {
             console.error("Error checking admin status:", error);
-            data.admin = true; // Setting admin to true on error for debugging
+            data.admin = false; // Setting admin to true on error for debugging
             // console.log(data)
             setConfig(data);
           },
@@ -68,6 +68,8 @@ export const ConfigProvider = ({ children }) => {
     return;
   }
   return (
-    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
+    <ConfigContext.Provider value={config}>
+      {children}
+    </ConfigContext.Provider>
   );
 };

@@ -19,6 +19,7 @@ function App() {
       <input
         value={filterValue || ""}
         onChange={(e) => {
+          e.preventDefault()
           setFilter(e.target.value || undefined);
         }}
         placeholder={`Search ${id}...`}
