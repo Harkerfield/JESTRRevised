@@ -184,12 +184,12 @@ function EmitterScheduling() {
         Cell: ({ value }) => (
           <>
             {value}
-            <button
+            {/* <button
               style={{ marginLeft: "5px" }}
               onClick={(e) => handleCopy(e, value)}
             >
               Copy
-            </button>
+            </button> */}
           </>
         ),
       },
