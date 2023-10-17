@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { useTable, useRowSelect, useFilters, useSortBy } from "react-table";
+import {
+  useTable,
+  useRowSelect,
+  useFilters,
+  useSortBy,
+  usePagination, // Import usePagination
+} from "react-table";
 import "./ThreatList.css";
-//https://tanstack.com/table/v8/docs/examples/react/column-ordering
 
 const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -12,31 +17,33 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     headerGroups,
     rows,
     prepareRow,
-    state: { selectedRowIds },
+    state: { selectedRowIds, pageSize, pageIndex },
+    page,
+    gotoPage,
+    pageCount,
+    canPreviousPage,
+    canNextPage,
+    setPageSize,
+    pageOptions,
   } = useTable(
     { columns, data },
     useFilters,
     useSortBy,
     useRowSelect,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        {
-          id: "selection",
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <>
-              <input type="checkbox" {...getToggleAllRowsSelectedProps()} />
-              {/* <button onClick={selectAll}>Select All</button>
-              <button onClick={deselectAll}>Deselect All</button> */}
-            </>
-          ),
-          Cell: ({ row }) => (
-            <input type="checkbox" {...row.getToggleRowSelectedProps()} />
-          ),
-        },
-        ...columns,
-      ]);
-    },
+    usePagination // Use usePagination
   );
+
+  const previousPage = () => {
+    if (canPreviousPage) {
+      gotoPage(pageIndex - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (canNextPage) {
+      gotoPage(pageIndex + 1);
+    }
+  };
 
   React.useEffect(() => {
     const newSelectedRows = [];
@@ -57,11 +64,9 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     });
     setSelectedRows(newSelectedRows);
 
-    // Notify the parent component about the change in selected rows.
     if (onSelectedRowsChange) {
       onSelectedRowsChange(newSelectedRows);
     }
-    // }, [selectedRowIds, rows, onSelectedRowsChange]);
   }, [selectedRowIds, rows]);
 
   return (
@@ -95,7 +100,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -112,6 +117,50 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
           })}
         </tbody>
       </table>
+      <div className="pagination">
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {"<<"}
+        </button>{" "}
+        <button onClick={previousPage} disabled={!canPreviousPage}>
+          {"<"}
+        </button>{" "}
+        <button onClick={nextPage} disabled={!canNextPage}>
+          {">"}
+        </button>{" "}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {">>"}
+        </button>{" "}
+        <span>
+          Page{" "}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>{" "}
+        </span>
+        <span>
+          | Go to page:{" "}
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              gotoPage(page);
+            }}
+            style={{ width: "50px" }}
+          />
+        </span>{" "}
+        <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
+          }}
+        >
+          {[8, 10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize} per page
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 };

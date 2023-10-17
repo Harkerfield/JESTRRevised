@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/sites/354RANS/hafi/tester/static/css/main.35a0f91c.css",
-    "main.js": "/sites/354RANS/hafi/tester/static/js/main.ed77f520.js",
+    "main.css": "/sites/354RANS/hafi/tester/static/css/main.98cd52d4.css",
+    "main.js": "/sites/354RANS/hafi/tester/static/js/main.9b3df581.js",
     "index.html": "/sites/354RANS/hafi/tester/index.html",
-    "main.35a0f91c.css.map": "/sites/354RANS/hafi/tester/static/css/main.35a0f91c.css.map",
-    "main.ed77f520.js.map": "/sites/354RANS/hafi/tester/static/js/main.ed77f520.js.map"
+    "main.98cd52d4.css.map": "/sites/354RANS/hafi/tester/static/css/main.98cd52d4.css.map",
+    "main.9b3df581.js.map": "/sites/354RANS/hafi/tester/static/js/main.9b3df581.js.map"
   },
   "entrypoints": [
-    "static/css/main.35a0f91c.css",
-    "static/js/main.ed77f520.js"
+    "static/css/main.98cd52d4.css",
+    "static/js/main.9b3df581.js"
   ]
 }

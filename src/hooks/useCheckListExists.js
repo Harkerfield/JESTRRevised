@@ -1,43 +1,39 @@
-/* global SP */
-// hooks/useCheckListExists.js
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
+import { ConfigContext } from "../Provider/Context.js";
+
 
 const useCheckListExists = () => {
+  const config = useContext(ConfigContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const checkListsExist = useCallback(async (listTitles) => {
     setLoading(true);
     const existenceMap = {};
-    const clientContext = new SP.ClientContext.get_current();
-    const oWeb = clientContext.get_web();
-    const lists = oWeb.get_lists();
-    clientContext.load(lists);
 
     try {
-      await new Promise((resolve, reject) => {
-        clientContext.executeQueryAsync(
-          () => {
-            Object.keys(listTitles).forEach(key => {
-              let title = listTitles[key];
-              let listExists = false;
-              const listEnumerator = lists.getEnumerator();
-              while (listEnumerator.moveNext()) {
-                const oList = listEnumerator.get_current();
-                if (oList.get_title() === title) {
-                  listExists = true;
-                  break;
-                }
-              }
-              existenceMap[title] = listExists;
-            });
-            resolve();
+      // Define the SharePoint site URL
+      const sharePointSiteUrl = config.apiBaseUrl;
+      
+      // Loop through the list titles and check their existence
+      for (const title of listTitles) {
+        const listUrl = `${sharePointSiteUrl}/_api/web/lists/getbytitle('${encodeURIComponent(title)}')`;
+        
+        const response = await fetch(listUrl, {
+          method: "GET",
+          headers: {
+            Accept: "application/json;odata=verbose",
           },
-          (sender, args) => {
-            reject(new Error(args.get_message()));
-          },
-        );
-      });
+        });
+
+        if (response.ok) {
+          existenceMap[title] = true; // List exists
+        } else if (response.status === 404) {
+          existenceMap[title] = false; // List does not exist
+        } else {
+          throw new Error(`Error checking list existence for ${title}`);
+        }
+      }
     } catch (err) {
       setError(err.message);
     }

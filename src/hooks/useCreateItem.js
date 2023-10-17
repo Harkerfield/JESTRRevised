@@ -1,7 +1,4 @@
-// hooks/useCreateItem.js
-
 import { useState, useContext } from "react";
-import axios from "axios";
 import { ConfigContext } from "../Provider/Context.js";
 
 const useCreateItem = () => {
@@ -14,14 +11,22 @@ const useCreateItem = () => {
     const url = `${config.apiBaseUrl}_api/web/lists/getbytitle('${listTitle}')/items`;
 
     try {
-      const response = await axios.post(url, itemData, {
+      const response = await fetch(url, {
+        method: "POST",
         headers: {
           Accept: "application/json;odata=nometadata",
           "Content-Type": "application/json;odata=verbose",
           "odata-version": "",
         },
+        body: JSON.stringify(itemData),
       });
-      return response.data;
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
     } catch (err) {
       setError(err.message);
       return null;

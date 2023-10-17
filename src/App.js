@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import CollapsibleHeader from "./Components/CollapsibleHeaderVertical/CollapsibleHeaderVertical.js";
 
-import SharePointData from "./hooks/SPdata/SharePointData.js";
-
 import EmitterScheduling from "./Pages/EmitterScheduling/EmitterScheduling.js";
 import OtherScheduling from "./Pages/OtherScheduling/OtherScheduling.js";
 import ScheduledEmitters from "./Pages/ScheduledEmitters/ScheduledEmitters.js";
@@ -14,55 +12,31 @@ import Debug from "./Pages/Debug/Debug.js";
 import { ConfigContext } from "./Provider/Context.js";
 import "./App.css";
 
-function loadScript(url, callback) {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-
-  if (script.readyState) {
-    // For old versions of IE
-    script.onreadystatechange = function () {
-      if (script.readyState === "loaded" || script.readyState === "complete") {
-        script.onreadystatechange = null;
-        callback();
-      }
-    };
-  } else {
-    // Other browsers
-    script.onload = function () {
-      callback();
-    };
-  }
-
-  script.src = url;
-  document.getElementsByTagName("head")[0].appendChild(script);
-}
 
 const App = () => {
   const config = useContext(ConfigContext);
   const [settings, setSettings] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
   const [defaultCollapsed, setDefaultCollapsed] = useState(false);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+
+
+  // review
+  useEffect(() => {
+    setDefaultCollapsed(false)
+  }, [])
 
   useEffect(() => {
     console.log("config", config);
     setSettings(config);
   }, [config]);
 
-  useEffect(() => {
-    loadScript("/_layouts/15/sp.js", function () {
-      console.log("SP.js loaded");
-      setScriptLoaded(true);
-    });
-  }, []);
 
   if (!settings) {
     return;
   }
   return (
     <div className="app-container" style={{ display: "flex" }}>
-      {scriptLoaded && <SharePointData />}
-      {/* {JSON.stringify(settings)} */}
+
       <CollapsibleHeader
         show={"Menu"}
         hide={"Hide Menu"}

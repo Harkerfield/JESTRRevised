@@ -1,7 +1,6 @@
 // hooks/useDeleteItem.js
 
 import { useState, useContext } from "react";
-import axios from "axios";
 import { ConfigContext } from "../Provider/Context.js";
 
 const useDeleteItem = () => {
@@ -14,7 +13,8 @@ const useDeleteItem = () => {
     const url = `${config.apiBaseUrl}_api/web/lists/getbytitle('${listTitle}')/items(${itemId})`;
 
     try {
-      const response = await axios.delete(url, {
+      const response = await fetch(url, {
+        method: "DELETE",
         headers: {
           Accept: "application/json;odata=nometadata",
           "Content-Type": "application/json;odata=verbose",
@@ -22,7 +22,12 @@ const useDeleteItem = () => {
           "IF-MATCH": "*",
         },
       });
-      return response.data;
+
+      if (!response.ok) {
+        throw new Error("Failed to delete item.");
+      }
+
+      return await response.json();
     } catch (err) {
       setError(err.message);
       return null;

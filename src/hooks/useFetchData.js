@@ -1,7 +1,4 @@
-// hooks/useFetchData.js
-
 import { useState, useEffect, useContext, useMemo } from "react";
-import axios from "axios";
 import { ConfigContext } from "../Provider/Context.js";
 
 const useFetchData = (listTitle) => {
@@ -16,15 +13,21 @@ const useFetchData = (listTitle) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(url, {
+        const response = await fetch(url, {
+          method: "GET",
           credentials: "include",
           headers: {
             Accept: "application/json;odata=nometadata",
             Prefer: 'odata.include-annotations="none"',
           },
         });
-        //   console.log(response.data.value)
-        setRawData(response.data.value); // .value is used to extract the array of items from the response
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        setRawData(data.value);
       } catch (error) {
         setError(error.message);
       } finally {

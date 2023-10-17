@@ -1,7 +1,6 @@
 // hooks/useUpdateItem.js
 
 import { useState, useContext } from "react";
-import axios from "axios";
 import { ConfigContext } from "../Provider/Context.js";
 
 const useUpdateItem = () => {
@@ -14,7 +13,8 @@ const useUpdateItem = () => {
     const url = `${config.apiBaseUrl}_api/web/lists/getbytitle('${listTitle}')/items(${itemId})`;
 
     try {
-      const response = await axios.put(url, updatedData, {
+      const response = await fetch(url, {
+        method: "POST", // Use POST for updates
         headers: {
           Accept: "application/json;odata=nometadata",
           "Content-Type": "application/json;odata=verbose",
@@ -22,8 +22,15 @@ const useUpdateItem = () => {
           "IF-MATCH": "*",
           "X-HTTP-Method": "MERGE",
         },
+        body: JSON.stringify(updatedData),
       });
-      return response.data;
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
     } catch (err) {
       setError(err.message);
       return null;

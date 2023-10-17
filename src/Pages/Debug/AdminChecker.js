@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { useIsCurrentUserSiteAdmin } from "../../hooks/useIsCurrentUserSiteAdmin.js";
+import { useCheckAdmin } from "../../hooks/useCheckAdmin.js";
 
 const SiteAdminCheck = () => {
-  const { isCurrentUserSiteAdmin, loading, error } = useIsCurrentUserSiteAdmin();
+  const { isCurrentUserSiteAdmin, loading, error } = useCheckAdmin();
 
   const [isSiteAdmin, setIsSiteAdmin] = useState(null);
 

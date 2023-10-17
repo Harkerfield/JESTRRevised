@@ -1,44 +1,73 @@
-/* global SP */
-// hooks/useCreateList.js
-
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext } from "react";
+import { ConfigContext } from "../Provider/Context.js";
 
 const useCreateList = () => {
+  const config = useContext(ConfigContext);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const createList = useCallback(async (listTitle, columnArrays) => {
     setLoading(true);
-    var clientContext = new SP.ClientContext();
-    var oWeb = clientContext.get_web();
-    var listCreation = new SP.ListCreationInformation();
-    listCreation.set_title(listTitle);
-    
-    listCreation.set_templateType(SP.ListTemplateType.genericList);
-    var mySpList = oWeb.get_lists().add(listCreation);
-    var fieldCol = mySpList.get_fields();
 
-    columnArrays.forEach((item) => {
-      var spTxtField = fieldCol.addFieldAsXml(
-        item.data,
-        true,
-        SP.AddFieldOptions.addToDefaultContentType,
-      );
-      spTxtField.set_title(item.title);
-    });
+    // Define the SharePoint site URL and list endpoint
+    const siteUrl = config.apiBaseUrl;
+    const listEndpoint = `${siteUrl}/_api/web/lists`;
 
-    mySpList.update();
-
-    clientContext.executeQueryAsync(
-      function () {
-        alert("successfully Created The List and List Field");
-        setLoading(false);
+    // Define the list creation request body
+    const listCreationPayload = {
+      __metadata: {
+        type: "SP.List",
       },
-      function (sender, args) {
-        setError("Error: " + args.get_message() + "\n" + args.get_stackTrace());
-        setLoading(false);
-      },
-    );
+      Title: listTitle,
+      BaseTemplate: 100, // Use 100 for a custom list
+    };
+
+    try {
+      const response = await fetch(listEndpoint, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json;odata=verbose",
+          "Content-Type": "application/json;odata=verbose",
+        },
+        body: JSON.stringify(listCreationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to create list: ${response.statusText}`);
+      }
+
+      // Create columns
+      for (const item of columnArrays) {
+        const fieldEndpoint = `${listEndpoint}/getbytitle('${listTitle}')/fields`;
+        const fieldPayload = {
+          __metadata: {
+            type: "SP.Field",
+          },
+          FieldTypeKind: item.fieldType, // Set the field type as needed
+          Title: item.title,
+        };
+
+        const fieldResponse = await fetch(fieldEndpoint, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+          },
+          body: JSON.stringify(fieldPayload),
+        });
+
+        if (!fieldResponse.ok) {
+          throw new Error(`Failed to create column '${item.title}': ${fieldResponse.statusText}`);
+        }
+      }
+
+      alert("Successfully created the list and list fields");
+      setLoading(false);
+    } catch (err) {
+      setError("Error: " + err.message);
+      setLoading(false);
+    }
   }, []);
 
   return { createList, loading, error };

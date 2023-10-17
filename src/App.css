@@ -37,3 +37,8 @@
 .ms-pub-contentLayout{
   padding: 0;
 }
+
+#contentBox{
+  background-color: aliceblue !important;
+}
+
