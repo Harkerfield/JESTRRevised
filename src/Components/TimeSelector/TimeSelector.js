@@ -15,7 +15,7 @@ const TimeSelector = ({ onTimeIntervalsChange }) => {
   ]);
 
   const addTimeInterval = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     if (startTime && endTime && startTime < endTime) {
       setTimeIntervals([...timeIntervals, { start: startTime, end: endTime }]);
     } else {
@@ -24,7 +24,7 @@ const TimeSelector = ({ onTimeIntervalsChange }) => {
   };
 
   const deleteTimeInterval = (event, index) => {
-    event.preventDefault()
+    event.preventDefault();
     setTimeIntervals(timeIntervals.filter((_, i) => i !== index));
   };
 

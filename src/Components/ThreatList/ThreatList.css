@@ -1,7 +1,5 @@
-.tableContainer {
+.tableThreatsListContainer {
   width: 100%;
-  overflow-x: auto;
+  height: 100%;
   background-color: rgb(255 255 255);
-
 }
-

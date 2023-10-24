@@ -86,12 +86,10 @@ const MapComponent = ({ points }) => {
 
     const size = map.getSize();
     if (points.length !== 0) {
-      map
-        .getView()
-        .fit(vectorSource.getExtent(), {
-          padding: [30, 30, 30, 30],
-          constrainResolution: false,
-        });
+      map.getView().fit(vectorSource.getExtent(), {
+        padding: [30, 30, 30, 30],
+        constrainResolution: false,
+      });
     } else {
       map
         .getView()

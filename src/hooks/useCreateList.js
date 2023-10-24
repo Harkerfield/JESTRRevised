@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext, useEffect } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
 const useCreateList = () => {
@@ -6,6 +6,31 @@ const useCreateList = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [requestDigest, setRequestDigest] = useState("");
+
+  useEffect(() => {
+    // Fetch the __REQUESTDIGEST value from SharePoint
+    const getRequestDigest = async () => {
+      try {
+        const digestUrl =
+          "https://intelshare.intelink.gov/sites/354RANS/JESTR/_api/contextinfo";
+        const digestResponse = await fetch(digestUrl, {
+          method: "POST",
+          headers: {
+            Accept: "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+          },
+        });
+        const digestData = await digestResponse.json();
+        setRequestDigest(digestData.d.GetContextWebInformation.FormDigestValue);
+      } catch (error) {
+        console.error("Error fetching __REQUESTDIGEST:", error);
+      }
+    };
+
+    getRequestDigest();
+  }, []);
 
   const createList = useCallback(async (listTitle, columnArrays) => {
     setLoading(true);
@@ -26,9 +51,11 @@ const useCreateList = () => {
     try {
       const response = await fetch(listEndpoint, {
         method: "POST",
+        credentials: "same-origin",
         headers: {
-          "Accept": "application/json;odata=verbose",
-          "Content-Type": "application/json;odata=verbose",
+          Accept: "application/json; odata=nometadata",
+          "Content-Type": "application/json;odata=nometadata",
+          "X-RequestDigest": requestDigest,
         },
         body: JSON.stringify(listCreationPayload),
       });
@@ -51,14 +78,16 @@ const useCreateList = () => {
         const fieldResponse = await fetch(fieldEndpoint, {
           method: "POST",
           headers: {
-            "Accept": "application/json;odata=verbose",
+            Accept: "application/json;odata=verbose",
             "Content-Type": "application/json;odata=verbose",
           },
           body: JSON.stringify(fieldPayload),
         });
 
         if (!fieldResponse.ok) {
-          throw new Error(`Failed to create column '${item.title}': ${fieldResponse.statusText}`);
+          throw new Error(
+            `Failed to create column '${item.title}': ${fieldResponse.statusText}`,
+          );
         }
       }
 

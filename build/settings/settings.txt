@@ -127,12 +127,12 @@
         ]
     },
     "debug": true,
-    "mainInfo": "",
-    "emmiterSchedulingInfo": "",
-    "otherSchedulingInfo": "",
-    "viewScheduledEmittersInfo": "",
-    "mapAndToolsInfo": "",
-    "metricsInfo": "",
-    "adminInfo": "",
-    "debugInfo": ""
+    "homeInfo": "home",
+    "emmiterSchedulingInfo": "emitter",
+    "otherSchedulingInfo": "other",
+    "viewScheduledEmittersInfo": "calendar",
+    "mapAndToolsInfo": "map",
+    "metricsInfo": "metrics",
+    "adminInfo": "admin \n info",
+    "debugInfo": "<div>https://intelshare.intelink.gov/sites/354RANS/hafi/tester/index.html</div><div>https://github.com/Harkerfield/JESTRRevised​</div>"
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useMemo } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
-const useFetchData = (listTitle) => {
+const useListGetItems = (listTitle) => {
   const config = useContext(ConfigContext);
   const [rawData, setRawData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const useFetchData = (listTitle) => {
       try {
         const response = await fetch(url, {
           method: "GET",
-          credentials: "include",
+          credentials: "same-origin",
           headers: {
             Accept: "application/json;odata=nometadata",
             Prefer: 'odata.include-annotations="none"',
@@ -47,4 +47,4 @@ const useFetchData = (listTitle) => {
   return { data, loading, error };
 };
 
-export { useFetchData };
+export { useListGetItems };

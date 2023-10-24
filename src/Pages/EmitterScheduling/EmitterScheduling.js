@@ -4,10 +4,12 @@ import SchedulerForm from "../../Components/SchedulerForm/SchedulerForm.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
 import WeekSelector from "../../Components/WeekSelector/WeekSelector.js";
 import TimeSelector from "../../Components/TimeSelector/TimeSelector.js";
-import Modal from "../../Components/Modal/Modal.js";
-import useCreateItem from "../../hooks/useCreateItem.js";
-import { useFetchData } from "../../hooks/useFetchData.js";
+import ModalForm from "../../Components/Modal/ModalForm.js";
+import ModalChildren from "../../Components/Modal/ModalChildren.js";
+import useListCreateItem from "../../hooks/useListCreateItem.js";
+import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
+import "./EmitterScheduling.css";
 
 function EmitterScheduling() {
   const config = useContext(ConfigContext);
@@ -22,9 +24,8 @@ function EmitterScheduling() {
     },
   ]);
 
-  const { data, loading, error } = useFetchData(config.lists.threatList);
+  const { data, loading, error } = useListGetItems(config.lists.threatList);
   const [filteredData, setFilteredData] = useState([]);
-
 
   const handleSelectedRowsChange = (selectedRows) => {
     setselectedThreatData(selectedRows);
@@ -39,15 +40,23 @@ function EmitterScheduling() {
   };
 
   const [rowData, setRowData] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalFormOpen, setIsModalFormOpen] = useState(false);
+  const [isModalChildrenOpen, setIsModalChildrenOpen] = useState(false);
 
   const handleSaveData = (data) => {
     setRowData(data);
-    setIsModalOpen(true);
+    setIsModalFormOpen(true);
+  };
+  const openSchedulingModel = (e) => {
+    e.preventDefault();
+    setIsModalChildrenOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseModalForm = () => {
+    setIsModalFormOpen(false);
+  };
+  const handleCloseModalChildren = () => {
+    setIsModalChildrenOpen(false);
   };
 
   const handlePushData = () => {
@@ -61,7 +70,7 @@ function EmitterScheduling() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        handleCloseModal();
+        handleCloseModalForm();
       })
       .catch((error) => {
         console.error("Error pushing data:", error);
@@ -73,10 +82,10 @@ function EmitterScheduling() {
   }) {
     return (
       <input
-        style={{ width: '100%', textAlign: 'center' }}
+        style={{ width: "100%", textAlign: "center" }}
         value={filterValue || ""}
         onChange={(e) => {
-          e.preventDefault()
+          e.preventDefault();
           setFilter(e.target.value || undefined);
         }}
         placeholder={`Search`}
@@ -85,7 +94,7 @@ function EmitterScheduling() {
   }
 
   const handleCopy = async (event, text) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
       await navigator.clipboard.writeText(text);
       alert("Copied to clipboard!");
@@ -157,21 +166,34 @@ function EmitterScheduling() {
 
   const columns = useMemo(
     () => [
-      { Header: "Title", accessor: "Title", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      // { Header: "Title", accessor: "Title", Filter: ColumnFilter, style: { textAlign: 'center' }},
       // {
       //   Header: "Serial Number",
       //   accessor: "serialNumber",
       //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' } 
+      //   style: { textAlign: 'center' }
       // },
-      { Header: "System Type", accessor: "systemType", Filter: ColumnFilter, style: { textAlign: 'center' } },
+
+      {
+        Header: "System Type/Threat",
+        accessor: (d) => `${d.systemType}/${d.threat}`,
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+        Cell: ({ value }) => <>{value}</>,
+      },
+      // { Header: "System Type", accessor: "systemType", Filter: ColumnFilter, style: { textAlign: 'center' } },
       // {
       //   Header: "Schedulable Item",
       //   accessor: "schedulableItem",
       //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' } 
+      //   style: { textAlign: 'center' }
       // },
-      { Header: "Location", accessor: "location", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      {
+        Header: "Location",
+        accessor: "location",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
       {
         Header: "Lat/Long",
         accessor: (d) =>
@@ -180,7 +202,7 @@ function EmitterScheduling() {
             "lon",
           )}`, // Use an accessor function to get both values.
         Filter: ColumnFilter,
-        style: { textAlign: 'center' },
+        style: { textAlign: "center" },
         Cell: ({ value }) => (
           <>
             {value}
@@ -194,12 +216,12 @@ function EmitterScheduling() {
         ),
       },
       // { Header: "Device Type", accessor: "deviceType", Filter: ColumnFilter, style: { textAlign: 'center' }  },
-      { Header: "Threat", accessor: "threat", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      // { Header: "Threat", accessor: "threat", Filter: ColumnFilter, style: { textAlign: 'center' } },
       // {
       //   Header: "Maintenance Condition",
       //   accessor: "mxCondition",
       //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' } 
+      //   style: { textAlign: 'center' }
       //   Cell: ({ value }) =>
       //     value ? (
       //       <div
@@ -220,19 +242,34 @@ function EmitterScheduling() {
       //     ),
       // },
       // { Header: "Status", accessor: "status", Filter: ColumnFilter, style: { textAlign: 'center' }  },
-      { Header: "ETIC", accessor: "ETIC", Filter: ColumnFilter, style: { textAlign: 'center' } },
-      { Header: "Remarks", accessor: "remarks", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      // { Header: "ETIC", accessor: "ETIC", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      // { Header: "Remarks", accessor: "remarks", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      {
+        Header: "Remarks",
+        accessor: (d) => {
+          return (
+            <>
+              {d.remarks ? <div>{d.remarks}</div> : <></>}
+              {d.ETIC ? <div>ETIC: {d.ETIC}</div> : <></>}
+            </>
+          );
+        },
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+        Cell: ({ value }) => <>{value}</>,
+      },
+
       // {
       //   Header: "Status Change Date",
       //   accessor: "statusChangeDate",
       //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' } 
+      //   style: { textAlign: 'center' }
       // },
       {
         Header: "Operational Status",
         accessor: "operationalStatus",
         Filter: ColumnFilter,
-        style: { textAlign: 'center' },
+        style: { textAlign: "center" },
         Cell: ({ value }) =>
           value ? (
             <div
@@ -241,7 +278,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -256,30 +293,27 @@ function EmitterScheduling() {
     [],
   );
 
-  // const { data, loading, error } = useFetchData(config.lists.threatList);
+  const collapsibleColumns = ["Remarks", "ETIC"];
+
+  // const { data, loading, error } = useListGetItems(config.lists.threatList);
   //data.filter(item=> item.schedulableItem === "Yes" && (item.operationalStatus === "GREEN" || item.operationalStatus === "YELLOW" || item.operationalStatus === "RED" || item.operationalStatus === "AMBER") )
 
   useEffect(() => {
     if (data) {
       const filtered = data.filter(
-        item =>
+        (item) =>
           item.schedulableItem === "Yes" &&
           (item.operationalStatus === "GREEN" ||
             item.operationalStatus === "YELLOW" ||
             item.operationalStatus === "RED" ||
-            item.operationalStatus === "AMBER")
+            item.operationalStatus === "AMBER"),
       );
       setFilteredData(filtered);
     }
   }, [data]);
 
-
   return (
-    <div>
-      {/* {data.map(item => (
-        <div key={item.Id}>{item.Title}</div>
-      ))} */}
-
+    <div className="PageFormat">
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ width: "45vw" }}>
           {loading ? (
@@ -289,6 +323,7 @@ function EmitterScheduling() {
               Error! {error}
               <ThreatList
                 columns={columns}
+                collapsibleColumns={collapsibleColumns}
                 data={backupData}
                 onSelectedRowsChange={handleSelectedRowsChange}
               />
@@ -298,6 +333,7 @@ function EmitterScheduling() {
               <ThreatList
                 columns={columns}
                 data={filteredData}
+                collapsibleColumns={collapsibleColumns}
                 onSelectedRowsChange={handleSelectedRowsChange}
               />
             </>
@@ -307,22 +343,33 @@ function EmitterScheduling() {
           <MapComponent points={selectedThreatData} />
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <WeekSelector onWeekSelected={handleSelectedDays} />
-        <TimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} />
-      </div>
-      <SchedulerForm
-        selectedThreatData={selectedThreatData}
-        selectedWeek={selectedWeek}
-        userTimes={userTimes}
-        onSaveData={handleSaveData}
-      />
-      {isModalOpen && (
-        <Modal
-          data={rowData}
-          onClose={handleCloseModal}
-          onPush={handlePushData}
-        />
+      <button onClick={openSchedulingModel}>Click here to schedule</button>
+
+      {isModalChildrenOpen && (
+        <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
+          <div>Error useListGetItems</div>
+
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <WeekSelector onWeekSelected={handleSelectedDays} />
+            <TimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} />
+          </div>
+          <div style={{ height: "100%" }}>
+            <SchedulerForm
+              selectedThreatData={selectedThreatData}
+              selectedWeek={selectedWeek}
+              userTimes={userTimes}
+              onSaveData={handleSaveData}
+            />
+          </div>
+
+          {isModalFormOpen && (
+            <ModalForm
+              data={rowData}
+              onClose={handleCloseModalForm}
+              onPush={handlePushData}
+            />
+          )}
+        </ModalChildren>
       )}
     </div>
   );

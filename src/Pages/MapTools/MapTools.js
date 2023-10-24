@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useContext } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
-import CollapsibleHeader from "../../Components/CollapsibleHeaderVertical/CollapsibleHeaderVertical.js";
+import "./MapTools.css";
 
-import { useFetchData } from "../../hooks/useFetchData.js";
+import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 
 function MapTools() {
@@ -21,7 +21,7 @@ function MapTools() {
       <input
         value={filterValue || ""}
         onChange={(e) => {
-          e.preventDefault()
+          e.preventDefault();
           setFilter(e.target.value || undefined);
         }}
         placeholder={`Search ${id}...`}
@@ -30,7 +30,7 @@ function MapTools() {
   }
 
   const handleCopy = async (event, text) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
       await navigator.clipboard.writeText(text);
       alert("Ccopied to clipboard!");
@@ -195,32 +195,35 @@ function MapTools() {
     [],
   );
 
-  const { data, loading, error } = useFetchData(config.lists.threatList);
+  const { data, loading, error } = useListGetItems(config.lists.threatList);
 
   return (
-    <div style={{ width: "95vw" }}>
-      <MapComponent points={selectedRowsInParent} />
+    <div className="PageFormat">
+      <div className="InfoPanel">{config.mapAndToolsInfo}</div>
+      <div style={{ width: "95vw" }}>
+        <MapComponent points={selectedRowsInParent} />
 
-      {loading ? (
-        <>Loading...</>
-      ) : error ? (
-        <>
-          Error! {error}
-          <ThreatList
-            columns={columns}
-            data={backupData}
-            onSelectedRowsChange={handleSelectedRowsChange}
-          />
-        </>
-      ) : (
-        <>
-          <ThreatList
-            columns={columns}
-            data={data}
-            onSelectedRowsChange={handleSelectedRowsChange}
-          />
-        </>
-      )}
+        {loading ? (
+          <>Loading...</>
+        ) : error ? (
+          <>
+            Error! {error}
+            <ThreatList
+              columns={columns}
+              data={backupData}
+              onSelectedRowsChange={handleSelectedRowsChange}
+            />
+          </>
+        ) : (
+          <>
+            <ThreatList
+              columns={columns}
+              data={data}
+              onSelectedRowsChange={handleSelectedRowsChange}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }

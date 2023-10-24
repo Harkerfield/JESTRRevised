@@ -30,7 +30,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     useFilters,
     useSortBy,
     useRowSelect,
-    usePagination // Use usePagination
+    usePagination, // Use usePagination
   );
 
   const previousPage = () => {
@@ -69,41 +69,82 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     }
   }, [selectedRowIds, rows]);
 
+  const toggleAllRows = () => {
+    const isSelectedAll =
+      selectedRows.length === rows.length &&
+      rows.every((row) => selectedRowIds[row.id]);
+
+    if (isSelectedAll) {
+      selectedRows.forEach((row) => {
+        row.toggleRowSelected(false);
+      });
+    } else {
+      rows.forEach((row) => {
+        row.toggleRowSelected(true);
+      });
+    }
+  };
+
+  const toggleRow = (row) => {
+    row.toggleRowSelected(!selectedRowIds[row.id]);
+  };
+
   return (
-    <div className="tableContainer">
+    <div className="tableThreatsListContainer">
       <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  style={{
-                    borderBottom: "solid 2px red",
-                    background: "aliceblue",
-                    color: "black",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {column.render("Header")}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
-                      : ""}
-                  </span>
-                  <div>{column.canFilter ? column.render("Filter") : null}</div>
-                </th>
-              ))}
-            </tr>
-          ))}
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                checked={
+                  selectedRows.length === rows.length &&
+                  rows.every((row) => selectedRowIds[row.id])
+                }
+                onChange={toggleAllRows}
+              />
+            </th>
+            {headerGroups.map((headerGroup) => (
+              <React.Fragment key={headerGroup.id}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    style={{
+                      borderBottom: "solid 2px red",
+                      background: "aliceblue",
+                      color: "black",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                    <div>
+                      {column.canFilter ? column.render("Filter") : null}
+                    </div>
+                  </th>
+                ))}
+              </React.Fragment>
+            ))}
+          </tr>
         </thead>
         <tbody {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedRowIds[row.id]}
+                    onChange={() => toggleRow(row)}
+                  />
+                </td>
                 {row.cells.map((cell) => (
                   <td
                     {...cell.getCellProps()}
@@ -118,25 +159,30 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
         </tbody>
       </table>
       <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={previousPage} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={nextPage} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
-        <span>
+        <div>
+          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {"<<"}
+          </button>{" "}
+          <button onClick={previousPage} disabled={!canPreviousPage}>
+            {"<"}
+          </button>{" "}
+          <button onClick={nextPage} disabled={!canNextPage}>
+            {">"}
+          </button>{" "}
+          <button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {">>"}
+          </button>{" "}
+        </div>
+        <div>
           Page{" "}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
           </strong>{" "}
-        </span>
-        <span>
+        </div>
+        <div>
           | Go to page:{" "}
           <input
             type="number"
@@ -146,20 +192,20 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
               gotoPage(page);
             }}
             style={{ width: "50px" }}
-          />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[8, 10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize} per page
-            </option>
-          ))}
-        </select>
+          />{" "}
+          <select
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}
+          >
+            {[8, 10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize} per page
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );

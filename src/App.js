@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import CollapsibleHeader from "./Components/CollapsibleHeaderVertical/CollapsibleHeaderVertical.js";
+import CollapsibleHeader from "./Components/CollapsibleHeaderHorizontal/CollapsibleHeaderHorizontal.js";
 
+import Home from "./Pages/Home/Home.js";
 import EmitterScheduling from "./Pages/EmitterScheduling/EmitterScheduling.js";
 import OtherScheduling from "./Pages/OtherScheduling/OtherScheduling.js";
 import ScheduledEmitters from "./Pages/ScheduledEmitters/ScheduledEmitters.js";
@@ -11,61 +12,105 @@ import Debug from "./Pages/Debug/Debug.js";
 
 import { ConfigContext } from "./Provider/Context.js";
 import "./App.css";
-
+import { disable } from "ol/rotationconstraint.js";
 
 const App = () => {
   const config = useContext(ConfigContext);
   const [settings, setSettings] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
-  const [defaultCollapsed, setDefaultCollapsed] = useState(false);
-
-
-  // review
-  useEffect(() => {
-    setDefaultCollapsed(false)
-  }, [])
 
   useEffect(() => {
     console.log("config", config);
     setSettings(config);
   }, [config]);
 
-
   if (!settings) {
     return;
   }
   return (
-    <div className="app-container" style={{ display: "flex" }}>
-
-      <CollapsibleHeader
-        show={"Menu"}
-        hide={"Hide Menu"}
-        defaultCollapsed={defaultCollapsed}
-      >
-        <button onClick={() => setActiveSection("emitterScheduling")}>
+    <div className="app-container">
+      <CollapsibleHeader>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveSection(null);
+          }}
+          disabled={activeSection === null ? true : false}
+        >
+          Home
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveSection("emitterScheduling");
+          }}
+          disabled={activeSection === "emitterScheduling" ? true : false}
+        >
           Emitter Scheduling
         </button>
-        <button onClick={() => setActiveSection("otherScheduling")}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveSection("otherScheduling");
+          }}
+          disabled={activeSection === "otherScheduling" ? true : false}
+        >
           SAM/MANPAD Scheduling
         </button>
-        <button onClick={() => setActiveSection("scheduledEmitters")}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveSection("scheduledEmitters");
+          }}
+          disabled={activeSection === "scheduledEmitters" ? true : false}
+        >
           View Scheduled Emitters Calendar
         </button>
-        <button onClick={() => setActiveSection("mapTools")}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveSection("mapTools");
+          }}
+          disabled={activeSection === "mapTools" ? true : false}
+        >
           Map and Tools
         </button>
-        <button onClick={() => setActiveSection("metrics")}>Metrics</button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveSection("metrics");
+          }}
+          disabled={activeSection === "metrics" ? true : false}
+        >
+          Metrics
+        </button>
         {(settings.admin === true || settings.admin === true) && (
-          <button onClick={() => setActiveSection("admin")}>Admin</button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveSection("admin");
+            }}
+            disabled={activeSection === "admin" ? true : false}
+          >
+            Admin
+          </button>
         )}
         {settings.debug === true && (
-          <button onClick={() => setActiveSection("debug")}>Debug</button>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveSection("debug");
+            }}
+            disabled={activeSection === "debug" ? true : false}
+          >
+            Debug
+          </button>
         )}
       </CollapsibleHeader>
 
       {activeSection === null && (
         <div>
-          <h2>Welcome to the JESTR</h2>
+          <Home />
         </div>
       )}
       {activeSection === "emitterScheduling" && (

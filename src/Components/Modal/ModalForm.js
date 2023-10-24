@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ data, onClose, onPush }) => {
+const ModalForm = ({ data, onClose, onPush }) => {
   return (
     <div
       style={{
@@ -43,4 +43,4 @@ const Modal = ({ data, onClose, onPush }) => {
   );
 };
 
-export default Modal;
+export default ModalForm;

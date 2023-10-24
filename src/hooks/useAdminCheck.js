@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useContext } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
-const useCheckAdmin = () => {
+const useAdminCheck = () => {
   const config = useContext(ConfigContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,18 +12,17 @@ const useCheckAdmin = () => {
       // Use the SharePoint REST API to check if the current user is a site admin.
       const response = await fetch(`${config.apiBaseUrl}_api/web/currentuser`, {
         method: "GET",
+        credentials: "same-origin",
         headers: {
-          Accept: "application/json;odata=verbose",
+          Accept: "application/json;odata=nometadata",
         },
       });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
       const data = await response.json();
-      console.log("is site admin", data)
-      setIsCurrentUserSiteAdmin(data.d.ISSiteAdmin);
+      setIsCurrentUserSiteAdmin(data.IsSiteAdmin);
       setLoading(false);
     } catch (error) {
       setError(`Error: ${error.message}`);
@@ -38,4 +37,4 @@ const useCheckAdmin = () => {
   return { isCurrentUserSiteAdmin, loading, error };
 };
 
-export { useCheckAdmin };
+export { useAdminCheck };

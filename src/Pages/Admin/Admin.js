@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useContext } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
 
-import { useFetchData } from "../../hooks/useFetchData.js";
+import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 
-function App() {
+function Admin() {
   const config = useContext(ConfigContext);
   const [selectedRowsInParent, setSelectedRowsInParent] = useState([]);
 
@@ -19,7 +19,7 @@ function App() {
       <input
         value={filterValue || ""}
         onChange={(e) => {
-          e.preventDefault()
+          e.preventDefault();
           setFilter(e.target.value || undefined);
         }}
         placeholder={`Search ${id}...`}
@@ -97,7 +97,7 @@ function App() {
     [],
   );
 
-  const { data, loading, error } = useFetchData(config.lists.threatList);
+  const { data, loading, error } = useListGetItems(config.lists.threatList);
 
   const columns = useMemo(
     () => [
@@ -138,7 +138,7 @@ function App() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                  value.toLowerCase() === "green"
+                    value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -169,7 +169,7 @@ function App() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                  value.toLowerCase() === "green"
+                    value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -185,13 +185,11 @@ function App() {
   );
 
   return (
-    <div style={{ justifyContent: "space-between", width: "95vw" }}>
+    <div  className="PageFormat" style={{ justifyContent: "space-between", width: "95vw" }}>
 
-https://intelshare.intelink.gov/sites/354RANS/hafi/tester/index.html​
-https://github.com/Harkerfield/JESTRRevised​
+      <div className="InfoPanel">{config.adminInfo}</div>
 
-
-​      {loading ? (
+      {loading ? (
         <>Loading...</>
       ) : error ? (
         <>
@@ -215,4 +213,4 @@ https://github.com/Harkerfield/JESTRRevised​
   );
 }
 
-export default App;
+export default Admin;

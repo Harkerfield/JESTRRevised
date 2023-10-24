@@ -15,7 +15,7 @@ function getWeeksInMonth(month, year) {
     week.start = new Date(currentMonday);
 
     const currentFriday = new Date(currentMonday);
-    currentFriday.setDate(currentMonday.getDate() + 4);
+    currentFriday.setDate(currentMonday.getDate() + 6);
 
     week.end = currentFriday;
     weeks.push(week);
@@ -32,7 +32,7 @@ function WeekSelector({ onWeekSelected }) {
   const weeks = getWeeksInMonth(currentMonth, currentYear);
 
   const changeMonth = (event, offset) => {
-    event.preventDefault()
+    event.preventDefault();
     let newMonth = currentMonth + offset;
     let newYear = currentYear;
 
@@ -49,7 +49,7 @@ function WeekSelector({ onWeekSelected }) {
   };
 
   const selectWeek = (event, week) => {
-    event.preventDefault()
+    event.preventDefault();
     const selectedDays = [];
     let currentDay = new Date(week.start);
 

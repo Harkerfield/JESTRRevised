@@ -62,7 +62,7 @@ const SchedulerForm = ({
     useTable({ columns, data });
 
   const saveTableAsJSON = (event, columns) => {
-    event.preventDefault()
+    event.preventDefault();
     const rowData = data.map((row) => {
       let obj = {};
       columns.forEach((column, idx) => {
@@ -88,7 +88,7 @@ const SchedulerForm = ({
   }, [selectedWeek]);
 
   return (
-    <div className="tableContainer">
+    <div className="tableSchedulerContainer">
       <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
         <thead>
           {headerGroups.map((headerGroup) => (
