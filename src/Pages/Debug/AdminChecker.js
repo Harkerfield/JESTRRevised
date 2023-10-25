@@ -31,6 +31,7 @@ const SiteAdminCheck = () => {
     //   )}
     // </div>
     <div>
+      <h1>Admin Checker</h1>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (

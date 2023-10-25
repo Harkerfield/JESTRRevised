@@ -138,7 +138,7 @@ function Admin() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -169,7 +169,7 @@ function Admin() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -185,8 +185,10 @@ function Admin() {
   );
 
   return (
-    <div  className="PageFormat" style={{ justifyContent: "space-between", width: "95vw" }}>
-
+    <div
+      className="PageFormat"
+      style={{ justifyContent: "space-between", width: "95vw" }}
+    >
       <div className="InfoPanel">{config.adminInfo}</div>
 
       {loading ? (

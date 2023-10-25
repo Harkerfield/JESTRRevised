@@ -1,63 +1,82 @@
-// components/ListChecker.js
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useListCheckExists } from "../../hooks/useListCheckExists.js";
-import { useCreateList } from "../../hooks/useCreateList.js";
+import { useCreateList } from "../../hooks/useCreateList.js"; // Update the import path
 
 import { ConfigContext } from "../../Provider/Context.js";
 
 const ListChecker = () => {
   const config = useContext(ConfigContext);
-  const { checkListsExist } = useListCheckExists();
-  const [listExistenceMap, setListExistenceMap] = useState({});
+  const [listTitlesToCheck, setListTitlesToCheck] = useState(config.lists);
+  // Call the custom hook to get the createList function, loading, and error
+  const { createList, loadingCreate, errorCreate } = useCreateList();
 
-  const { createList } = useCreateList();
+  // Call the custom hook to get the checkListsExist function, loading, and error
+  const { checkListsExist, loading, error } = useListCheckExists();
 
-  const handleCreateList = (event, listName) => {
-    event.preventDefault();
-    createList(listName, config.listColumn[listName]);
-  };
+  const [existenceMap, setExistenceMap] = useState({});
 
   useEffect(() => {
-    const checkLists = async () => {
-      const existenceMap = await checkListsExist(config.lists);
-      setListExistenceMap(existenceMap);
+    const checkListExistence = async () => {
+      const listTitles = Object.keys(listTitlesToCheck);
+      const result = await checkListsExist(listTitles);
+      setExistenceMap(result);
     };
-    checkLists();
-  }, [checkListsExist, config.lists]);
+
+    checkListExistence();
+  }, [checkListsExist, listTitlesToCheck]);
+
+  // Function to create a list when the button is clicked
+  const handleCreateList = async (event, listTitle) => {
+    event.preventDefault();
+    // You can customize this based on your requirements
+    const columnArrays = config.listColumn[listTitle];
+
+    await createList(listTitle, columnArrays);
+    // After the list is created, you can perform additional actions if needed
+  };
 
   return (
     <div>
-      List of lists: {JSON.stringify(config.lists)}
-      List of listExistenceMap: {JSON.stringify(listExistenceMap)}
-      {Object.keys(listExistenceMap).map((listTitle) => {
-        console.log(listTitle);
-        let columns = config.listColumn[listTitle];
-        let checker = listExistenceMap[listTitle];
-        return (
-          <div key={listTitle} style={{ marginBottom: "10px" }}>
-            <span>{listTitle}</span>
+      <h1>List Existence Checker</h1>
+      {Object.keys(listTitlesToCheck).map((listTitle) => (
+        <div key={listTitle} style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ marginRight: "10px" }}>{listTitle}</div>
+          {existenceMap[listTitle] ? (
             <div
               style={{
                 width: "20px",
                 height: "20px",
                 borderRadius: "50%",
-                backgroundColor: checker ? "green" : "red",
-                display: "inline-block",
-                marginLeft: "10px",
+                backgroundColor: "green",
+                marginRight: "10px",
               }}
             ></div>
-
-            <div>
+          ) : (
+            <>
+              <div
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  backgroundColor: "red",
+                  marginRight: "10px",
+                  marginLeft: "5px",
+                }}
+              ></div>
               <button
-                disabled={checker ? true : false}
-                onClick={(e) => handleCreateList(e, listTitle, columns)}
+                onClick={(e) => handleCreateList(e, listTitle)}
+                disabled={loading} // Disable the button while creating the list
               >
-                Create {listTitle} List: {listTitle}
+                Create List
               </button>
-            </div>
-          </div>
-        );
-      })}
+              {loadingCreate && <p>Creating list...</p>}
+              {errorCreate && <p>Error: {errorCreate}</p>}
+            </>
+          )}
+        </div>
+      ))}
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 };

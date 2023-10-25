@@ -1,105 +1,73 @@
-import { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
-const useCreateList = () => {
+function useCreateList() {
   const config = useContext(ConfigContext);
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const [requestDigest, setRequestDigest] = useState("");
+  const [listCreated, setListCreated] = useState(false);
 
   useEffect(() => {
-    // Fetch the __REQUESTDIGEST value from SharePoint
-    const getRequestDigest = async () => {
-      try {
-        const digestUrl =
-          "https://intelshare.intelink.gov/sites/354RANS/JESTR/_api/contextinfo";
-        const digestResponse = await fetch(digestUrl, {
+    // SharePoint site URL
+    const siteUrl = "config";
+
+    // SharePoint API endpoint for list creation
+    const endpointUrl = `${config.apiBaseUrl}_api/web/lists`;
+
+    // SharePoint list properties
+    const listInfo = {
+      Title: "MyNewList",
+      BaseTemplate: 100, // Custom List template
+    };
+
+    // SharePoint request headers
+    const headers = new Headers({
+      Accept: "application/json;odata=verbose",
+      "Content-Type": "application/json;odata=verbose",
+    });
+
+    // SharePoint authentication headers (you may need to adjust for your SharePoint setup)
+    headers.append("Authorization", "Bearer YOUR_ACCESS_TOKEN");
+
+    // Fetch X-RequestDigest token
+    fetch(`${siteUrl}_api/contextinfo`, {
+      method: "POST",
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const requestDigest = data.d.GetContextWebInformation.FormDigestValue;
+
+        // Use the obtained X-RequestDigest to create the SharePoint list
+        headers.append("X-RequestDigest", requestDigest);
+
+        // Create the SharePoint list
+        fetch(endpointUrl, {
           method: "POST",
-          headers: {
-            Accept: "application/json;odata=verbose",
-            "Content-Type": "application/json;odata=verbose",
-          },
-        });
-        const digestData = await digestResponse.json();
-        setRequestDigest(digestData.d.GetContextWebInformation.FormDigestValue);
-      } catch (error) {
-        console.error("Error fetching __REQUESTDIGEST:", error);
-      }
-    };
-
-    getRequestDigest();
-  }, []);
-
-  const createList = useCallback(async (listTitle, columnArrays) => {
-    setLoading(true);
-
-    // Define the SharePoint site URL and list endpoint
-    const siteUrl = config.apiBaseUrl;
-    const listEndpoint = `${siteUrl}/_api/web/lists`;
-
-    // Define the list creation request body
-    const listCreationPayload = {
-      __metadata: {
-        type: "SP.List",
-      },
-      Title: listTitle,
-      BaseTemplate: 100, // Use 100 for a custom list
-    };
-
-    try {
-      const response = await fetch(listEndpoint, {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          Accept: "application/json; odata=nometadata",
-          "Content-Type": "application/json;odata=nometadata",
-          "X-RequestDigest": requestDigest,
-        },
-        body: JSON.stringify(listCreationPayload),
+          headers: headers,
+          body: JSON.stringify(listInfo),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("List created:", data);
+            setListCreated(true);
+          })
+          .catch((error) => {
+            console.error("Error creating list:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching X-RequestDigest:", error);
       });
-
-      if (!response.ok) {
-        throw new Error(`Failed to create list: ${response.statusText}`);
-      }
-
-      // Create columns
-      for (const item of columnArrays) {
-        const fieldEndpoint = `${listEndpoint}/getbytitle('${listTitle}')/fields`;
-        const fieldPayload = {
-          __metadata: {
-            type: "SP.Field",
-          },
-          FieldTypeKind: item.fieldType, // Set the field type as needed
-          Title: item.title,
-        };
-
-        const fieldResponse = await fetch(fieldEndpoint, {
-          method: "POST",
-          headers: {
-            Accept: "application/json;odata=verbose",
-            "Content-Type": "application/json;odata=verbose",
-          },
-          body: JSON.stringify(fieldPayload),
-        });
-
-        if (!fieldResponse.ok) {
-          throw new Error(
-            `Failed to create column '${item.title}': ${fieldResponse.statusText}`,
-          );
-        }
-      }
-
-      alert("Successfully created the list and list fields");
-      setLoading(false);
-    } catch (err) {
-      setError("Error: " + err.message);
-      setLoading(false);
-    }
   }, []);
 
-  return { createList, loading, error };
-};
+  return (
+    <div>
+      {listCreated ? (
+        <p>SharePoint list created successfully!</p>
+      ) : (
+        <p>Creating SharePoint list...</p>
+      )}
+    </div>
+  );
+}
 
 export { useCreateList };

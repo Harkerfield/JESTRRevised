@@ -134,5 +134,5 @@
     "mapAndToolsInfo": "map",
     "metricsInfo": "metrics",
     "adminInfo": "admin \n info",
-    "debugInfo": "<div>https://intelshare.intelink.gov/sites/354RANS/hafi/tester/index.html</div><div>https://github.com/Harkerfield/JESTRRevised​</div>"
+    "debugInfo": "Heres the location of the source files: https://github.com/Harkerfield/JESTRRevised​"
 }
