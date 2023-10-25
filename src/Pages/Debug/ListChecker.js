@@ -8,7 +8,7 @@ const ListChecker = () => {
   const config = useContext(ConfigContext);
   const [listTitlesToCheck, setListTitlesToCheck] = useState(config.lists);
   // Call the custom hook to get the createList function, loading, and error
-  const { createList, loadingCreate, errorCreate } = useCreateList();
+  const { createSharePointList, loadingCreate, errorCreate } = useCreateList();
 
   // Call the custom hook to get the checkListsExist function, loading, and error
   const { checkListsExist, loading, error } = useListCheckExists();
@@ -31,7 +31,8 @@ const ListChecker = () => {
     // You can customize this based on your requirements
     const columnArrays = config.listColumn[listTitle];
 
-    await createList(listTitle, columnArrays);
+    await createSharePointList(listTitle, columnArrays);
+    
     // After the list is created, you can perform additional actions if needed
   };
 

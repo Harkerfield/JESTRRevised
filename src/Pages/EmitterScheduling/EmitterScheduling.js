@@ -278,7 +278,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}

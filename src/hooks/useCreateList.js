@@ -1,73 +1,144 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useCallback, useContext } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
-function useCreateList() {
+const useCreateList = () => {
   const config = useContext(ConfigContext);
-  const [listCreated, setListCreated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // SharePoint site URL
-    const siteUrl = "config";
+  const createSharePointList = useCallback(
+    async (listName, columnData) => {
+      setLoading(true);
 
-    // SharePoint API endpoint for list creation
-    const endpointUrl = `${config.apiBaseUrl}_api/web/lists`;
+      try {
+        // Define the SharePoint site URL and list endpoint
+        const siteUrl = `${config.apiBaseUrl}`;
+        const listEndpoint = `${siteUrl}_api/web/lists`;
 
-    // SharePoint list properties
-    const listInfo = {
-      Title: "MyNewList",
-      BaseTemplate: 100, // Custom List template
-    };
 
-    // SharePoint request headers
-    const headers = new Headers({
-      Accept: "application/json;odata=verbose",
-      "Content-Type": "application/json;odata=verbose",
-    });
 
-    // SharePoint authentication headers (you may need to adjust for your SharePoint setup)
-    headers.append("Authorization", "Bearer YOUR_ACCESS_TOKEN");
 
-    // Fetch X-RequestDigest token
-    fetch(`${siteUrl}_api/contextinfo`, {
-      method: "POST",
-      headers: headers,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const requestDigest = data.d.GetContextWebInformation.FormDigestValue;
-
-        // Use the obtained X-RequestDigest to create the SharePoint list
-        headers.append("X-RequestDigest", requestDigest);
-
-        // Create the SharePoint list
-        fetch(endpointUrl, {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify(listInfo),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("List created:", data);
-            setListCreated(true);
-          })
-          .catch((error) => {
-            console.error("Error creating list:", error);
+        const getDigestValue = async () => {
+          const digestResponse = await fetch(`${siteUrl}/_api/contextinfo`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'Accept': 'application/json;odata=verbose',
+              'Content-Type': 'application/json;odata=verbose',
+            },
           });
-      })
-      .catch((error) => {
-        console.error("Error fetching X-RequestDigest:", error);
-      });
-  }, []);
 
-  return (
-    <div>
-      {listCreated ? (
-        <p>SharePoint list created successfully!</p>
-      ) : (
-        <p>Creating SharePoint list...</p>
-      )}
-    </div>
+          const digestData = await digestResponse.json();
+          return digestData.d.GetContextWebInformation.FormDigestValue;
+        };
+
+
+
+        // Define the list metadata, including columns
+        const listMetadata = {
+          __metadata: { type: "SP.List" },
+          BaseTemplate: 100, // Custom List template
+          Title: listName, // Name of the list
+        };
+
+        // Headers for the REST API request
+        const headers = {
+          'Accept': 'application/json;odata=verbose',
+          'Content-Type': 'application/json;odata=verbose',
+          'X-RequestDigest': await getDigestValue(), // Include the digest value
+        };
+
+        // SharePoint REST API POST request to create the list
+        const listResponse = await fetch(listEndpoint, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: headers,
+          body: JSON.stringify(listMetadata),
+        });
+
+        if (!listResponse.ok) {
+          throw new Error(`Error creating list: ${listResponse.statusText}`);
+        }
+
+
+
+        // After creating the list, get the list's default view
+        const getListViewResponse = await fetch(
+          `${listEndpoint}/getbytitle('${listName}')/DefaultView`,
+          {
+            method: "GET",
+            credentials: "same-origin",
+            headers: headers,
+          }
+        );
+
+        if (!getListViewResponse.ok) {
+          throw new Error(`Error getting the list's default view: ${getListViewResponse.statusText}`);
+        }
+
+        const listViewData = await getListViewResponse.json();
+
+
+
+
+        // Example: Add columns based on the provided columnData
+        if (columnData && Array.isArray(columnData)) {
+          for (const column of columnData) {
+            console.log("columnData", column)
+            const columnResponse = await fetch(
+              `${listEndpoint}/getbytitle('${listName}')/Fields`,
+              {
+                method: "POST",
+                credentials: "same-origin",
+                headers: headers,
+                body: JSON.stringify(column),
+              }
+            );
+
+            if (!columnResponse.ok) {
+              throw new Error(
+                `Error adding column "${column.title}": ${columnResponse.statusText}`
+              );
+            }
+
+
+            // Add the field to the default view
+            const fieldInternalName = column.Title; // Adjust this based on the column data
+            listViewData.ViewFields.FieldRef.push({ Name: fieldInternalName });
+
+            // Update the default view with the modified view data
+            const updateViewResponse = await fetch(
+              `${listEndpoint}/getbytitle('${listName}')/DefaultView`,
+              {
+                method: "POST",
+                credentials: "same-origin",
+                headers: headers,
+                body: JSON.stringify(listViewData),
+              }
+            );
+
+            if (!updateViewResponse.ok) {
+              throw new Error(
+                `Error updating the default view: ${updateViewResponse.statusText}`
+              );
+            }
+
+
+
+
+
+          }
+        }
+      } catch (err) {
+        setError(err.message);
+      }
+
+      setLoading(false);
+    },
+    [config.apiBaseUrl]
   );
-}
+
+  return { createSharePointList, loading, error };
+};
 
 export { useCreateList };

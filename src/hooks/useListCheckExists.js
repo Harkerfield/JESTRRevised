@@ -17,7 +17,7 @@ const useListCheckExists = () => {
 
         // Loop through the list titles and check their existence
         for (const title of listTitles) {
-          const listUrl = `${sharePointSiteUrl}/_api/web/lists/getbytitle('${encodeURIComponent(
+          const listUrl = `${sharePointSiteUrl}_api/web/lists/getbytitle('${encodeURIComponent(
             title,
           )}')`;
 

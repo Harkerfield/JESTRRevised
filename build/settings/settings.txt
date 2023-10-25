@@ -1,138 +1,250 @@
 {
-    "apiBaseUrl": "/sites/354RANS/hafi/",
-    "folderLocation": "tester",
-    "lists": {
-        "threatList": "threatList",
-        "otherThreatList": "otherThreatList",
-        "scheduleList": "scheduleList"
-    },
-    "listColumn": {
-        "threatList": [
-            {
-                "title": "serialNumber",
-                "data": "<Field Type='Text' DisplayName='serialNumber' Name='serialNumber' />"
-            },
-            {
-                "title": "systemType",
-                "data": "<Field Type='Text' DisplayName='systemType' Name='systemType' />"
-            },
-            {
-                "title": "schedulableItem",
-                "data": "<Field Type='Text' DisplayName='schedulableItem' Name='schedulableItem' />"
-            },
-            {
-                "title": "location",
-                "data": "<Field Type='Text' DisplayName='location' Name='location' />"
-            },
-            {
-                "title": "pointLocationLat",
-                "data": "<Field Type='Text' DisplayName='pointLocationLat' Name='pointLocationLat' />"
-            },
-            {
-                "title": "pointLocationLon",
-                "data": "<Field Type='Text' DisplayName='pointLocationLon' Name='pointLocationLon' />"
-            },
-            {
-                "title": "deviceType",
-                "data": "<Field Type='Text' DisplayName='deviceType' Name='deviceType' />"
-            },
-            {
-                "title": "threat",
-                "data": "<Field Type='Text' DisplayName='threat' Name='threat' />"
-            },
-            {
-                "title": "mxCondition",
-                "data": "<Field Type='Text' DisplayName='mxCondition' Name='mxCondition' />"
-            },
-            {
-                "title": "status",
-                "data": "<Field Type='Text' DisplayName='status' Name='status' />"
-            },
-            {
-                "title": "ETIC",
-                "data": "<Field Type='Text' DisplayName='ETIC' Name='ETIC' />"
-            },
-            {
-                "title": "remarks",
-                "data": "<Field Type='Text' DisplayName='remarks' Name='remarks' />"
-            },
-            {
-                "title": "statusChangeDate",
-                "data": "<Field Type='Text' DisplayName='statusChangeDate' Name='statusChangeDate' />"
-            },
-            {
-                "title": "operationalStatus",
-                "data": "<Field Type='Text' DisplayName='operationalStatus' Name='operationalStatus' />"
-            }
-        ],
-        "otherThreatList": [
-            {
-                "title": "systemType",
-                "data": "<Field Type='Text' DisplayName='systemType' Name='systemType' />"
-            },
-            {
-                "title": "schedulableItem",
-                "data": "<Field Type='Text' DisplayName='schedulableItem' Name='schedulableItem' />"
-            }
-        ],
-        "scheduleList": [
-            {
-                "title": "equipmentRequested",
-                "data": "<Field Type='Text' DisplayName='equipmentRequested' Name='equipmentRequested' />"
-            },
-            {
-                "title": "typeOfThreat",
-                "data": "<Field Type='Text' DisplayName='typeOfThreat' Name='typeOfThreat' />"
-            },
-            {
-                "title": "range",
-                "data": "<Field Type='Text' DisplayName='range' Name='range' />"
-            },
-            {
-                "title": "location",
-                "data": "<Field Type='Text' DisplayName='location' Name='location' />"
-            },
-            {
-                "title": "requestStatus",
-                "data": "<Field Type='Text' DisplayName='requestStatus' Name='requestStatus' />"
-            },
-            {
-                "title": "notes",
-                "data": "<Field Type='Text' DisplayName='notes' Name='notes' />"
-            },
-            {
-                "title": "pocName",
-                "data": "<Field Type='Text' DisplayName='pocName' Name='pocName' />"
-            },
-            {
-                "title": "pocNumber",
-                "data": "<Field Type='Text' DisplayName='pocNumber' Name='pocNumber' />"
-            },
-            {
-                "title": "pocEmail",
-                "data": "<Field Type='Text' DisplayName='pocEmail' Name='pocEmail' />"
-            },
-            {
-                "title": "pocSquadron",
-                "data": "<Field Type='Text' DisplayName='pocSquadron' Name='pocSquadron' />"
-            },
-            {
-                "title": "startTime",
-                "data": "<Field Type='DateTime' DisplayName='startTime' Name='startTime' />"
-            },
-            {
-                "title": "endTime",
-                "data": "<Field Type='DateTime' DisplayName='endTime' Name='endTime' />"
-            }
-        ]
-    },
-    "debug": true,
-    "homeInfo": "home",
-    "emmiterSchedulingInfo": "emitter",
-    "otherSchedulingInfo": "other",
-    "viewScheduledEmittersInfo": "calendar",
-    "mapAndToolsInfo": "map",
-    "metricsInfo": "metrics",
-    "adminInfo": "admin \n info",
-    "debugInfo": "Heres the location of the source files: https://github.com/Harkerfield/JESTRRevised​"
+  "apiBaseUrl": "/sites/354RANS/hafi/",
+  "folderLocation": "tester",
+  "lists": {
+    "threatList": "threatList",
+    "otherThreatList": "otherThreatList",
+    "scheduleList": "scheduleList"
+  },
+  "listColumn": {
+    "threatList": [
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "serialNumber",
+        "FieldTypeKind": 2,
+        "StaticName": "serialNumber"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "systemType",
+        "FieldTypeKind": 2,
+        "StaticName": "systemType"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "schedulableItem",
+        "FieldTypeKind": 2,
+        "StaticName": "schedulableItem"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "location",
+        "FieldTypeKind": 2,
+        "StaticName": "location"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pointLocationLat",
+        "FieldTypeKind": 2,
+        "StaticName": "pointLocationLat"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pointLocationLon",
+        "FieldTypeKind": 2,
+        "StaticName": "pointLocationLon"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "deviceType",
+        "FieldTypeKind": 2,
+        "StaticName": "deviceType"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "threat",
+        "FieldTypeKind": 2,
+        "StaticName": "threat"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "mxCondition",
+        "FieldTypeKind": 2,
+        "StaticName": "mxCondition"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "status",
+        "FieldTypeKind": 2,
+        "StaticName": "status"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "ETIC",
+        "FieldTypeKind": 2,
+        "StaticName": "ETIC"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "remarks",
+        "FieldTypeKind": 2,
+        "StaticName": "remarks"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "statusChangeDate",
+        "FieldTypeKind": 2,
+        "StaticName": "statusChangeDate"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "operationalStatus",
+        "FieldTypeKind": 2,
+        "StaticName": "operationalStatus"
+      }
+    ],
+    "otherThreatList": [
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "systemType",
+        "FieldTypeKind": 2,
+        "StaticName": "systemType"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "schedulableItem",
+        "FieldTypeKind": 2,
+        "StaticName": "schedulableItem"
+      }
+    ],
+    "scheduleList": [
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "equipmentRequested",
+        "FieldTypeKind": 2,
+        "StaticName": "equipmentRequested"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "typeOfThreat",
+        "FieldTypeKind": 2,
+        "StaticName": "typeOfThreat"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "range",
+        "FieldTypeKind": 2,
+        "StaticName": "range"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "location",
+        "FieldTypeKind": 2,
+        "StaticName": "location"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "requestStatus",
+        "FieldTypeKind": 2,
+        "StaticName": "requestStatus"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "notes",
+        "FieldTypeKind": 2,
+        "StaticName": "notes"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pocName",
+        "FieldTypeKind": 2,
+        "StaticName": "pocName"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pocNumber",
+        "FieldTypeKind": 2,
+        "StaticName": "pocNumber"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pocEmail",
+        "FieldTypeKind": 2,
+        "StaticName": "pocEmail"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pocSquadron",
+        "FieldTypeKind": 2,
+        "StaticName": "pocSquadron"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "startTime",
+        "FieldTypeKind": 4,
+        "StaticName": "startTime"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "endTime",
+        "FieldTypeKind": 4,
+        "StaticName": "endTime"
+      }
+    ]
+  },
+  "debug": true,
+  "homeInfo": "home",
+  "emmiterSchedulingInfo": "emitter",
+  "otherSchedulingInfo": "other",
+  "viewScheduledEmittersInfo": "calendar",
+  "mapAndToolsInfo": "map",
+  "metricsInfo": "metrics",
+  "adminInfo": "admin \n info",
+  "debugInfo": "Heres the location of the source files: https://github.com/Harkerfield/JESTRRevised​"
 }
