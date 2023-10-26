@@ -15,9 +15,6 @@ const useCreateList = () => {
         const siteUrl = `${config.apiBaseUrl}`;
         const listEndpoint = `${siteUrl}_api/web/lists`;
 
-
-
-
         const getDigestValue = async () => {
           const digestResponse = await fetch(`${siteUrl}/_api/contextinfo`, {
             method: 'POST',
@@ -31,8 +28,6 @@ const useCreateList = () => {
           const digestData = await digestResponse.json();
           return digestData.d.GetContextWebInformation.FormDigestValue;
         };
-
-
 
         // Define the list metadata, including columns
         const listMetadata = {
@@ -60,31 +55,14 @@ const useCreateList = () => {
           throw new Error(`Error creating list: ${listResponse.statusText}`);
         }
 
-
-
-        // After creating the list, get the list's default view
-        const getListViewResponse = await fetch(
-          `${listEndpoint}/getbytitle('${listName}')/DefaultView`,
-          {
-            method: "GET",
-            credentials: "same-origin",
-            headers: headers,
-          }
-        );
-
-        if (!getListViewResponse.ok) {
-          throw new Error(`Error getting the list's default view: ${getListViewResponse.statusText}`);
-        }
-
-        const listViewData = await getListViewResponse.json();
-
-
-
+        // Initialize an array to store field internal names for the default view
+        const fieldInternalNames = [];
 
         // Example: Add columns based on the provided columnData
         if (columnData && Array.isArray(columnData)) {
           for (const column of columnData) {
-            console.log("columnData", column)
+
+            // SharePoint REST API POST request to add the column to the list
             const columnResponse = await fetch(
               `${listEndpoint}/getbytitle('${listName}')/Fields`,
               {
@@ -97,38 +75,27 @@ const useCreateList = () => {
 
             if (!columnResponse.ok) {
               throw new Error(
-                `Error adding column "${column.title}": ${columnResponse.statusText}`
+                `Error adding column "${column.Title}": ${columnResponse.statusText}`
               );
             }
 
-
-            // Add the field to the default view
-            const fieldInternalName = column.Title; // Adjust this based on the column data
-            listViewData.ViewFields.FieldRef.push({ Name: fieldInternalName });
-
-            // Update the default view with the modified view data
-            const updateViewResponse = await fetch(
-              `${listEndpoint}/getbytitle('${listName}')/DefaultView`,
-              {
-                method: "POST",
-                credentials: "same-origin",
-                headers: headers,
-                body: JSON.stringify(listViewData),
-              }
-            );
-
-            if (!updateViewResponse.ok) {
-              throw new Error(
-                `Error updating the default view: ${updateViewResponse.statusText}`
-              );
-            }
-
-
-
-
-
+            // Add the field internal name to the array
+            fieldInternalNames.push(column.Title);
           }
         }
+
+        // Update the "All Items" default view to include the new fields
+        const viewEndpoint = `${listEndpoint}/getbytitle('${listName}')/Views/getbytitle('All%20Items')/ViewFields`;
+        
+        // Loop through fieldInternalNames and add them to the view
+        for (const fieldName of fieldInternalNames) {
+          await fetch(`${viewEndpoint}/addViewField('${fieldName}')`, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: headers,
+          });
+        }
+
       } catch (err) {
         setError(err.message);
       }

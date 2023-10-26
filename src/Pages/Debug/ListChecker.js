@@ -30,7 +30,7 @@ const ListChecker = () => {
     event.preventDefault();
     // You can customize this based on your requirements
     const columnArrays = config.listColumn[listTitle];
-
+    
     await createSharePointList(listTitle, columnArrays);
     
     // After the list is created, you can perform additional actions if needed
