@@ -349,6 +349,7 @@ function EmitterScheduling() {
 
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
+  
           <div>Error useListGetItems</div>
 
           <div style={{ display: "flex", justifyContent: "space-between" }}>
