@@ -20,7 +20,7 @@ const ModalChildren = ({ children, onClose }) => {
           backgroundColor: "#fff",
           padding: "5px",
           width: "95%",
-          height: "100%",
+          height: "80%",
           // maxHeight: "80%",
           // overflowY: "auto",
         }}
