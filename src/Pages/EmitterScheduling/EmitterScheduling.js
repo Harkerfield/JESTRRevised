@@ -294,7 +294,6 @@ function EmitterScheduling() {
     [],
   );
 
-  const collapsibleColumns = ["Remarks", "ETIC"];
 
   // const { data, loading, error } = useListGetItems(config.lists.threatList);
   //data.filter(item=> item.schedulableItem === "Yes" && (item.operationalStatus === "GREEN" || item.operationalStatus === "YELLOW" || item.operationalStatus === "RED" || item.operationalStatus === "AMBER") )
@@ -326,7 +325,6 @@ function EmitterScheduling() {
               Error! {error}
               <ThreatList
                 columns={columns}
-                collapsibleColumns={collapsibleColumns}
                 data={backupData}
                 onSelectedRowsChange={handleSelectedRowsChange}
               />
@@ -336,7 +334,6 @@ function EmitterScheduling() {
               <ThreatList
                 columns={columns}
                 data={filteredData}
-                collapsibleColumns={collapsibleColumns}
                 onSelectedRowsChange={handleSelectedRowsChange}
               />
             </>
