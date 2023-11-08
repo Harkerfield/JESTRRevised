@@ -26,17 +26,17 @@ const ModalChildren = ({ children, onClose }) => {
         }}
       >
         {children}
-        <div
-          style={{
-            marginTop: "20px",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <button onClick={onClose} style={{ marginRight: "10px" }}>
-            Cancel
-          </button>
-        </div>
+      </div>
+      <div
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <button onClick={onClose} style={{ marginRight: "10px" }}>
+          Cancel
+        </button>
       </div>
     </div>
   );

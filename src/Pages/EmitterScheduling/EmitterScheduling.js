@@ -16,13 +16,14 @@ function EmitterScheduling() {
   const [selectedThreatData, setselectedThreatData] = useState([]);
   const [userTimes, setUserTimes] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState([]);
-  const [userData, setUserData] = useState([
-    {
-      name: "Joseph Hartsfield",
-      dsn: "377-3211",
-      squadron: "354th RANS",
-    },
-  ]);
+  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([
+  //   {
+  //     name: "Joseph Hartsfield",
+  //     dsn: "377-3211",
+  //     squadron: "354th RANS",
+  //   },
+  // ]);
 
   const { data, loading, error } = useListGetItems(config.lists.threatList);
   const [filteredData, setFilteredData] = useState([]);

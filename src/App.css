@@ -7,6 +7,16 @@
   background-color: rgba(255, 255, 255, 0.9);
 }
 
+.InfoPanel {
+  text-align: center;
+  padding: 10px;
+  margin: 5px;
+  font-weight: bold;
+  font-family: cursive;
+  font-size: x-large;
+  text-decoration-line: underline;
+}
+
 /* In your CSS file: */
 .app-container {
   width: 100%;
@@ -46,3 +56,4 @@
 #contentBox {
   background-color: rgb(0, 150, 255) !important;
 }
+
