@@ -236,7 +236,41 @@
         "FieldTypeKind": 4,
         "StaticName": "endTime"
       }
-    ]
+    ],
+    "siteList": [
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "systemName",
+        "FieldTypeKind": 2,
+        "StaticName": "systemName"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "sireRange",
+        "FieldTypeKind": 2,
+        "StaticName": "siteRange"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pointLocationLat",
+        "FieldTypeKind": 2,
+        "StaticName": "pointLocationLat"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pointLocationLon",
+        "FieldTypeKind": 2,
+        "StaticName": "pointLocationLon"
+      }
+    ],
   },
   "debug": true,
   "homeInfo": "home",
