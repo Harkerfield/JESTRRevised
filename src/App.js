@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import CollapsibleHeader from "./Components/CollapsibleHeaderHorizontal/CollapsibleHeaderHorizontal.js";
+import CollapsibleHeader from "./Components/HeaderHorizontal/HeaderHorizontal.js";
 
 import Home from "./Pages/Home/Home.js";
 import EmitterScheduling from "./Pages/EmitterScheduling/EmitterScheduling.js";
@@ -12,6 +12,7 @@ import Debug from "./Pages/Debug/Debug.js";
 
 import { ConfigContext } from "./Provider/Context.js";
 import "./App.css";
+import "./AFStyle.css";
 import { disable } from "ol/rotationconstraint.js";
 
 const App = () => {
@@ -28,7 +29,7 @@ const App = () => {
     return;
   }
   return (
-    <div className="app-container">
+    <div className="container af-background-blue">
       <CollapsibleHeader>
         <button
           onClick={(e) => {

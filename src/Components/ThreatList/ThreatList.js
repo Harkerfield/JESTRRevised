@@ -29,8 +29,8 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     { columns, data },
     useFilters,
     useSortBy,
+    usePagination,
     useRowSelect,
-    usePagination, // Use usePagination
   );
 
   const previousPage = () => {

@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useContext, useEffect } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
-import SchedulerForm from "../../Components/SchedulerForm/SchedulerForm.js";
+import FormSchedulerTable from "../../Components/FormSchedulerTable/FormSchedulerTable.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
-import WeekSelector from "../../Components/WeekSelector/WeekSelector.js";
-import TimeSelector from "../../Components/TimeSelector/TimeSelector.js";
-import ModalForm from "../../Components/Modal/ModalForm.js";
+import FormWeekSelector from "../../Components/FormWeekSelector/FormWeekSelector.js";
+import FormTimeSelector from "../../Components/FormTimeSelector/FormTimeSelector.js";
+import FormUser from "../../Components/FormUser/FormUser.js";
+import ModalForm from "../../Components/FormModalSubmit/FormModalSubmit.js";
 import ModalChildren from "../../Components/Modal/ModalChildren.js";
 import useListCreateItem from "../../hooks/useListCreateItem.js";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
@@ -38,6 +39,10 @@ function EmitterScheduling() {
 
   const handleSelectedDays = (days) => {
     setSelectedWeek(days);
+  };
+
+  const handleUserDataChange = (userData) => {
+    setUserData(userData);
   };
 
   const [rowData, setRowData] = useState([]);
@@ -279,7 +284,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                  value.toLowerCase() === "green"
+                    value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -347,15 +352,18 @@ function EmitterScheduling() {
 
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
-  
-          <div>Error useListGetItems</div>
+
+          <div>
+           {/* {error handling} */}
+          </div>
 
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <WeekSelector onWeekSelected={handleSelectedDays} />
-            <TimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} />
+            <FormUser onSetUserDataChange={handleUserDataChange} />
+            <FormWeekSelector onWeekSelected={handleSelectedDays} />
+            <FormTimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} />
           </div>
           <div style={{ height: "100%" }}>
-            <SchedulerForm
+            <FormSchedulerTable
               selectedThreatData={selectedThreatData}
               selectedWeek={selectedWeek}
               userTimes={userTimes}
@@ -364,8 +372,23 @@ function EmitterScheduling() {
           </div>
 
           {isModalFormOpen && (
+
+
+
+
+
+
+
+
+
+
+
             <ModalForm
-              data={rowData}
+              data={{
+                rowData: rowData,
+                userTimes: userTimes,
+                userData: userData
+              }}
               onClose={handleCloseModalForm}
               onPush={handlePushData}
             />

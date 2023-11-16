@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useTable } from "react-table";
 import Dropdown from "../Dropdown/Dropdown.js";
-import "./SchedulerForm.css";
+import "./FormSchedulerTable.css";
 //https://tanstack.com/table/v8/docs/examples/
 
-const SchedulerForm = ({
+const FormSchedulerTable = ({
   selectedThreatData,
   selectedWeek,
   userTimes,
@@ -133,4 +133,4 @@ const SchedulerForm = ({
   );
 };
 
-export default SchedulerForm;
+export default FormSchedulerTable;

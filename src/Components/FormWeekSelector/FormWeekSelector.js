@@ -26,7 +26,7 @@ function getWeeksInMonth(month, year) {
   return weeks;
 }
 
-function WeekSelector({ onWeekSelected }) {
+function FormWeekSelector({ onWeekSelected }) {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const weeks = getWeeksInMonth(currentMonth, currentYear);
@@ -117,4 +117,4 @@ const DAYS = [
   "Saturday",
 ];
 
-export default WeekSelector;
+export default FormWeekSelector;
