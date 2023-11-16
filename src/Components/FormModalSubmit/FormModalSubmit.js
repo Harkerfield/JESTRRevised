@@ -12,40 +12,66 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
 
   const splitTimeRange = (timeRange) => {
     const [start, end] = timeRange.split('-').map(time => time.trim());
-    return {
+    return [{
       start,
       end
-    };
+    }];
   };
 
-
   useEffect(() => {
-
     setReadyToSubmit(
-      data.rowData.map(item => {
-        const filtered = {};
-        const dataInfo = {};
+      data.rowData.flatMap(item => {
+        const staticFields = {};
 
+        // Extract static fields (non-date fields)
         for (const key in item) {
-          if (!isDateKey(key) && item[key] !== "NONE" && item[key] !== "ALL") {
-            filtered[key] = item[key];
-          }
-          if (isDateKey(key) && item[key] !== "NONE") {
-            if (item[key] === "All") {
-              const dataTimes = data.userTimes;
-              dataInfo[key] = { ...filtered, dataTimes };
-            } else {
-              const dataTiems = splitTimeRange(item[key]);
-              dataInfo[key] = { ...filtered, dataTiems };
-            }
+          if (!isDateKey(key)) {
+            staticFields[key] = item[key];
           }
         }
-        return { ...dataInfo };
+
+        // Create an array of objects for each time range in each date
+        return Object.keys(item)
+          .filter(key => isDateKey(key) && item[key] !== "NONE")
+          .flatMap(key => {
+            const [day, month, date, year] = key.split(' ');
+            const isoDate = new Date(`${month} ${date}, ${year}`).toISOString().split('T')[0];
+
+            if (item[key] === "All") {
+              // Handle the case where the time is "All"
+              // Assuming 'data.userTimes' is an array of time ranges
+              return data.userTimes.map(({ start, end }) => {
+                const isoStart = new Date(`${isoDate}T${start}:00`).toISOString();
+                const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
+                return {
+                  date: isoDate,
+                  start: isoStart,
+                  end: isoEnd,
+                  ...staticFields,
+                  ...data.userData
+                };
+              });
+            } else {
+              // Handle the case where specific time ranges are provided
+              const times = splitTimeRange(item[key]);
+              return times.map(({ start, end }) => {
+                const isoStart = new Date(`${isoDate}T${start}:00`).toISOString();
+                const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
+                return {
+                  date: isoDate,
+                  start: isoStart,
+                  end: isoEnd,
+                  ...staticFields,
+                  ...data.userData
+
+                };
+              });
+            }
+          });
       })
-
-    )
-
+    );
   }, [data]);
+
 
   return (
     <div
