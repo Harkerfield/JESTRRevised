@@ -9,6 +9,7 @@ const FormSchedulerTable = ({
   selectedWeek,
   userTimes,
   onSaveData,
+
 }) => {
   // userTimes, userData, selectedWeek
   const [data, setData] = useState([]);
@@ -43,7 +44,7 @@ const FormSchedulerTable = ({
                   "All",
                   ...userTimes.map((time) => `${time.start} - ${time.end}`),
                 ]}
-                placeholder="Time Selector"
+                placeholder="NONE"
                 onChange={(selected) => {
                   // console.log(selected);
                   handleDropdownChange(day, selected);
@@ -77,6 +78,7 @@ const FormSchedulerTable = ({
 
     onSaveData(rowData); // passing the rowData to the parent component
   };
+
 
   useEffect(() => {
     let initialDropdownValues = {};
@@ -128,7 +130,8 @@ const FormSchedulerTable = ({
         </tbody>
       </table>
 
-      <button onClick={(e) => saveTableAsJSON(e, columns)}>Save as JSON</button>
+      <button onClick={(e) => saveTableAsJSON(e, columns)}  style={{  width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
+
     </div>
   );
 };

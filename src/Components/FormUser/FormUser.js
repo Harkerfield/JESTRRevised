@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const FormUser = ({ onSetUserDataChange }) => {
   const initialUserData = {
@@ -10,22 +10,15 @@ const FormUser = ({ onSetUserDataChange }) => {
   const [userData, setUserData] = useState(initialUserData);
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    if (onSetUserDataChange) {
+      onSetUserDataChange(userData);
+    }
+  }, [userData, onSetUserDataChange]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm(userData);
-    if (Object.keys(validationErrors).length === 0) {
-      if (onSetUserDataChange) {
-        onSetUserDataChange(userData);
-      }
-      setUserData(initialUserData);
-    } else {
-      setErrors(validationErrors);
-    }
   };
 
   const validateForm = (data) => {
@@ -43,7 +36,7 @@ const FormUser = ({ onSetUserDataChange }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <div>
         <label htmlFor="name">Name:</label>
         <input
@@ -77,7 +70,6 @@ const FormUser = ({ onSetUserDataChange }) => {
         />
         {errors.squadron && <p className="error">{errors.squadron}</p>}
       </div>
-      <button type="submit">Submit</button>
     </form>
   );
 };

@@ -3,3 +3,25 @@
   height: 100%;
   overflow-x: auto;
 }
+
+/* Dropdown specific styles */
+.tableSchedulerContainer .dropdown {
+  width: 100%; /* Full width within the cell */
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.tableSchedulerContainer .dropdown:focus {
+  outline: none;
+  border-color: #4a90e2;
+}
+
+.tableSchedulerContainer .dropdown option {
+  padding: 5px 10px;
+}
+
+/* Add more styles as needed */
+

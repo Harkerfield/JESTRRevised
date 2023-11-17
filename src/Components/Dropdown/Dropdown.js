@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './Dropdown.css';
 
 function Dropdown({ options, placeholder, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ function Dropdown({ options, placeholder, onChange }) {
       onChange(option);
     }
   };
-
+  
   return (
     <div className="dropdown-container">
       <div className="dropdown-header" onClick={toggleDropdown}>
@@ -24,17 +25,17 @@ function Dropdown({ options, placeholder, onChange }) {
         <span>{isOpen ? "▲" : "▼"}</span>
       </div>
       {isOpen && (
-        <ul className="dropdown-list">
+        <p className="dropdown-list">
           {options.map((option, index) => (
-            <li
+            <p
               key={index}
               onClick={(e) => handleOptionClick(e, option)}
               className="dropdown-list-item"
             >
               {option}
-            </li>
+            </p>
           ))}
-        </ul>
+        </p>
       )}
     </div>
   );

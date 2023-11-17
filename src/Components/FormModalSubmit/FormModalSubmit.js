@@ -73,6 +73,13 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
   }, [data]);
 
 
+  // var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const options = {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  };
+
   return (
     <div
       style={{
@@ -97,10 +104,27 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
         }}
       >
         <h2>Confirm Data</h2>
-        <pre>{JSON.stringify(readyToSubmit, null, 2)}</pre>
+        {/* {Debug} */}
+        {/* <pre>{JSON.stringify(readyToSubmit, null, 2)}</pre> */}
         {/* <pre>{JSON.stringify(data.rowData.map(item => {
           return item
         }), null, 2)}</pre>  */}
+
+        {readyToSubmit.map((item) => {
+          const startDate = new Date(item.start);
+          const endDate = new Date(item.end);
+
+          return (<>
+          
+            <div>
+              {item.name} | {item.dsn} | {item.squadron}
+            </div>
+            <div>
+              {item.Title} | {item.date} | {startDate.toLocaleTimeString("en-US", options)} - {endDate.toLocaleTimeString("en-US", options)}
+            </div>
+            <br />
+          </>)
+        })}
         <div
           style={{
             marginTop: "20px",
@@ -108,10 +132,10 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
             justifyContent: "flex-end",
           }}
         >
-          <button onClick={onClose} style={{ marginRight: "10px" }}>
+          <button onClick={onClose} style={{  width: "99%", height: "50px", backgroundColor: "red", color: "white"  }}>
             Cancel
           </button>
-          <button onClick={onPush}>Submit</button>
+          <button onClick={onPush} style={{  width: "99%", height: "50px", backgroundColor: "green", color: "white"  }}>Submit</button>
         </div>
       </div>
     </div>

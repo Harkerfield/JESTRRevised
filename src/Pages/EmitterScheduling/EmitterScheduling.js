@@ -322,7 +322,7 @@ function EmitterScheduling() {
       <div className="InfoPanel">{config.emmiterSchedulingInfo}</div>
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "45vw" }}>
+        <div style={{ width: "48vw" }}>
           {loading ? (
             <>Loading...</>
           ) : error ? (
@@ -344,11 +344,11 @@ function EmitterScheduling() {
             </>
           )}
         </div>
-        <div style={{ width: "50vw" }}>
+        <div style={{ width: "48vw" }}>
           <MapComponent points={selectedThreatData} />
         </div>
       </div>
-      <button onClick={openSchedulingModel}>Click here to schedule</button>
+      <button onClick={openSchedulingModel} style={{  width: "100%", height: "50px", backgroundColor: "green", color: "white"   }}>Click here to schedule</button>
 
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
@@ -368,21 +368,11 @@ function EmitterScheduling() {
               selectedWeek={selectedWeek}
               userTimes={userTimes}
               onSaveData={handleSaveData}
+
             />
           </div>
 
           {isModalFormOpen && (
-
-
-
-
-
-
-
-
-
-
-
             <ModalForm
               data={{
                 rowData: rowData,
