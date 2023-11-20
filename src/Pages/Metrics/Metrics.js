@@ -10,30 +10,32 @@ const Metrics = () => {
   const data = useMemo(
     () => [
       {
-        status: "Approved",
-        squadron: "962 AACS",
-        location: "Zulu8A-1",
-        equipThreat: "SA-3 (TK3)",
-        systemType: "UMTE",
-        range: "2202",
-        eventDate: "20 Sep 23",
-        startTime: "13:30L",
-        endTime: "15:0L",
-        poc: "Jeffrey Leslie/962 AACS",
-        pocDsn: "5529211",
+        equipmentRequested : "", 
+        typeOfThreat : "", 
+        range : "", 
+        location : "", 
+        requestStatus : "", 
+        notes : "", 
+        pocName : "", 
+        pocNumber : "", 
+        pocEmail : "", 
+        pocSquadron : "", 
+        startTime : "", 
+        endTime : "", 
       },
       {
-        status: "Rejected",
-        squadron: "Falcons",
-        location: "Oscar-1",
-        equipThreat: "SA-3 (T1)",
-        systemType: "Manned",
-        range: "2205",
-        eventDate: "20 Sep 23",
-        startTime: "18:0L",
-        endTime: "19:30L",
-        poc: "/",
-        pocDsn: "",
+        equipmentRequested : "", 
+        typeOfThreat : "", 
+        range : "", 
+        location : "", 
+        requestStatus : "", 
+        notes : "", 
+        pocName : "", 
+        pocNumber : "", 
+        pocEmail : "", 
+        pocSquadron : "", 
+        startTime : "", 
+        endTime : "", 
       },
       // More data points can be added here
     ],
@@ -42,17 +44,19 @@ const Metrics = () => {
 
   const columns = useMemo(
     () => [
-      { Header: "Status", accessor: "status" },
-      { Header: "Squadron", accessor: "squadron" },
-      { Header: "Location", accessor: "location" },
-      { Header: "Equip/Threat", accessor: "equipThreat" },
-      { Header: "System Type", accessor: "systemType" },
-      { Header: "Range", accessor: "range" },
-      { Header: "Event Date", accessor: "eventDate" },
-      { Header: "Start Time", accessor: "startTime" },
+      { Header: "equipmentRequested", accessor: "equipmentRequested" },
+      { Header: "typeOfThreat", accessor: "typeOfThreat" },
+      { Header: "range", accessor: "range" },
+      { Header: "location", accessor: "location" },
+      { Header: "requestrequestStatus", accessor: "requestrequestStatus" },
+      { Header: "notes", accessor: "notes" },
+      { Header: "pocName", accessor: "pocName" },
       { Header: "End Time", accessor: "endTime" },
-      { Header: "POC", accessor: "poc" },
-      { Header: "POC DSN", accessor: "pocDsn" },
+      { Header: "pocNumber", accessor: "pocNumber" },
+      { Header: "pocEmail", accessor: "pocEmail" },
+      { Header: "pocSquadron", accessor: "pocSquadron" },
+      { Header: "startTime", accessor: "startTime" },
+      { Header: "endTime", accessor: "endTime" },
     ],
     [],
   );
@@ -99,20 +103,20 @@ const Metrics = () => {
           </div>
           <div className="stats-item">
             <strong>Approved:</strong>{" "}
-            {data.filter((item) => item.status === "Approved").length}
+            {data.filter((item) => item.requestStatus === "Approved").length}
           </div>
           <div className="stats-item">
             <strong>Rejected:</strong>{" "}
-            {data.filter((item) => item.status === "Rejected").length}
+            {data.filter((item) => item.requestStatus === "Rejected").length}
           </div>
 
           <div className="stats-item">
             <strong>Unique Equip/Threat Scheduled:</strong>{" "}
-            {new Set(data.map((item) => item.equipThreat)).size}
+            {new Set(data.map((item) => item.equipmentRequested)).size}
           </div>
           <div className="stats-item">
             <strong>Unique Squadrons Scheduled:</strong>{" "}
-            {new Set(data.map((item) => item.squadron)).size}
+            {new Set(data.map((item) => item.pocSquadron)).size}
           </div>
           <div className="stats-item">
             <strong>Unique Locations Scheduled:</strong>{" "}

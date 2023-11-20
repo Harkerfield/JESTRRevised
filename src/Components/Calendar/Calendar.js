@@ -9,6 +9,48 @@ const localizer = momentLocalizer(moment); // Create a localizer using moment
 const CalendarComponent = () => {
   const { admin } = useContext(ConfigContext);
 
+
+
+
+  const data = useMemo(
+    () => [
+      {
+        equipmentRequested : "", 
+        typeOfThreat : "", 
+        range : "", 
+        location : "", 
+        requestStatus : "", 
+        notes : "", 
+        pocName : "", 
+        pocNumber : "", 
+        pocEmail : "", 
+        pocSquadron : "", 
+        startTime : "", 
+        endTime : "", 
+      },
+      {
+        equipmentRequested : "", 
+        typeOfThreat : "", 
+        range : "", 
+        location : "", 
+        requestStatus : "", 
+        notes : "", 
+        pocName : "", 
+        pocNumber : "", 
+        pocEmail : "", 
+        pocSquadron : "", 
+        startTime : "", 
+        endTime : "", 
+      },
+      // More data points can be added here
+    ],
+    [],
+  );
+
+
+
+
+
   const events = [
     {
       title: "Event 1",
