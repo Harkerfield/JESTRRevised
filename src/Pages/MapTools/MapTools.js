@@ -80,7 +80,7 @@ function MapTools() {
     () => [
       // Sample data; you'd typically fetch this from an API or other source.
       {
-        name: "CERU5",
+        Title: "CERU5",
         serialNumber: "CERU5(SN13)",
         systemType: "UMTE",
         schedulableItem: "Yes",

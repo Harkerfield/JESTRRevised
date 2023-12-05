@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const TimeSelector = ({ onTimeIntervalsChange }) => {
+const TimeSelector = ({ onTimeIntervalsChange, onErrors }) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [timeIntervals, setTimeIntervals] = useState([
@@ -13,6 +13,10 @@ const TimeSelector = ({ onTimeIntervalsChange }) => {
       end: "16:00",
     },
   ]);
+
+  useEffect(() => {
+    timeIntervals.length > 0 ? onErrors(false) : onErrors(true)
+  }, [onErrors, timeIntervals])
 
   const addTimeInterval = (event) => {
     event.preventDefault();

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
-const FormUser = ({ onSetUserDataChange }) => {
+const StyledInput = styled.input`
+  border: 4px solid ${props => props.hasError ? 'red' : 'green'};
+`;
+
+const FormUser = ({ onFormSubmit, onErrors }) => {
   const initialUserData = {
     name: "",
     dsn: "",
@@ -10,65 +15,93 @@ const FormUser = ({ onSetUserDataChange }) => {
   const [userData, setUserData] = useState(initialUserData);
   const [errors, setErrors] = useState({});
 
+
   useEffect(() => {
-    if (onSetUserDataChange) {
-      onSetUserDataChange(userData);
+
+    const formErrors = {};
+    if (!userData.name) {
+      formErrors.name = "Name is required.";
     }
-  }, [userData, onSetUserDataChange]);
+    if (!userData.dsn) {
+      formErrors.dsn = "DSN is required.";
+    }
+    if (!userData.squadron) {
+      formErrors.squadron = "Squadron is required.";
+    }
+
+    setErrors(formErrors);
+    if (onErrors) {
+      onErrors(Object.keys(formErrors).length > 0);
+      //truthey falsey
+    }
+  }, [onErrors, userData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
 
-  const validateForm = (data) => {
-    const errors = {};
-    if (!data.name) {
-      errors.name = "Name is required.";
+  const handleBlur = () => {
+
+    const formErrors = {};
+    if (!userData.name) {
+      formErrors.name = "Name is required.";
     }
-    if (!data.dsn) {
-      errors.dsn = "DSN is required.";
+    if (!userData.dsn) {
+      formErrors.dsn = "DSN is required.";
     }
-    if (!data.squadron) {
-      errors.squadron = "Squadron is required.";
+    if (!userData.squadron) {
+      formErrors.squadron = "Squadron is required.";
     }
-    return errors;
+
+    // if (Object.keys(formErrors).length === 0 && onFormSubmit) {
+      onFormSubmit(userData);
+    // }
   };
+
 
   return (
     <form>
+      {onErrors}
+      test
       <div>
         <label htmlFor="name">Name:</label>
-        <input
+        <StyledInput
           type="text"
           id="name"
           name="name"
           value={userData.name}
           onChange={handleChange}
+          onBlur={handleBlur}
+          hasError={!!errors.name}
+          placeholder={errors.name || "Enter name"}
         />
-        {errors.name && <p className="error">{errors.name}</p>}
       </div>
       <div>
         <label htmlFor="dsn">DSN:</label>
-        <input
+        <StyledInput
           type="text"
           id="dsn"
           name="dsn"
           value={userData.dsn}
           onChange={handleChange}
+          onBlur={handleBlur}
+          hasError={!!errors.dsn}
+          placeholder={errors.dsn || "Enter DSN"}
         />
-        {errors.dsn && <p className="error">{errors.dsn}</p>}
       </div>
       <div>
         <label htmlFor="squadron">Squadron:</label>
-        <input
+        <StyledInput
           type="text"
           id="squadron"
           name="squadron"
           value={userData.squadron}
           onChange={handleChange}
+          onBlur={handleBlur}
+          hasError={!!errors.squadron}
+          placeholder={errors.squadron || "Enter Squadron"}
         />
-        {errors.squadron && <p className="error">{errors.squadron}</p>}
       </div>
     </form>
   );

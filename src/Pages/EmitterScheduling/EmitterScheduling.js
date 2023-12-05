@@ -194,6 +194,12 @@ function EmitterScheduling() {
       //   Filter: ColumnFilter,
       //   style: { textAlign: 'center' }
       // },
+      // {
+      //   Header: "id",
+      //   accessor: "id",
+      //   Filter: ColumnFilter,
+      //   style: { textAlign: "center" },
+      // },
       {
         Header: "Location",
         accessor: "location",
@@ -317,6 +323,13 @@ function EmitterScheduling() {
     }
   }, [data]);
 
+
+  const [formIsValid, setFormIsValid] = useState(true);
+  const [weekErrors, setWeekErrors] = useState(true);
+  const [timeErrors, setTimeErrors] = useState(true);
+
+
+
   return (
     <div className="PageFormat">
       <div className="InfoPanel">{config.emmiterSchedulingInfo}</div>
@@ -348,8 +361,12 @@ function EmitterScheduling() {
           <MapComponent points={selectedThreatData} />
         </div>
       </div>
-      <button onClick={openSchedulingModel} style={{  width: "100%", height: "50px", backgroundColor: "green", color: "white"   }}>Click here to schedule</button>
 
+      {selectedThreatData.length > 0 ?   <button onClick={openSchedulingModel} style={{  width: "100%", height: "50px", backgroundColor: "green", color: "white"   }}>Click here to schedule</button>
+     : <button style={{  width: "100%", height: "50px", backgroundColor: "yellow", color: "black"   }}>Please select atleast one threat to schedule</button>
+    }
+
+      
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
 
@@ -358,9 +375,9 @@ function EmitterScheduling() {
           </div>
 
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <FormUser onSetUserDataChange={handleUserDataChange} />
-            <FormWeekSelector onWeekSelected={handleSelectedDays} />
-            <FormTimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} />
+            <FormUser onFormSubmit={handleUserDataChange} onErrors={(e) => { setFormIsValid(!e)}}/>
+            <FormWeekSelector onWeekSelected={handleSelectedDays} onErrors = {(e) => {setWeekErrors(!e)}}/>
+            <FormTimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} onErrors = {(e) => {setTimeErrors(!e)}} />
           </div>
           <div style={{ height: "100%" }}>
             <FormSchedulerTable
@@ -368,7 +385,7 @@ function EmitterScheduling() {
               selectedWeek={selectedWeek}
               userTimes={userTimes}
               onSaveData={handleSaveData}
-
+              formIsValid={formIsValid && weekErrors && timeErrors} //truthie / falsie
             />
           </div>
 

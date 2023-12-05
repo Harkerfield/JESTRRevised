@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import styled from "styled-components";
+
+const WeekButton = styled.button`
+  border: 4px solid ${props => props.isSelected ? 'green' : 'red'};
+`;
 
 function getWeeksInMonth(month, year) {
   const weeks = [];
@@ -26,9 +31,10 @@ function getWeeksInMonth(month, year) {
   return weeks;
 }
 
-function FormWeekSelector({ onWeekSelected }) {
+function FormWeekSelector({ onWeekSelected, onErrors }) {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [selectedWeekIndex, setSelectedWeekIndex] = useState(null);
   const weeks = getWeeksInMonth(currentMonth, currentYear);
 
   const changeMonth = (event, offset) => {
@@ -48,8 +54,10 @@ function FormWeekSelector({ onWeekSelected }) {
     setCurrentYear(newYear);
   };
 
-  const selectWeek = (event, week) => {
+  const selectWeek = (event, week, index) => {
     event.preventDefault();
+    setSelectedWeekIndex(index);
+
     const selectedDays = [];
     let currentDay = new Date(week.start);
 
@@ -62,6 +70,7 @@ function FormWeekSelector({ onWeekSelected }) {
     }
 
     onWeekSelected(selectedDays);
+    onErrors(false);
   };
 
   const formatDateWithoutYear = (date) => {
@@ -81,11 +90,13 @@ function FormWeekSelector({ onWeekSelected }) {
 
       <div className="weeks">
         {weeks.map((week, index) => (
-          <button key={index} onClick={(e) => selectWeek(e, week)}>
-            {`${formatDateWithoutYear(week.start)} - ${formatDateWithoutYear(
-              week.end,
-            )}`}
-          </button>
+          <WeekButton
+            key={index}
+            isSelected={selectedWeekIndex === index}
+            onClick={(e) => selectWeek(e, week, index)}
+          >
+            {`${formatDateWithoutYear(week.start)} - ${formatDateWithoutYear(week.end)}`}
+          </WeekButton>
         ))}
       </div>
     </div>
@@ -93,28 +104,13 @@ function FormWeekSelector({ onWeekSelected }) {
 }
 
 const MONTH = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
 const DAYS = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  "Sunday", "Monday", "Tuesday", "Wednesday",
+  "Thursday", "Friday", "Saturday",
 ];
 
 export default FormWeekSelector;

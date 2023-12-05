@@ -9,6 +9,7 @@ const FormSchedulerTable = ({
   selectedWeek,
   userTimes,
   onSaveData,
+  formIsValid,
 
 }) => {
   // userTimes, userData, selectedWeek
@@ -30,6 +31,7 @@ const FormSchedulerTable = ({
     () => [
       { Header: "Title", accessor: "Title" },
       { Header: "Serial Number", accessor: "serialNumber" },
+      { Header: "Id", accessor: "id" },
       { Header: "System Type", accessor: "systemType" },
       ...selectedWeek.map((item) => {
         return {
@@ -129,9 +131,10 @@ const FormSchedulerTable = ({
           })}
         </tbody>
       </table>
-
-      <button onClick={(e) => saveTableAsJSON(e, columns)}  style={{  width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
-
+{formIsValid? 
+      <button onClick={(e) => saveTableAsJSON(e, columns)} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
+     : <button style={{ width: "99%", height: "50px", backgroundColor: "yellow", color: "black", disabled:"true" }} >Errors in Form</button>
+}
     </div>
   );
 };
