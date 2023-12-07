@@ -135,7 +135,7 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
           <button onClick={onClose} style={{  width: "99%", height: "50px", backgroundColor: "red", color: "white"  }}>
             Cancel
           </button>
-          <button onClick={onPush} style={{  width: "99%", height: "50px", backgroundColor: "green", color: "white"  }}>Submit</button>
+          <button onClick={e => {onPush(e, readyToSubmit)}} style={{  width: "99%", height: "50px", backgroundColor: "green", color: "white"  }}>Submit</button>
         </div>
       </div>
     </div>

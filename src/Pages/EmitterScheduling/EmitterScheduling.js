@@ -7,7 +7,7 @@ import FormTimeSelector from "../../Components/FormTimeSelector/FormTimeSelector
 import FormUser from "../../Components/FormUser/FormUser.js";
 import ModalForm from "../../Components/FormModalSubmit/FormModalSubmit.js";
 import ModalChildren from "../../Components/Modal/ModalChildren.js";
-import useListCreateItem from "../../hooks/useListCreateItem.js";
+import { useListCreateItem } from "../../hooks/useListCreateItem.js";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 import "./EmitterScheduling.css";
@@ -18,36 +18,24 @@ function EmitterScheduling() {
   const [userTimes, setUserTimes] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState([]);
   const [userData, setUserData] = useState([]);
-  // const [userData, setUserData] = useState([
-  //   {
-  //     name: "Joseph Hartsfield",
-  //     dsn: "377-3211",
-  //     squadron: "354th RANS",
-  //   },
-  // ]);
 
   const { data, loading, error } = useListGetItems(config.lists.threatList);
   const [filteredData, setFilteredData] = useState([]);
 
-  const handleSelectedRowsChange = (selectedRows) => {
-    setselectedThreatData(selectedRows);
-  };
-
-  const handleTimeIntervalsChange = (intervals) => {
-    setUserTimes(intervals);
-  };
-
-  const handleSelectedDays = (days) => {
-    setSelectedWeek(days);
-  };
-
-  const handleUserDataChange = (userData) => {
-    setUserData(userData);
-  };
+  const handleSelectedRowsChange = (selectedRows) => { setselectedThreatData(selectedRows) };
+  const handleTimeIntervalsChange = (intervals) => { setUserTimes(intervals) };
+  const handleSelectedDays = (days) => { setSelectedWeek(days) };
+  const handleUserDataChange = (userData) => { setUserData(userData) };
 
   const [rowData, setRowData] = useState([]);
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [isModalChildrenOpen, setIsModalChildrenOpen] = useState(false);
+
+
+  const { createItem, loadingPush, errorPush } = useListCreateItem();
+  // const [itemData, setItemData] = useState({ /* initial item data structure */ });
+
+
 
   const handleSaveData = (data) => {
     setRowData(data);
@@ -65,22 +53,29 @@ function EmitterScheduling() {
     setIsModalChildrenOpen(false);
   };
 
-  const handlePushData = () => {
-    fetch("YOUR_API_ENDPOINT", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(rowData),
+  const handlePushData = async (e, readyToSubmit) => {
+    // useListCreateItem
+    e.preventDefault();
+    console.log(readyToSubmit);
+
+    readyToSubmit.map(async item => {
+      // Replace 'YourListTitle' with the actual title of your SharePoint list
+      const result = await createItem(config.scheduleList, item);
+      if (result) {
+        console.log('Item created:', result);
+        // handleCloseModalForm();
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        handleCloseModalForm();
-      })
-      .catch((error) => {
-        console.error("Error pushing data:", error);
-      });
+
+
+    if (loadingPush) {
+      return <p>Loading...</p>;
+    }
+
+    if (errorPush) {
+      console.log(errorPush)
+      return <p>Error: {errorPush}</p>;
+    }
   };
 
   function ColumnFilter({
@@ -362,22 +357,22 @@ function EmitterScheduling() {
         </div>
       </div>
 
-      {selectedThreatData.length > 0 ?   <button onClick={openSchedulingModel} style={{  width: "100%", height: "50px", backgroundColor: "green", color: "white"   }}>Click here to schedule</button>
-     : <button style={{  width: "100%", height: "50px", backgroundColor: "yellow", color: "black"   }}>Please select atleast one threat to schedule</button>
-    }
+      {selectedThreatData.length > 0 ? <button onClick={openSchedulingModel} style={{ width: "100%", height: "50px", backgroundColor: "green", color: "white" }}>Click here to schedule</button>
+        : <button style={{ width: "100%", height: "50px", backgroundColor: "yellow", color: "black" }}>Please select atleast one threat to schedule</button>
+      }
 
-      
+
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
 
           <div>
-           {/* {error handling} */}
+            {/* {error handling} */}
           </div>
 
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <FormUser onFormSubmit={handleUserDataChange} onErrors={(e) => { setFormIsValid(!e)}}/>
-            <FormWeekSelector onWeekSelected={handleSelectedDays} onErrors = {(e) => {setWeekErrors(!e)}}/>
-            <FormTimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} onErrors = {(e) => {setTimeErrors(!e)}} />
+            <FormUser onFormSubmit={handleUserDataChange} onErrors={(e) => { setFormIsValid(!e) }} />
+            <FormWeekSelector onWeekSelected={handleSelectedDays} onErrors={(e) => { setWeekErrors(!e) }} />
+            <FormTimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} onErrors={(e) => { setTimeErrors(!e) }} />
           </div>
           <div style={{ height: "100%" }}>
             <FormSchedulerTable

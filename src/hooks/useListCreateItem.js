@@ -12,7 +12,7 @@ const useListCreateItem = () => {
     const getRequestDigest = async () => {
       try {
         const digestUrl =
-          "https://intelshare.intelink.gov/sites/354RANS/JESTR/_api/contextinfo";
+          `${config.apiBaseUrl}_api/contextinfo`;
         const digestResponse = await fetch(digestUrl, {
           method: "POST",
           headers: {
@@ -28,7 +28,7 @@ const useListCreateItem = () => {
     };
 
     getRequestDigest();
-  }, []);
+  }, [config.apiBaseUrl]);
 
   const createItem = async (listTitle, itemData) => {
     setLoading(true);

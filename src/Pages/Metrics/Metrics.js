@@ -1,126 +1,204 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo, useContext, useEffect, useState } from "react";
 import { useTable } from "react-table";
+import { useListGetItems } from "../../hooks/useListGetItems.js";
+import ThreatList from "../../Components/ThreatList/ThreatList.js";
+
 import { ConfigContext } from "../../Provider/Context.js";
 
 import "./Metrics.css";
 
 const Metrics = () => {
+
   const config = useContext(ConfigContext);
 
-  const data = useMemo(
-    () => [
-      {
-        equipmentRequested : "2312", 
-        typeOfThreat : "1", 
-        range : "", 
-        location : "123", 
-        requestStatus : "Approved", 
-        notes : "", 
-        pocName : "", 
-        pocNumber : "", 
-        pocEmail : "", 
-        pocSquadron : "123", 
-        startTime : "", 
-        endTime : "", 
-      },
-      {
-        equipmentRequested : "32112", 
-        typeOfThreat : "1", 
-        range : "", 
-        location : "23", 
-        requestStatus : "Rejected", 
-        notes : "", 
-        pocName : "", 
-        pocNumber : "", 
-        pocEmail : "", 
-        pocSquadron : "123", 
-        startTime : "", 
-        endTime : "", 
-      },
-      // More data points can be added here
-    ],
+  const { data, loading, error } = useListGetItems(config.lists.scheduleList);
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleSelectedRowsChange = (selectedRows) => {
+    console.log(selectedRows)
+  };
+
+  function ColumnFilter({
+    column: { filterValue, setFilter, filteredRows, id },
+  }) {
+    return (
+      <input
+        style={{ width: "100%", textAlign: "center" }}
+        value={filterValue || ""}
+        onChange={(e) => {
+          e.preventDefault();
+          setFilter(e.target.value || undefined);
+        }}
+        placeholder={`Search`}
+      />
+    );
+  }
+
+
+  const backupData = useMemo(
+    () =>
+      [
+        {
+          equipmentRequested: "2312",
+          typeOfThreat: "1",
+          range: "fds",
+          location: "123",
+          requestStatus: "Approved",
+          notes: "dsa",
+          pocName: "dsa",
+          pocNumber: "dsa",
+          pocEmail: "dsa",
+          pocSquadron: "123",
+          startTime: "dsa",
+          endTime: "dsa",
+        },
+      ],
     [],
   );
+
+
 
   const columns = useMemo(
     () => [
-      { Header: "equipmentRequested", accessor: "equipmentRequested" },
-      { Header: "typeOfThreat", accessor: "typeOfThreat" },
-      { Header: "range", accessor: "range" },
-      { Header: "location", accessor: "location" },
-      { Header: "requestrequestStatus", accessor: "requestrequestStatus" },
-      { Header: "notes", accessor: "notes" },
-      { Header: "pocName", accessor: "pocName" },
-      { Header: "pocNumber", accessor: "pocNumber" },
-      { Header: "pocEmail", accessor: "pocEmail" },
-      { Header: "pocSquadron", accessor: "pocSquadron" },
-      { Header: "startTime", accessor: "startTime" },
-      { Header: "endTime", accessor: "endTime" },
+      {
+        Header: "equipmentRequested",
+        accessor: "equipmentRequested",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "typeOfThreat",
+        accessor: "typeOfThreat",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "range",
+        accessor: "range",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "location",
+        accessor: "location",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "requestStatus",
+        accessor: "requestStatus",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "notes",
+        accessor: "notes",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "pocName",
+        accessor: "pocName",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "pocNumber",
+        accessor: "pocNumber",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "pocEmail",
+        accessor: "pocEmail",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "pocSquadron",
+        accessor: "pocSquadron",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "startTime",
+        accessor: "startTime",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
+      {
+        Header: "endTime",
+        accessor: "endTime",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
     ],
     [],
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+
+
+  useEffect(() => {
+    if (data) {
+      const filtered = data;
+      //TODO create filtered data
+      if (data.length > 0) {
+        setFilteredData(filtered);
+      } else if (error) {
+        setFilteredData(backupData);
+      }
+    }
+  }, [backupData, data, error]);
 
   return (
     <div className="PageFormat">
       <div className="InfoPanel">{config.metricsInfo}</div>
-      <div className="tableMetricsContainer">
-        <h2>QAE/COR Report</h2>
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td className="borderStyle" {...cell.getCellProps()}>
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div style={{ width: "48vw" }}>
+        {loading ? (
+          <>Loading...</>
+        ) : error ? (
+          <>
+            Error! {error}
+            <ThreatList
+              columns={columns}
+              data={filteredData}
+              onSelectedRowsChange={handleSelectedRowsChange}
+            />
+          </>
+        ) : (
+          <>
+            <ThreatList
+              columns={columns}
+              data={filteredData}
+              onSelectedRowsChange={handleSelectedRowsChange}
+            />
+          </>
+        )}
+      </div>
+      <div className="stats">
+        <div className="stats-item">
+          <strong>Total Scheduled:</strong> {filteredData.length}
+        </div>
+        <div className="stats-item">
+          <strong>Approved:</strong>{" "}
+          {filteredData.filter((item) => item.requestStatus === "Approved").length}
+        </div>
+        <div className="stats-item">
+          <strong>Rejected:</strong>{" "}
+          {filteredData.filter((item) => item.requestStatus === "Rejected").length}
+        </div>
 
-        <div className="stats">
-          <div className="stats-item">
-            <strong>Total Scheduled:</strong> {data.length}
-          </div>
-          <div className="stats-item">
-            <strong>Approved:</strong>{" "}
-            {data.filter((item) => item.requestStatus === "Approved").length}
-          </div>
-          <div className="stats-item">
-            <strong>Rejected:</strong>{" "}
-            {data.filter((item) => item.requestStatus === "Rejected").length}
-          </div>
-
-          <div className="stats-item">
-            <strong>Unique Equip/Threat Scheduled:</strong>{" "}
-            {new Set(data.map((item) => item.equipmentRequested)).size}
-          </div>
-          <div className="stats-item">
-            <strong>Unique Squadrons Scheduled:</strong>{" "}
-            {new Set(data.map((item) => item.pocSquadron)).size}
-          </div>
-          <div className="stats-item">
-            <strong>Unique Locations Scheduled:</strong>{" "}
-            {new Set(data.map((item) => item.location)).size}
-          </div>
+        <div className="stats-item">
+          <strong>Unique Equip/Threat Scheduled:</strong>{" "}
+          {new Set(filteredData.map((item) => item.equipmentRequested)).size}
+        </div>
+        <div className="stats-item">
+          <strong>Unique Squadrons Scheduled:</strong>{" "}
+          {new Set(filteredData.map((item) => item.pocSquadron)).size}
+        </div>
+        <div className="stats-item">
+          <strong>Unique Locations Scheduled:</strong>{" "}
+          {new Set(filteredData.map((item) => item.location)).size}
         </div>
       </div>
     </div>
