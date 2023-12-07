@@ -133,7 +133,7 @@ const FormSchedulerTable = ({
       </table>
 {formIsValid? 
       <button onClick={(e) => saveTableAsJSON(e, columns)} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
-     : <button style={{ width: "99%", height: "50px", backgroundColor: "yellow", color: "black", disabled:"true" }} >Errors in Form</button>
+     : <button onClick={(e) => e.preventDefault} style={{ width: "99%", height: "50px", backgroundColor: "yellow", color: "black", disabled:"true" }} >Errors in Form</button>
 }
     </div>
   );

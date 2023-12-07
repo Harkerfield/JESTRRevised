@@ -39,11 +39,15 @@ const useListCreateItem = () => {
         method: "POST",
         credentials: "same-origin",
         headers: {
-          Accept: "application/json;odata=nometadata",
+          "Accept": "application/json;odata=nometadata",
           "Content-Type": "application/json;odata=nometadata",
           "X-RequestDigest": requestDigest,
+          "X-HTTP-Method": "POST",
         },
-        body: JSON.stringify(itemData),
+        body: JSON.stringify({...itemData, "__metadata":
+          {
+            "type": `SP.Data.${listTitle}ListItem`
+          }}),
       });
 
       if (!response.ok) {

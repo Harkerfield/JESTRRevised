@@ -49,7 +49,7 @@ const MapComponent = ({ points }) => {
     // const airspaceLayer = new VectorLayer({
     //   name: 'airspace',
     //   source: new VectorSource({
-    //     url: 'https://intelshare.intelink.gov/sites/354RANS/JESTR/JESTR/CommonMapFiles/Airspace.kml',
+    //     url: '  `${config.apiBaseUrl}CommonMapFiles/Airspace.kml',
     //     format: new KML(),
     //   }),
     // });

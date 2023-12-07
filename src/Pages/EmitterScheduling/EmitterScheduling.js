@@ -60,7 +60,7 @@ function EmitterScheduling() {
 
     readyToSubmit.map(async item => {
       // Replace 'YourListTitle' with the actual title of your SharePoint list
-      const result = await createItem(config.scheduleList, item);
+      const result = await createItem(config.lists.scheduleList, item);
       if (result) {
         console.log('Item created:', result);
         // handleCloseModalForm();
@@ -358,7 +358,7 @@ function EmitterScheduling() {
       </div>
 
       {selectedThreatData.length > 0 ? <button onClick={openSchedulingModel} style={{ width: "100%", height: "50px", backgroundColor: "green", color: "white" }}>Click here to schedule</button>
-        : <button style={{ width: "100%", height: "50px", backgroundColor: "yellow", color: "black" }}>Please select atleast one threat to schedule</button>
+        : <button onClick={(e) => e.preventDefault} style={{ width: "100%", height: "50px", backgroundColor: "yellow", color: "black" }}>Please select atleast one threat to schedule</button>
       }
 
 
