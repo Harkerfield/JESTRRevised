@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 const TimeSelector = ({ onTimeIntervalsChange, onErrors }) => {
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
   const [timeIntervals, setTimeIntervals] = useState([
     {
       start: "09:00",
@@ -20,8 +20,8 @@ const TimeSelector = ({ onTimeIntervalsChange, onErrors }) => {
 
   const addTimeInterval = (event) => {
     event.preventDefault();
-    if (startTime && endTime && startTime < endTime) {
-      setTimeIntervals([...timeIntervals, { start: startTime, end: endTime }]);
+    if (start && end && start < end) {
+      setTimeIntervals([...timeIntervals, { start: start, end: end }]);
     } else {
       alert("times are incorrect");
     }
@@ -45,16 +45,16 @@ const TimeSelector = ({ onTimeIntervalsChange, onErrors }) => {
         Start Time:
         <input
           type="time"
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
+          value={start}
+          onChange={(e) => setStart(e.target.value)}
         />
       </label>
       <label>
         End Time:
         <input
           type="time"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
+          value={end}
+          onChange={(e) => setEnd(e.target.value)}
         />
       </label>
       <button onClick={(e) => addTimeInterval(e)}>Add Time Interval</button>

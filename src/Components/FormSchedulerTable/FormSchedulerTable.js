@@ -66,19 +66,32 @@ const FormSchedulerTable = ({
 
   const saveTableAsJSON = (event, columns) => {
     event.preventDefault();
+
     const rowData = data.map((row) => {
-      let obj = {};
-      columns.forEach((column, idx) => {
-        if (selectedWeek.some((item) => item["day"] === column.accessor)) {
-          obj[column.Header] = dropdownSelections[column.accessor] || null;
-        } else {
-          obj[column.Header] = row[column.accessor];
+      // Start with a copy of the original row data
+      let updatedRow = { ...row };
+
+      // Update only the fields that have dropdown selections
+      selectedWeek.forEach((weekItem) => {
+        const day = weekItem["day"];
+        if (dropdownSelections[day]) {
+          // updatedRow[day] = dropdownSelections[day];
+
+
+          //TODO, make sure this works...
+          columns.forEach((column, idx) => {
+            if (selectedWeek.some((item) => item["day"] === column.accessor)) {
+              updatedRow[column.Header] = dropdownSelections[column.accessor] || null;
+            } else {
+              updatedRow[column.Header] = row[column.accessor];
+            }
+          });
         }
       });
-      return obj;
-    });
 
-    onSaveData(rowData); // passing the rowData to the parent component
+      return updatedRow;
+    });
+    onSaveData(rowData); // Passing the rowData to the parent component
   };
 
 
@@ -131,10 +144,10 @@ const FormSchedulerTable = ({
           })}
         </tbody>
       </table>
-{formIsValid? 
-      <button onClick={(e) => saveTableAsJSON(e, columns)} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
-     : <button onClick={(e) => e.preventDefault} style={{ width: "99%", height: "50px", backgroundColor: "yellow", color: "black", disabled:"true" }} >Errors in Form</button>
-}
+      {formIsValid ?
+        <button onClick={(e) => saveTableAsJSON(e, columns)} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
+        : <button onClick={(e) => e.preventDefault} style={{ width: "99%", height: "50px", backgroundColor: "yellow", color: "black", disabled: "true" }} >Errors in Form</button>
+      }
     </div>
   );
 };

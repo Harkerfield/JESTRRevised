@@ -88,7 +88,7 @@ const ListChecker = () => {
                 marginRight: "10px",
               }}
             ></div>
-              <button onClick={(e) => handleAddItemtoList(e, listTitle)}>Add "Title" test to Title</button>
+              <button onClick={(e) => handleAddItemtoList(e, listTitle)}>Create: {listTitle}</button>
               {loadingCreateItem && <p>Adding item...</p>}
               {errorCreateItem && <p>Error: {errorCreateItem}</p>}
             </>

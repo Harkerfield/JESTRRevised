@@ -69,8 +69,8 @@ function FormWeekSelector({ onWeekSelected, onErrors }) {
       currentDay.setDate(currentDay.getDate() + 1);
     }
 
-    onWeekSelected(selectedDays);
     onErrors(false);
+    onWeekSelected(selectedDays);
   };
 
   const formatDateWithoutYear = (date) => {

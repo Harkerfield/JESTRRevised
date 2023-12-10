@@ -7,9 +7,10 @@ const StyledInput = styled.input`
 
 const FormUser = ({ onFormSubmit, onErrors }) => {
   const initialUserData = {
-    name: "",
-    dsn: "",
-    squadron: "",
+    pocName: "",
+    pocNumber: "",
+    pocEmail: "",
+    pocSquadron: "",
   };
 
   const [userData, setUserData] = useState(initialUserData);
@@ -19,14 +20,17 @@ const FormUser = ({ onFormSubmit, onErrors }) => {
   useEffect(() => {
 
     const formErrors = {};
-    if (!userData.name) {
-      formErrors.name = "Name is required.";
+    if (!userData.pocName) {
+      formErrors.pocName = "poc name is required.";
     }
-    if (!userData.dsn) {
-      formErrors.dsn = "DSN is required.";
+    if (!userData.pocNumber) {
+      formErrors.pocNumber = "Phone is required.";
     }
-    if (!userData.squadron) {
-      formErrors.squadron = "Squadron is required.";
+    if (!userData.pocEmail) {
+      formErrors.pocEmail = "Email is required.";
+    }
+    if (!userData.pocSquadron) {
+      formErrors.pocSquadron = "Squadron is required.";
     }
 
     setErrors(formErrors);
@@ -44,14 +48,17 @@ const FormUser = ({ onFormSubmit, onErrors }) => {
   const handleBlur = () => {
 
     const formErrors = {};
-    if (!userData.name) {
-      formErrors.name = "Name is required.";
+    if (!userData.pocName) {
+      formErrors.pocName = "Name is required.";
     }
-    if (!userData.dsn) {
-      formErrors.dsn = "DSN is required.";
+    if (!userData.pocNumber) {
+      formErrors.pocNumber = "POC Phone is required.";
     }
-    if (!userData.squadron) {
-      formErrors.squadron = "Squadron is required.";
+    if (!userData.pocEmail) {
+      formErrors.pocEmail = "POC pocEmail is required.";
+    }
+    if (!userData.pocSquadron) {
+      formErrors.pocSquadron = "Squadron is required.";
     }
 
     // if (Object.keys(formErrors).length === 0 && onFormSubmit) {
@@ -63,44 +70,56 @@ const FormUser = ({ onFormSubmit, onErrors }) => {
   return (
     <form>
       {onErrors}
-      test
       <div>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="pocName">Enter POC name:</label>
         <StyledInput
           type="text"
-          id="name"
-          name="name"
-          value={userData.name}
+          id="pocName"
+          name="pocName"
+          value={userData.pocName}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={!!errors.name}
-          placeholder={errors.name || "Enter name"}
+          hasError={!!errors.pocName}
+          placeholder={errors.pocName || "Enter POC name"}
         />
       </div>
       <div>
-        <label htmlFor="dsn">DSN:</label>
+        <label htmlFor="pocNumber">POC Phone Number:</label>
         <StyledInput
           type="text"
-          id="dsn"
-          name="dsn"
-          value={userData.dsn}
+          id="pocNumber"
+          name="pocNumber"
+          value={userData.pocNumber}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={!!errors.dsn}
-          placeholder={errors.dsn || "Enter DSN"}
+          hasError={!!errors.pocNumber}
+          placeholder={errors.pocNumber || "Enter Number"}
         />
       </div>
       <div>
-        <label htmlFor="squadron">Squadron:</label>
+        <label htmlFor="pocEmail">POC Phone Number:</label>
         <StyledInput
           type="text"
-          id="squadron"
-          name="squadron"
-          value={userData.squadron}
+          id="pocEmail"
+          name="pocEmail"
+          value={userData.pocEmail}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={!!errors.squadron}
-          placeholder={errors.squadron || "Enter Squadron"}
+          hasError={!!errors.pocEmail}
+          placeholder={errors.pocEmail || "Enter Number"}
+        />
+      </div>
+      <div>
+        <label htmlFor="squadron">POC Squadron:</label>
+        <StyledInput
+          type="text"
+          id="pocSquadron"
+          name="pocSquadron"
+          value={userData.pocSquadron}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          hasError={!!errors.pocSquadron}
+          placeholder={errors.pocSquadron || "Enter POC Squadron"}
         />
       </div>
     </form>

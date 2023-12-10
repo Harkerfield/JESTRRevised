@@ -21,7 +21,7 @@ const App = () => {
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
-    console.log("config", config);
+    // console.log("config", config);
     setSettings(config);
   }, [config]);
 

@@ -56,14 +56,14 @@ function EmitterScheduling() {
   const handlePushData = async (e, readyToSubmit) => {
     // useListCreateItem
     e.preventDefault();
-    console.log(readyToSubmit);
 
     readyToSubmit.map(async item => {
-      // Replace 'YourListTitle' with the actual title of your SharePoint list
+      console.log("Item to submit", item);
+
       const result = await createItem(config.lists.scheduleList, item);
       if (result) {
         console.log('Item created:', result);
-        // handleCloseModalForm();
+        handleCloseModalForm();
       }
     })
 
@@ -145,11 +145,13 @@ function EmitterScheduling() {
     () =>
       [
         {
+          id: 1,
           Title: "CERU5",
           serialNumber: "CERU5(SN13)",
           systemType: "UMTE",
           schedulableItem: "Yes",
           location: "Zulu-3 / OP 28.5",
+          range: "R2205",
           pointLocationLat: "63.834875",
           pointLocationLon: "-145.820617",
           deviceType: "TK1",
@@ -158,6 +160,24 @@ function EmitterScheduling() {
           status: "A/W Helo",
           ETIC: "30-Sep-23",
           remarks: "CEAR Will not power up. Intermittent Communications",
+          statusChangeDate: "Down 15 Aug 23",
+          operationalStatus: "RED",
+        }, {
+          id: 2,
+          Title: "CERU99",
+          serialNumber: "CERU99(SN13)",
+          systemType: "UMTdsaE",
+          schedulableItem: "Yes",
+          location: "Zuludsa-3 / OP 28.5",
+          range: "R2211",
+          pointLocationLat: "63.834875",
+          pointLocationLon: "-145.820617",
+          deviceType: "TKdsa1",
+          threat: "SdsaA6",
+          mxCondition: "RED",
+          status: "A/W dsadsaHelo",
+          ETIC: "30-Sep-23",
+          remarks: "CEAdsadsaR Will not power up. Intermittent Communications",
           statusChangeDate: "Down 15 Aug 23",
           operationalStatus: "RED",
         },
@@ -182,6 +202,7 @@ function EmitterScheduling() {
         style: { textAlign: "center" },
         Cell: ({ value }) => <>{value}</>,
       },
+
       // { Header: "System Type", accessor: "systemType", Filter: ColumnFilter, style: { textAlign: 'center' } },
       // {
       //   Header: "Schedulable Item",
@@ -383,8 +404,8 @@ function EmitterScheduling() {
               formIsValid={formIsValid && weekErrors && timeErrors} //truthie / falsie
             />
           </div>
-
           {isModalFormOpen && (
+
             <ModalForm
               data={{
                 rowData: rowData,

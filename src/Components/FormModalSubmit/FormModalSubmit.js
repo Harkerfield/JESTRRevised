@@ -19,6 +19,7 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
   };
 
   useEffect(() => {
+    console.log("testing data before", data)
     setReadyToSubmit(
       data.rowData.flatMap(item => {
         const staticFields = {};
@@ -37,6 +38,7 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
             const [day, month, date, year] = key.split(' ');
             const isoDate = new Date(`${month} ${date}, ${year}`).toISOString().split('T')[0];
 
+
             if (item[key] === "All") {
               // Handle the case where the time is "All"
               // Assuming 'data.userTimes' is an array of time ranges
@@ -44,10 +46,10 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                 const isoStart = new Date(`${isoDate}T${start}:00`).toISOString();
                 const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
                 return {
-                  date: isoDate,
                   start: isoStart,
                   end: isoEnd,
-                  ...staticFields,
+                  // ...staticFields,
+                  //TODO need to extract data out...
                   ...data.userData
                 };
               });
@@ -58,10 +60,16 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                 const isoStart = new Date(`${isoDate}T${start}:00`).toISOString();
                 const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
                 return {
-                  date: isoDate,
                   start: isoStart,
                   end: isoEnd,
-                  ...staticFields,
+                  // ...staticFields,
+                  //TODO need to extract data out...
+                  equipmentRequested: staticFields.Title,
+                  typeOfThreat: staticFields['System Type'],
+                  range: staticFields.range,
+                  location: staticFields.location,
+                  // requestStatus: staticFields...
+                  // notes: staticFields...
                   ...data.userData
 
                 };
@@ -113,14 +121,14 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
         {readyToSubmit.map((item) => {
           const startDate = new Date(item.start);
           const endDate = new Date(item.end);
-
+          console.log("Item to check", item)
           return (<>
-          
+
             <div>
-              {item.name} | {item.dsn} | {item.squadron}
+              {item.pocName} | {item.pocNumber} | {item.pocSquadron}
             </div>
             <div>
-              {item.Title} | {item.date} | {startDate.toLocaleTimeString("en-US", options)} - {endDate.toLocaleTimeString("en-US", options)}
+              {item.Title} | {startDate.toDateString("en-US")} | {startDate.toLocaleTimeString("en-US", options)} - {endDate.toLocaleTimeString("en-US", options)}
             </div>
             <br />
           </>)
@@ -132,10 +140,10 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
             justifyContent: "flex-end",
           }}
         >
-          <button onClick={onClose} style={{  width: "99%", height: "50px", backgroundColor: "red", color: "white"  }}>
+          <button onClick={onClose} style={{ width: "99%", height: "50px", backgroundColor: "red", color: "white" }}>
             Cancel
           </button>
-          <button onClick={e => {onPush(e, readyToSubmit)}} style={{  width: "99%", height: "50px", backgroundColor: "green", color: "white"  }}>Submit</button>
+          <button onClick={e => { onPush(e, readyToSubmit) }} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Submit</button>
         </div>
       </div>
     </div>

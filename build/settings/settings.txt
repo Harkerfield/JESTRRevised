@@ -224,17 +224,17 @@
         "__metadata": {
           "type": "SP.Field"
         },
-        "Title": "startTime",
+        "Title": "start",
         "FieldTypeKind": 4,
-        "StaticName": "startTime"
+        "StaticName": "start"
       },
       {
         "__metadata": {
           "type": "SP.Field"
         },
-        "Title": "endTime",
+        "Title": "end",
         "FieldTypeKind": 4,
-        "StaticName": "endTime"
+        "StaticName": "end"
       }
     ]
   },

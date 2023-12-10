@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useTable,
   useRowSelect,
@@ -10,6 +10,12 @@ import "./ThreatList.css";
 
 const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
   const [selectedRows, setSelectedRows] = useState([]);
+
+
+  useEffect(()=>{
+    console.log(selectedRows)
+  }, [selectedRows])
+
 
   const {
     getTableProps,

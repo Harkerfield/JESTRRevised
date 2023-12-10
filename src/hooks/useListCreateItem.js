@@ -21,6 +21,7 @@ const useListCreateItem = () => {
           },
         });
         const digestData = await digestResponse.json();
+
         setRequestDigest(digestData.d.GetContextWebInformation.FormDigestValue);
       } catch (error) {
         console.error("Error fetching __REQUESTDIGEST:", error);
@@ -44,10 +45,9 @@ const useListCreateItem = () => {
           "X-RequestDigest": requestDigest,
           "X-HTTP-Method": "POST",
         },
-        body: JSON.stringify({...itemData, "__metadata":
-          {
-            "type": `SP.Data.${listTitle}ListItem`
-          }}),
+        body: JSON.stringify({
+          ...itemData
+        }),
       });
 
       if (!response.ok) {
@@ -57,6 +57,7 @@ const useListCreateItem = () => {
       const data = await response.json();
       return data;
     } catch (err) {
+      console.log(err)
       setError(err.message);
       return null;
     } finally {
