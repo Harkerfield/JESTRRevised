@@ -8,7 +8,6 @@ const localizer = momentLocalizer(moment); // Create a localizer using moment
 
 const CalendarComponent = ({ data, loading, error }) => {
   const config = useContext(ConfigContext);
-
   const [filteredData, setFilteredData] = useState([]);
 
   const backupData = useMemo(
@@ -22,7 +21,7 @@ const CalendarComponent = ({ data, loading, error }) => {
           typeOfThreat: "Type X",
           range: "100m",
           location: "Location Y",
-          requestStatus: "Pending",
+          requestStatus: "Rejected",
           notes: "Notes for event 1",
           pocName: "John Doe",
           pocNumber: "123-456-7890",
@@ -52,7 +51,7 @@ const CalendarComponent = ({ data, loading, error }) => {
           typeOfThreat: "Type Z",
           range: "300m",
           location: "Location A",
-          requestStatus: "On-hold",
+          requestStatus: "Pending",
           notes: "Notes for event 3",
           pocName: "Sam Brown",
           pocNumber: "456-123-7890",
@@ -67,7 +66,7 @@ const CalendarComponent = ({ data, loading, error }) => {
           typeOfThreat: "Type A",
           range: "400m",
           location: "Location B",
-          requestStatus: "Completed",
+          requestStatus: "Approved",
           notes: "Notes for event 4",
           pocName: "Lucy Green",
           pocNumber: "321-654-9870",
@@ -102,30 +101,76 @@ const CalendarComponent = ({ data, loading, error }) => {
     }
   };
 
+  const handleSelectSlot = (slotInfo, browserEvent) => {
+    if (browserEvent) {
+      browserEvent.preventDefault(); // Prevent the default browser event action
+    }
+
+    // Handle slot selection logic
+    console.log("Selected slot:", slotInfo);
+  };
+
   const dayPropGetter = (date) => {
     const now = moment();
     if (now.isSame(date, 'day') && now.hours() === moment(date).hours()) {
       return {
         style: {
           backgroundColor: 'orange', // Highlight color for current time slot
-          
         }
       };
     }
   };
 
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setFilteredData(data);
+    } else if (error) {
+      setFilteredData(backupData);
+    }
+  }, [backupData, data, error]);
+
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    let backgroundColor = '#3174ad'; // Default color
+    if (event.requestStatus === 'Pending') {
+      backgroundColor = 'orange';
+    } else if (event.requestStatus === 'Approved') {
+      backgroundColor = 'green';
+    } else if (event.requestStatus === 'Rejected') {
+      backgroundColor = 'red';
+    }
+    return {
+      style: { backgroundColor }
+    };
+  };
+
+  const CustomEvent = ({ event }) => {
+    // Custom component for rendering events
+    return (
+      <span>
+        <strong>{event.title}</strong> | {event.pocSquadron}
+      </span>
+    );
+  };
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
-    <Calendar
-      localizer={localizer}
-      events={filteredData}
-      startAccessor="start"
-      endAccessor="end"
-      style={{ height: 500 }}
-      onSelectEvent={handleSelectEvent}
-      dayPropGetter={dayPropGetter} // Apply the custom day property getter
-    />
-  </div>
+      {JSON.stringify(moment("2023-11-27T18:00:00Z"))}
+      {/* {JSON.stringify(moment().add(1, "days").set({ hour: 10, minute: 0 }).toDate())} */}
+      
+      {/* {() => {return moment("2023-11-27T18:00:00Z")}} */}
+      <Calendar
+        localizer={localizer}
+        events={filteredData}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+        onSelectEvent={(event) => console.log(event)}
+        eventPropGetter={eventStyleGetter}
+        components={{
+          event: CustomEvent, // Use custom event component
+        }}
+      />
+    </div>
   );
 };
 

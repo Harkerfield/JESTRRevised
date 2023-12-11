@@ -44,6 +44,14 @@
         "__metadata": {
           "type": "SP.Field"
         },
+        "Title": "range",
+        "FieldTypeKind": 2,
+        "StaticName": "range"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
         "Title": "pointLocationLat",
         "FieldTypeKind": 2,
         "StaticName": "pointLocationLat"

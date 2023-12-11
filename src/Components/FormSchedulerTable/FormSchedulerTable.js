@@ -30,8 +30,8 @@ const FormSchedulerTable = ({
   const columns = useMemo(
     () => [
       { Header: "Title", accessor: "Title" },
-      { Header: "Serial Number", accessor: "serialNumber" },
-      { Header: "Id", accessor: "id" },
+      { Header: "Range", accessor: "range" },
+      // { Header: "Id", accessor: "ID" },
       { Header: "System Type", accessor: "systemType" },
       ...selectedWeek.map((item) => {
         return {

@@ -48,8 +48,12 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                 return {
                   start: isoStart,
                   end: isoEnd,
-                  // ...staticFields,
-                  //TODO need to extract data out...
+                  // notes: notes,
+                  equipmentRequested: staticFields.Title,
+                  typeOfThreat: staticFields['System Type'],
+                  range: staticFields.range,
+                  location: staticFields.location,
+                  // requestStatus: staticFields...
                   ...data.userData
                 };
               });
@@ -62,16 +66,13 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                 return {
                   start: isoStart,
                   end: isoEnd,
-                  // ...staticFields,
-                  //TODO need to extract data out...
+                  // notes: notes,
                   equipmentRequested: staticFields.Title,
                   typeOfThreat: staticFields['System Type'],
                   range: staticFields.range,
                   location: staticFields.location,
                   // requestStatus: staticFields...
-                  // notes: staticFields...
                   ...data.userData
-
                 };
               });
             }
@@ -128,7 +129,7 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
               {item.pocName} | {item.pocNumber} | {item.pocSquadron}
             </div>
             <div>
-              {item.Title} | {startDate.toDateString("en-US")} | {startDate.toLocaleTimeString("en-US", options)} - {endDate.toLocaleTimeString("en-US", options)}
+              {item.equipmentRequested} | {startDate.toDateString("en-US")} | {startDate.toLocaleTimeString("en-US", options)} - {endDate.toLocaleTimeString("en-US", options)}
             </div>
             <br />
           </>)
