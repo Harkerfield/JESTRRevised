@@ -15,8 +15,8 @@ const CalendarComponent = ({ data, loading, error }) => {
       [
         {
           title: "Event 1",
-          start: moment().set({ hour: 9, minute: 0 }).toDate(),
-          end: moment().set({ hour: 11, minute: 30 }).toDate(),
+          start: "2023-11-27T18:00:00Z",
+          end: "2023-11-27T20:00:00Z",
           equipmentRequested: "Equipment A",
           typeOfThreat: "Type X",
           range: "100m",
@@ -30,8 +30,8 @@ const CalendarComponent = ({ data, loading, error }) => {
         },
         {
           title: "Event 2",
-          start: moment().set({ hour: 10, minute: 0 }).toDate(),
-          end: moment().set({ hour: 12, minute: 0 }).toDate(),
+          start: "2023-11-27T17:00:00Z",
+          end: "2023-11-27T18:00:00Z",
           equipmentRequested: "Equipment B",
           typeOfThreat: "Type Y",
           range: "200m",
@@ -45,8 +45,8 @@ const CalendarComponent = ({ data, loading, error }) => {
         },
         {
           title: "Event 3",
-          start: moment().set({ hour: 12, minute: 30 }).toDate(),
-          end: moment().set({ hour: 14, minute: 0 }).toDate(),
+          start: "2023-11-27T14:00:00Z",
+          end: "2023-11-27T18:00:00Z",
           equipmentRequested: "Equipment C",
           typeOfThreat: "Type Z",
           range: "300m",
@@ -60,8 +60,8 @@ const CalendarComponent = ({ data, loading, error }) => {
         },
         {
           title: "Event 4",
-          start: moment().add(1, "days").set({ hour: 10, minute: 0 }).toDate(),
-          end: moment().add(1, "days").set({ hour: 11, minute: 0 }).toDate(),
+          start: "2023-11-27T13:00:00Z",
+          end: "2023-11-27T15:00:00Z",
           equipmentRequested: "Equipment D",
           typeOfThreat: "Type A",
           range: "400m",
@@ -78,17 +78,6 @@ const CalendarComponent = ({ data, loading, error }) => {
   );
 
 
-  useEffect(() => {
-    if (data) {
-      const filtered = data;
-      //TODO create filtered data
-      if (data.length > 0) {
-        setFilteredData(filtered);
-      } else if (error) {
-        setFilteredData(backupData);
-      }
-    }
-  }, [backupData, data, error]);
 
 
 
@@ -121,11 +110,27 @@ const CalendarComponent = ({ data, loading, error }) => {
     }
   };
 
+  const convertToDateObject = (dateStr) => {
+    return moment(dateStr).toDate(); // Convert to JavaScript Date object
+  };
+
   useEffect(() => {
-    if (data && data.length > 0) {
-      setFilteredData(data);
-    } else if (error) {
-      setFilteredData(backupData);
+    if (data) {
+      // const filtered = data;
+      //TODO create filtered data
+      if (data.length > 0) {
+        setFilteredData(data.map(event => ({
+          ...event,
+          start: convertToDateObject(event.start),
+          end: convertToDateObject(event.end),
+        })));
+      } else if (error) {
+        setFilteredData(backupData.map(event => ({
+          ...event,
+          start: moment(event.start).toDate(),
+          end: moment(event.end).toDate()
+        })));
+      }
     }
   }, [backupData, data, error]);
 
@@ -154,16 +159,13 @@ const CalendarComponent = ({ data, loading, error }) => {
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {JSON.stringify(moment("2023-11-27T18:00:00Z"))}
-      {/* {JSON.stringify(moment().add(1, "days").set({ hour: 10, minute: 0 }).toDate())} */}
-      
-      {/* {() => {return moment("2023-11-27T18:00:00Z")}} */}
+
       <Calendar
         localizer={localizer}
         events={filteredData}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ height: 100 }}
         onSelectEvent={(event) => console.log(event)}
         eventPropGetter={eventStyleGetter}
         components={{
