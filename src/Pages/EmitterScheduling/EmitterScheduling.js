@@ -22,20 +22,25 @@ function EmitterScheduling() {
   const { data, loading, error } = useListGetItems(config.lists.threatList);
   const [filteredData, setFilteredData] = useState([]);
 
-  const handleSelectedRowsChange = (selectedRows) => { setselectedThreatData(selectedRows) };
-  const handleTimeIntervalsChange = (intervals) => { setUserTimes(intervals) };
-  const handleSelectedDays = (days) => { setSelectedWeek(days) };
-  const handleUserDataChange = (userData) => { setUserData(userData) };
+  const handleSelectedRowsChange = (selectedRows) => {
+    setselectedThreatData(selectedRows);
+  };
+  const handleTimeIntervalsChange = (intervals) => {
+    setUserTimes(intervals);
+  };
+  const handleSelectedDays = (days) => {
+    setSelectedWeek(days);
+  };
+  const handleUserDataChange = (userData) => {
+    setUserData(userData);
+  };
 
   const [rowData, setRowData] = useState([]);
   const [isModalFormOpen, setIsModalFormOpen] = useState(false);
   const [isModalChildrenOpen, setIsModalChildrenOpen] = useState(false);
 
-
   const { createItem, loadingPush, errorPush } = useListCreateItem();
   // const [itemData, setItemData] = useState({ /* initial item data structure */ });
-
-
 
   const handleSaveData = (data) => {
     setRowData(data);
@@ -57,23 +62,22 @@ function EmitterScheduling() {
     // useListCreateItem
     e.preventDefault();
 
-    readyToSubmit.map(async item => {
+    readyToSubmit.map(async (item) => {
       console.log("Item to submit", item);
 
       const result = await createItem(config.lists.scheduleList, item);
       if (result) {
-        console.log('Item created:', result);
+        console.log("Item created:", result);
         handleCloseModalForm();
       }
-    })
-
+    });
 
     if (loadingPush) {
       return <p>Loading...</p>;
     }
 
     if (errorPush) {
-      console.log(errorPush)
+      console.log(errorPush);
       return <p>Error: {errorPush}</p>;
     }
   };
@@ -162,7 +166,8 @@ function EmitterScheduling() {
           remarks: "CEAR Will not power up. Intermittent Communications",
           statusChangeDate: "Down 15 Aug 23",
           operationalStatus: "RED",
-        }, {
+        },
+        {
           id: 2,
           Title: "CERU99",
           serialNumber: "CERU99(SN13)",
@@ -306,7 +311,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -320,7 +325,6 @@ function EmitterScheduling() {
     ],
     [],
   );
-
 
   // const { data, loading, error } = useListGetItems(config.lists.threatList);
   //data.filter(item=> item.schedulableItem === "Yes" && (item.operationalStatus === "GREEN" || item.operationalStatus === "YELLOW" || item.operationalStatus === "RED" || item.operationalStatus === "AMBER") )
@@ -339,12 +343,9 @@ function EmitterScheduling() {
     }
   }, [data]);
 
-
   const [formIsValid, setFormIsValid] = useState(true);
   const [weekErrors, setWeekErrors] = useState(true);
   const [timeErrors, setTimeErrors] = useState(true);
-
-
 
   return (
     <div className="PageFormat">
@@ -378,22 +379,55 @@ function EmitterScheduling() {
         </div>
       </div>
 
-      {selectedThreatData.length > 0 ? <button onClick={openSchedulingModel} style={{ width: "100%", height: "50px", backgroundColor: "green", color: "white" }}>Click here to schedule</button>
-        : <button onClick={(e) => e.preventDefault} style={{ width: "100%", height: "50px", backgroundColor: "yellow", color: "black" }}>Please select atleast one threat to schedule</button>
-      }
-
+      {selectedThreatData.length > 0 ? (
+        <button
+          onClick={openSchedulingModel}
+          style={{
+            width: "100%",
+            height: "50px",
+            backgroundColor: "green",
+            color: "white",
+          }}
+        >
+          Click here to schedule
+        </button>
+      ) : (
+        <button
+          onClick={(e) => e.preventDefault}
+          style={{
+            width: "100%",
+            height: "50px",
+            backgroundColor: "yellow",
+            color: "black",
+          }}
+        >
+          Please select atleast one threat to schedule
+        </button>
+      )}
 
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
-
-          <div>
-            {/* {error handling} */}
-          </div>
+          <div>{/* {error handling} */}</div>
 
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <FormUser onFormSubmit={handleUserDataChange} onErrors={(e) => { setFormIsValid(!e) }} />
-            <FormWeekSelector onWeekSelected={handleSelectedDays} onErrors={(e) => { setWeekErrors(!e) }} />
-            <FormTimeSelector onTimeIntervalsChange={handleTimeIntervalsChange} onErrors={(e) => { setTimeErrors(!e) }} />
+            <FormUser
+              onFormSubmit={handleUserDataChange}
+              onErrors={(e) => {
+                setFormIsValid(!e);
+              }}
+            />
+            <FormWeekSelector
+              onWeekSelected={handleSelectedDays}
+              onErrors={(e) => {
+                setWeekErrors(!e);
+              }}
+            />
+            <FormTimeSelector
+              onTimeIntervalsChange={handleTimeIntervalsChange}
+              onErrors={(e) => {
+                setTimeErrors(!e);
+              }}
+            />
           </div>
           <div style={{ height: "100%" }}>
             <FormSchedulerTable
@@ -405,12 +439,11 @@ function EmitterScheduling() {
             />
           </div>
           {isModalFormOpen && (
-
             <ModalForm
               data={{
                 rowData: rowData,
                 userTimes: userTimes,
-                userData: userData
+                userData: userData,
               }}
               onClose={handleCloseModalForm}
               onPush={handlePushData}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 const FormModalSubmit = ({ data, onClose, onPush }) => {
-
   const [readyToSubmit, setReadyToSubmit] = useState([]);
 
   const isDateKey = (key) => {
@@ -11,17 +10,19 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
   };
 
   const splitTimeRange = (timeRange) => {
-    const [start, end] = timeRange.split('-').map(time => time.trim());
-    return [{
-      start,
-      end
-    }];
+    const [start, end] = timeRange.split("-").map((time) => time.trim());
+    return [
+      {
+        start,
+        end,
+      },
+    ];
   };
 
   useEffect(() => {
-    console.log("testing data before", data)
+    console.log("testing data before", data);
     setReadyToSubmit(
-      data.rowData.flatMap(item => {
+      data.rowData.flatMap((item) => {
         const staticFields = {};
 
         // Extract static fields (non-date fields)
@@ -33,60 +34,64 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
 
         // Create an array of objects for each time range in each date
         return Object.keys(item)
-          .filter(key => isDateKey(key) && item[key] !== "NONE")
-          .flatMap(key => {
-            const [day, month, date, year] = key.split(' ');
-            const isoDate = new Date(`${month} ${date}, ${year}`).toISOString().split('T')[0];
-
+          .filter((key) => isDateKey(key) && item[key] !== "NONE")
+          .flatMap((key) => {
+            const [day, month, date, year] = key.split(" ");
+            const isoDate = new Date(`${month} ${date}, ${year}`)
+              .toISOString()
+              .split("T")[0];
 
             if (item[key] === "All") {
               // Handle the case where the time is "All"
               // Assuming 'data.userTimes' is an array of time ranges
               return data.userTimes.map(({ start, end }) => {
-                const isoStart = new Date(`${isoDate}T${start}:00`).toISOString();
+                const isoStart = new Date(
+                  `${isoDate}T${start}:00`,
+                ).toISOString();
                 const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
                 return {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
                   equipmentRequested: staticFields.Title,
-                  typeOfThreat: staticFields['System Type'],
+                  typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
                   // requestStatus: staticFields...
-                  ...data.userData
+                  ...data.userData,
                 };
               });
             } else {
               // Handle the case where specific time ranges are provided
               const times = splitTimeRange(item[key]);
               return times.map(({ start, end }) => {
-                const isoStart = new Date(`${isoDate}T${start}:00`).toISOString();
+                const isoStart = new Date(
+                  `${isoDate}T${start}:00`,
+                ).toISOString();
                 const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
                 return {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
                   equipmentRequested: staticFields.Title,
-                  typeOfThreat: staticFields['System Type'],
+                  typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
                   // requestStatus: staticFields...
-                  ...data.userData
+                  ...data.userData,
                 };
               });
             }
           });
-      })
+      }),
     );
   }, [data]);
 
-
   // var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const options = {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   };
 
   return (
@@ -122,17 +127,20 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
         {readyToSubmit.map((item) => {
           const startDate = new Date(item.start);
           const endDate = new Date(item.end);
-          console.log("Item to check", item)
-          return (<>
-
-            <div>
-              {item.pocName} | {item.pocNumber} | {item.pocSquadron}
-            </div>
-            <div>
-              {item.equipmentRequested} | {startDate.toDateString("en-US")} | {startDate.toLocaleTimeString("en-US", options)} - {endDate.toLocaleTimeString("en-US", options)}
-            </div>
-            <br />
-          </>)
+          console.log("Item to check", item);
+          return (
+            <>
+              <div>
+                {item.pocName} | {item.pocNumber} | {item.pocSquadron}
+              </div>
+              <div>
+                {item.equipmentRequested} | {startDate.toDateString("en-US")} |{" "}
+                {startDate.toLocaleTimeString("en-US", options)} -{" "}
+                {endDate.toLocaleTimeString("en-US", options)}
+              </div>
+              <br />
+            </>
+          );
         })}
         <div
           style={{
@@ -141,10 +149,30 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
             justifyContent: "flex-end",
           }}
         >
-          <button onClick={onClose} style={{ width: "99%", height: "50px", backgroundColor: "red", color: "white" }}>
+          <button
+            onClick={onClose}
+            style={{
+              width: "99%",
+              height: "50px",
+              backgroundColor: "red",
+              color: "white",
+            }}
+          >
             Cancel
           </button>
-          <button onClick={e => { onPush(e, readyToSubmit) }} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Submit</button>
+          <button
+            onClick={(e) => {
+              onPush(e, readyToSubmit);
+            }}
+            style={{
+              width: "99%",
+              height: "50px",
+              backgroundColor: "green",
+              color: "white",
+            }}
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>

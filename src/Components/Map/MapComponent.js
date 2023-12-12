@@ -8,8 +8,7 @@ import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import { Style, Text, Fill, Stroke, RegularShape } from "ol/style";
 import { extend } from "ol/extent";
-import { defaults as defaultInteractions } from 'ol/interaction'; // Import default interactions
-
+import { defaults as defaultInteractions } from "ol/interaction"; // Import default interactions
 
 import "ol/ol.css";
 import "./MapComponent.css";
@@ -64,7 +63,6 @@ const MapComponent = ({ points }) => {
         zoom: 8,
         maxZoom: 18,
       }),
-      
     });
 
     // Convert JSON points to OpenLayers Features and add them to the map

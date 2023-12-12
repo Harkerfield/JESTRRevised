@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './Dropdown.css';
+import "./Dropdown.css";
 
 function Dropdown({ options, placeholder, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,7 @@ function Dropdown({ options, placeholder, onChange }) {
       onChange(option);
     }
   };
-  
+
   return (
     <div className="dropdown-container">
       <div className="dropdown-header" onClick={toggleDropdown}>

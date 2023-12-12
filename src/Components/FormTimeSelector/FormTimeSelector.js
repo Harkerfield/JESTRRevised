@@ -15,8 +15,8 @@ const TimeSelector = ({ onTimeIntervalsChange, onErrors }) => {
   ]);
 
   useEffect(() => {
-    timeIntervals.length > 0 ? onErrors(false) : onErrors(true)
-  }, [onErrors, timeIntervals])
+    timeIntervals.length > 0 ? onErrors(false) : onErrors(true);
+  }, [onErrors, timeIntervals]);
 
   const addTimeInterval = (event) => {
     event.preventDefault();

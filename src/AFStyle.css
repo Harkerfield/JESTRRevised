@@ -1,294 +1,294 @@
 /* Define Colors */
 #af-primary-blue {
-    color: #00308F;
-    /* Air Force Blue */
+  color: #00308f;
+  /* Air Force Blue */
 }
 
 #af-secondary-blue {
-    color: #0055A4;
-    /* Darker Blue for Highlights */
+  color: #0055a4;
+  /* Darker Blue for Highlights */
 }
 
 #af-dark-gray {
-    color: #333333;
-    /* Dark Gray Text */
+  color: #333333;
+  /* Dark Gray Text */
 }
 
 #af-light-gray {
-    color: #777777;
-    /* Light Gray Text */
+  color: #777777;
+  /* Light Gray Text */
 }
 
 #af-danger-red {
-    color: #FF0000;
-    /* Red for Error Messages */
+  color: #ff0000;
+  /* Red for Error Messages */
 }
 
 /* Background Colors */
 #af-background-gray {
-    background-color: #f8f8f8;
-    /* Light Gray Background */
+  background-color: #f8f8f8;
+  /* Light Gray Background */
 }
 
 #af-background-blue {
-    background-color: #00308F;
-    /* Air Force Blue Background */
-    color: #FFFFFF;
-    /* White Text on Blue */
+  background-color: #00308f;
+  /* Air Force Blue Background */
+  color: #ffffff;
+  /* White Text on Blue */
 }
 
 /* Fonts */
 .af-heading {
-    font-family: 'Arial', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-family: "Arial", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .af-subheading {
-    font-family: 'Arial', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
+  font-family: "Arial", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .af-paragraph {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 /* Buttons */
 .af-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #0055A4;
-    /* Darker Blue Button */
-    color: #FFFFFF;
-    border: none;
-    border-radius: 5px;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0055a4;
+  /* Darker Blue Button */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .af-button:hover {
-    background-color: #00308F;
-    /* Hover Effect */
+  background-color: #00308f;
+  /* Hover Effect */
 }
 
 /* Dropdown Styles */
 .military-dropdown {
-    width: 200px; /* Adjust the width as needed */
-    border: 1px solid #DDDDDD;
-    border-radius: 5px;
-    padding: 10px;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    background-color: #FFFFFF; /* White background */
-    color: #000000; /* Black text color */
-  }
-  
-  /* Customize dropdown selection styles (optional) */
-  .military-dropdown select {
-    appearance: none; /* Remove default arrow */
-    background-color: transparent;
-    border: none;
-    width: 100%;
-    cursor: pointer;
-  }
+  width: 200px; /* Adjust the width as needed */
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  background-color: #ffffff; /* White background */
+  color: #000000; /* Black text color */
+}
+
+/* Customize dropdown selection styles (optional) */
+.military-dropdown select {
+  appearance: none; /* Remove default arrow */
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
 
 /* Containers and Divs */
 .af-container {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #DDDDDD;
-    border-radius: 5px;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
 }
 
 .af-card {
-    background-color: #FFFFFF;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 5px;
 }
 
 /* Alerts */
 .af-alert {
-    background-color: #FF0000;
-    /* Red Alert Background */
-    color: #FFFFFF;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  background-color: #ff0000;
+  /* Red Alert Background */
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 /* Navigation */
 .af-nav {
-    background-color: #00308F;
-    /* Air Force Blue Navigation */
-    color: #FFFFFF;
-    padding: 10px;
+  background-color: #00308f;
+  /* Air Force Blue Navigation */
+  color: #ffffff;
+  padding: 10px;
 }
 
 .af-nav-item {
-    margin-right: 20px;
-    text-decoration: none;
-    color: #FFFFFF;
-    font-weight: bold;
+  margin-right: 20px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
 }
 
 .af-nav-item:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Forms */
 .af-form-label {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .af-input {
-    padding: 10px;
-    border: 1px solid #DDDDDD;
-    border-radius: 5px;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  width: 100%;
 }
 
 .af-select {
-    padding: 10px;
-    border: 1px solid #DDDDDD;
-    border-radius: 5px;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  width: 100%;
 }
 
 .af-checkbox-label {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
 }
 
 .af-checkbox {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .af-radio-label {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
 }
 
 .af-radio {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .af-textarea {
-    padding: 10px;
-    border: 1px solid #DDDDDD;
-    border-radius: 5px;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    width: 100%;
-    resize: vertical;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  width: 100%;
+  resize: vertical;
 }
 
 /* Tables */
 .af-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .af-table th,
 .af-table td {
-    border: 1px solid #DDDDDD;
-    padding: 10px;
-    text-align: left;
+  border: 1px solid #dddddd;
+  padding: 10px;
+  text-align: left;
 }
 
 .af-table th {
-    background-color: #0055A4;
-    /* Darker Blue Header */
-    color: #FFFFFF;
-    font-weight: bold;
+  background-color: #0055a4;
+  /* Darker Blue Header */
+  color: #ffffff;
+  font-weight: bold;
 }
 
 /* Custom Classes for Specific Elements */
 .af-important-text {
-    color: #00308F !important;
-    /* Override Important Text Color */
-    font-weight: bold;
+  color: #00308f !important;
+  /* Override Important Text Color */
+  font-weight: bold;
 }
 
 /* Map Markers */
 .af-map-marker {
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .af-target-marker {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><polygon points="50,0 0,100 100,100"/></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><polygon points="50,0 0,100 100,100"/></svg>');
 }
 
 .af-poi-marker {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="2" fill="red"/></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="2" fill="red"/></svg>');
 }
 
 .af-custom-marker {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect x="0" y="0" width="100" height="100" rx="10" ry="10" fill="blue"/></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect x="0" y="0" width="100" height="100" rx="10" ry="10" fill="blue"/></svg>');
 }
 
 /* Layout for Full, Left, and Right Sections */
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    /* 100% viewport height */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* 100% viewport height */
 }
 
 .full-section {
-    flex: 1;
-    /* Expand to fill available space */
-    background-color: #f2f2f2;
-    /* Background color for the full section */
-    padding: 20px;
+  flex: 1;
+  /* Expand to fill available space */
+  background-color: #f2f2f2;
+  /* Background color for the full section */
+  padding: 20px;
 }
 
 .left-right-container {
-    display: flex;
-    flex: 1;
-    /* Expand to fill available space */
+  display: flex;
+  flex: 1;
+  /* Expand to fill available space */
 }
 
 .left-section {
-    flex: 1;
-    /* Expand to fill half of the available space */
-    background-color: #e6e6e6;
-    /* Background color for the left section */
-    padding: 20px;
+  flex: 1;
+  /* Expand to fill half of the available space */
+  background-color: #e6e6e6;
+  /* Background color for the left section */
+  padding: 20px;
 }
 
 .right-section {
-    flex: 1;
-    /* Expand to fill half of the available space */
-    background-color: #dcdcdc;
-    /* Background color for the right section */
-    padding: 20px;
+  flex: 1;
+  /* Expand to fill half of the available space */
+  background-color: #dcdcdc;
+  /* Background color for the right section */
+  padding: 20px;
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    /* Define responsive styles here */
+  /* Define responsive styles here */
 }
 
 /* Add more custom IDs, classes, and embedded SVG marker styles as needed for specific map elements in your web application. */

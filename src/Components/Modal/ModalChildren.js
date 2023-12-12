@@ -25,7 +25,17 @@ const ModalChildren = ({ children, onClose }) => {
           // overflowY: "auto",
         }}
       >
-        <button onClick={onClose} style={{  width: "99%", height: "50px", backgroundColor: "red", color: "white"   }}>Cancel</button>
+        <button
+          onClick={onClose}
+          style={{
+            width: "99%",
+            height: "50px",
+            backgroundColor: "red",
+            color: "white",
+          }}
+        >
+          Cancel
+        </button>
         {children}
       </div>
       <div
@@ -34,9 +44,7 @@ const ModalChildren = ({ children, onClose }) => {
           display: "flex",
           justifyContent: "flex-end",
         }}
-      >
-
-      </div>
+      ></div>
     </div>
   );
 };

@@ -6,8 +6,5 @@
     "main.6a186a1c.css.map": "/sites/354RANS/hafi/tester/static/css/main.6a186a1c.css.map",
     "main.e1844bbe.js.map": "/sites/354RANS/hafi/tester/static/js/main.e1844bbe.js.map"
   },
-  "entrypoints": [
-    "static/css/main.6a186a1c.css",
-    "static/js/main.e1844bbe.js"
-  ]
+  "entrypoints": ["static/css/main.6a186a1c.css", "static/js/main.e1844bbe.js"]
 }

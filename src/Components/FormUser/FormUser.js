@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
-  border: 4px solid ${props => props.hasError ? 'red' : 'green'};
+  border: 4px solid ${(props) => (props.hasError ? "red" : "green")};
 `;
 
 const FormUser = ({ onFormSubmit, onErrors }) => {
@@ -16,9 +16,7 @@ const FormUser = ({ onFormSubmit, onErrors }) => {
   const [userData, setUserData] = useState(initialUserData);
   const [errors, setErrors] = useState({});
 
-
   useEffect(() => {
-
     const formErrors = {};
     if (!userData.pocName) {
       formErrors.pocName = "poc name is required.";
@@ -46,7 +44,6 @@ const FormUser = ({ onFormSubmit, onErrors }) => {
   };
 
   const handleBlur = () => {
-
     const formErrors = {};
     if (!userData.pocName) {
       formErrors.pocName = "Name is required.";
@@ -62,10 +59,9 @@ const FormUser = ({ onFormSubmit, onErrors }) => {
     }
 
     // if (Object.keys(formErrors).length === 0 && onFormSubmit) {
-      onFormSubmit(userData);
+    onFormSubmit(userData);
     // }
   };
-
 
   return (
     <form>

@@ -11,11 +11,9 @@ import "./ThreatList.css";
 const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
   const [selectedRows, setSelectedRows] = useState([]);
 
-
-  useEffect(()=>{
-    console.log(selectedRows)
-  }, [selectedRows])
-
+  useEffect(() => {
+    console.log(selectedRows);
+  }, [selectedRows]);
 
   const {
     getTableProps,

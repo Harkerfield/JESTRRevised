@@ -11,8 +11,7 @@ const useListCreateItem = () => {
     // Fetch the __REQUESTDIGEST value from SharePoint
     const getRequestDigest = async () => {
       try {
-        const digestUrl =
-          `${config.apiBaseUrl}_api/contextinfo`;
+        const digestUrl = `${config.apiBaseUrl}_api/contextinfo`;
         const digestResponse = await fetch(digestUrl, {
           method: "POST",
           headers: {
@@ -40,13 +39,13 @@ const useListCreateItem = () => {
         method: "POST",
         credentials: "same-origin",
         headers: {
-          "Accept": "application/json;odata=nometadata",
+          Accept: "application/json;odata=nometadata",
           "Content-Type": "application/json;odata=nometadata",
           "X-RequestDigest": requestDigest,
           "X-HTTP-Method": "POST",
         },
         body: JSON.stringify({
-          ...itemData
+          ...itemData,
         }),
       });
 
@@ -57,7 +56,7 @@ const useListCreateItem = () => {
       const data = await response.json();
       return data;
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError(err.message);
       return null;
     } finally {

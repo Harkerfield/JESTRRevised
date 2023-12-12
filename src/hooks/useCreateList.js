@@ -17,11 +17,11 @@ const useCreateList = () => {
 
         const getDigestValue = async () => {
           const digestResponse = await fetch(`${siteUrl}/_api/contextinfo`, {
-            method: 'POST',
-            credentials: 'same-origin',
+            method: "POST",
+            credentials: "same-origin",
             headers: {
-              'Accept': 'application/json;odata=verbose',
-              'Content-Type': 'application/json;odata=verbose',
+              Accept: "application/json;odata=verbose",
+              "Content-Type": "application/json;odata=verbose",
             },
           });
 
@@ -38,9 +38,9 @@ const useCreateList = () => {
 
         // Headers for the REST API request
         const headers = {
-          'Accept': 'application/json;odata=verbose',
-          'Content-Type': 'application/json;odata=verbose',
-          'X-RequestDigest': await getDigestValue(), // Include the digest value
+          Accept: "application/json;odata=verbose",
+          "Content-Type": "application/json;odata=verbose",
+          "X-RequestDigest": await getDigestValue(), // Include the digest value
         };
 
         // SharePoint REST API POST request to create the list
@@ -61,7 +61,6 @@ const useCreateList = () => {
         // Example: Add columns based on the provided columnData
         if (columnData && Array.isArray(columnData)) {
           for (const column of columnData) {
-
             // SharePoint REST API POST request to add the column to the list
             const columnResponse = await fetch(
               `${listEndpoint}/getbytitle('${listName}')/Fields`,
@@ -70,12 +69,12 @@ const useCreateList = () => {
                 credentials: "same-origin",
                 headers: headers,
                 body: JSON.stringify(column),
-              }
+              },
             );
 
             if (!columnResponse.ok) {
               throw new Error(
-                `Error adding column "${column.Title}": ${columnResponse.statusText}`
+                `Error adding column "${column.Title}": ${columnResponse.statusText}`,
               );
             }
 
@@ -86,7 +85,7 @@ const useCreateList = () => {
 
         // Update the "All Items" default view to include the new fields
         const viewEndpoint = `${listEndpoint}/getbytitle('${listName}')/Views/getbytitle('All%20Items')/ViewFields`;
-        
+
         // Loop through fieldInternalNames and add them to the view
         for (const fieldName of fieldInternalNames) {
           await fetch(`${viewEndpoint}/addViewField('${fieldName}')`, {
@@ -95,14 +94,13 @@ const useCreateList = () => {
             headers: headers,
           });
         }
-
       } catch (err) {
         setError(err.message);
       }
 
       setLoading(false);
     },
-    [config.apiBaseUrl]
+    [config.apiBaseUrl],
   );
 
   return { createSharePointList, loading, error };

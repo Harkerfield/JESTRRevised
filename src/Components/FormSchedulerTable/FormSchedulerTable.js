@@ -10,7 +10,6 @@ const FormSchedulerTable = ({
   userTimes,
   onSaveData,
   formIsValid,
-
 }) => {
   // userTimes, userData, selectedWeek
   const [data, setData] = useState([]);
@@ -77,11 +76,11 @@ const FormSchedulerTable = ({
         if (dropdownSelections[day]) {
           // updatedRow[day] = dropdownSelections[day];
 
-
           //TODO, make sure this works...
           columns.forEach((column, idx) => {
             if (selectedWeek.some((item) => item["day"] === column.accessor)) {
-              updatedRow[column.Header] = dropdownSelections[column.accessor] || null;
+              updatedRow[column.Header] =
+                dropdownSelections[column.accessor] || null;
             } else {
               updatedRow[column.Header] = row[column.accessor];
             }
@@ -93,7 +92,6 @@ const FormSchedulerTable = ({
     });
     onSaveData(rowData); // Passing the rowData to the parent component
   };
-
 
   useEffect(() => {
     let initialDropdownValues = {};
@@ -144,10 +142,32 @@ const FormSchedulerTable = ({
           })}
         </tbody>
       </table>
-      {formIsValid ?
-        <button onClick={(e) => saveTableAsJSON(e, columns)} style={{ width: "99%", height: "50px", backgroundColor: "green", color: "white" }}>Review Changes</button>
-        : <button onClick={(e) => e.preventDefault} style={{ width: "99%", height: "50px", backgroundColor: "yellow", color: "black", disabled: "true" }} >Errors in Form</button>
-      }
+      {formIsValid ? (
+        <button
+          onClick={(e) => saveTableAsJSON(e, columns)}
+          style={{
+            width: "99%",
+            height: "50px",
+            backgroundColor: "green",
+            color: "white",
+          }}
+        >
+          Review Changes
+        </button>
+      ) : (
+        <button
+          onClick={(e) => e.preventDefault}
+          style={{
+            width: "99%",
+            height: "50px",
+            backgroundColor: "yellow",
+            color: "black",
+            disabled: "true",
+          }}
+        >
+          Errors in Form
+        </button>
+      )}
     </div>
   );
 };

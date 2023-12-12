@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const WeekButton = styled.button`
-  border: 4px solid ${props => props.isSelected ? 'green' : 'red'};
+  border: 4px solid ${(props) => (props.isSelected ? "green" : "red")};
 `;
 
 function getWeeksInMonth(month, year) {
@@ -95,7 +95,9 @@ function FormWeekSelector({ onWeekSelected, onErrors }) {
             isSelected={selectedWeekIndex === index}
             onClick={(e) => selectWeek(e, week, index)}
           >
-            {`${formatDateWithoutYear(week.start)} - ${formatDateWithoutYear(week.end)}`}
+            {`${formatDateWithoutYear(week.start)} - ${formatDateWithoutYear(
+              week.end,
+            )}`}
           </WeekButton>
         ))}
       </div>
@@ -104,13 +106,28 @@ function FormWeekSelector({ onWeekSelected, onErrors }) {
 }
 
 const MONTH = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const DAYS = [
-  "Sunday", "Monday", "Tuesday", "Wednesday",
-  "Thursday", "Friday", "Saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
 ];
 
 export default FormWeekSelector;

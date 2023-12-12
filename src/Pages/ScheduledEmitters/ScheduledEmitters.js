@@ -8,9 +8,7 @@ import "./ScheduledEmitters.css";
 function ScheduledEmitters() {
   const config = useContext(ConfigContext);
 
-  
   const { data, loading, error } = useListGetItems(config.lists.scheduleList);
-
 
   return (
     <div className="PageFormat">

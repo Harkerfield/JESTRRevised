@@ -13,8 +13,7 @@ const useListDeleteItem = () => {
     // Fetch the __REQUESTDIGEST value from SharePoint
     const getRequestDigest = async () => {
       try {
-        const digestUrl =
-        `${config.apiBaseUrl}_api/contextinfo`;
+        const digestUrl = `${config.apiBaseUrl}_api/contextinfo`;
         const digestResponse = await fetch(digestUrl, {
           method: "POST",
           headers: {

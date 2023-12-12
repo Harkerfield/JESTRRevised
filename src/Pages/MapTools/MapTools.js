@@ -97,7 +97,8 @@ function MapTools() {
         remarks: "CEAR Will not power up. Intermittent Communications",
         statusChangeDate: "Down 15 Aug 23",
         operationalStatus: "RED",
-      }, {
+      },
+      {
         id: 2,
         Title: "CERU99",
         serialNumber: "CERU99(SN13)",

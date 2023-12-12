@@ -8,14 +8,13 @@ import { ConfigContext } from "../../Provider/Context.js";
 import "./Metrics.css";
 
 const Metrics = () => {
-
   const config = useContext(ConfigContext);
 
   const { data, loading, error } = useListGetItems(config.lists.scheduleList);
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSelectedRowsChange = (selectedRows) => {
-    console.log(selectedRows)
+    console.log(selectedRows);
   };
 
   function ColumnFilter({
@@ -34,29 +33,25 @@ const Metrics = () => {
     );
   }
 
-
   const backupData = useMemo(
-    () =>
-      [
-        {
-          equipmentRequested: "2312",
-          typeOfThreat: "1",
-          range: "fds",
-          location: "123",
-          requestStatus: "Approved",
-          notes: "dsa",
-          pocName: "dsa",
-          pocNumber: "dsa",
-          pocEmail: "dsa",
-          pocSquadron: "123",
-          start: "dsa",
-          end: "dsa",
-        },
-      ],
+    () => [
+      {
+        equipmentRequested: "2312",
+        typeOfThreat: "1",
+        range: "fds",
+        location: "123",
+        requestStatus: "Approved",
+        notes: "dsa",
+        pocName: "dsa",
+        pocNumber: "dsa",
+        pocEmail: "dsa",
+        pocSquadron: "123",
+        start: "dsa",
+        end: "dsa",
+      },
+    ],
     [],
   );
-
-
 
   const columns = useMemo(
     () => [
@@ -136,8 +131,6 @@ const Metrics = () => {
     [],
   );
 
-
-
   useEffect(() => {
     if (data) {
       const filtered = data;
@@ -181,11 +174,17 @@ const Metrics = () => {
         </div>
         <div className="stats-item">
           <strong>Approved:</strong>{" "}
-          {filteredData.filter((item) => item.requestStatus === "Approved").length}
+          {
+            filteredData.filter((item) => item.requestStatus === "Approved")
+              .length
+          }
         </div>
         <div className="stats-item">
           <strong>Rejected:</strong>{" "}
-          {filteredData.filter((item) => item.requestStatus === "Rejected").length}
+          {
+            filteredData.filter((item) => item.requestStatus === "Rejected")
+              .length
+          }
         </div>
 
         <div className="stats-item">
