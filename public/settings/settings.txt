@@ -130,6 +130,14 @@
       }
     ],
     "otherThreatList": [
+       {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "serialNumber",
+        "FieldTypeKind": 2,
+        "StaticName": "serialNumber"
+      },
       {
         "__metadata": {
           "type": "SP.Field"
@@ -145,6 +153,70 @@
         "Title": "schedulableItem",
         "FieldTypeKind": 2,
         "StaticName": "schedulableItem"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "deviceType",
+        "FieldTypeKind": 2,
+        "StaticName": "deviceType"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "threat",
+        "FieldTypeKind": 2,
+        "StaticName": "threat"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "mxCondition",
+        "FieldTypeKind": 2,
+        "StaticName": "mxCondition"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "status",
+        "FieldTypeKind": 2,
+        "StaticName": "status"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "ETIC",
+        "FieldTypeKind": 2,
+        "StaticName": "ETIC"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "remarks",
+        "FieldTypeKind": 2,
+        "StaticName": "remarks"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "statusChangeDate",
+        "FieldTypeKind": 2,
+        "StaticName": "statusChangeDate"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "operationalStatus",
+        "FieldTypeKind": 2,
+        "StaticName": "operationalStatus"
       }
     ],
     "scheduleList": [

@@ -76,6 +76,8 @@ const CalendarComponent = ({ data, loading, error }) => {
     [],
   );
 
+  
+
   const handleSelectEvent = (event) => {
     if (config.admin) {
       // Logic for admins to edit/delete time
@@ -136,7 +138,7 @@ const CalendarComponent = ({ data, loading, error }) => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     let backgroundColor = "#3174ad"; // Default color
     if (event.requestStatus === "Pending") {
-      backgroundColor = "orange";
+      backgroundColor = "blue";
     } else if (event.requestStatus === "Approved") {
       backgroundColor = "green";
     } else if (event.requestStatus === "Rejected") {
@@ -163,7 +165,7 @@ const CalendarComponent = ({ data, loading, error }) => {
         events={filteredData}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 100 }}
+        style={{ height: '85vh' }}
         onSelectEvent={(event) => console.log(event)}
         eventPropGetter={eventStyleGetter}
         components={{
