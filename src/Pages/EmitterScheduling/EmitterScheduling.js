@@ -311,7 +311,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                  value.toLowerCase() === "green"
+                    value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -348,8 +348,19 @@ function EmitterScheduling() {
   const [timeErrors, setTimeErrors] = useState(true);
 
   return (
+
     <div className="PageFormat">
-      <div className="InfoPanel">{config.emmiterSchedulingInfo}</div>
+      {config.emmiterSchedulingInfo.map((item, index) => {
+
+        return (
+          <>
+            {index === 0 ?
+              <div className="InfoPanel">{item}</div>
+              :
+              <div className="InfoContent">{item}</div>
+            }</>
+        )
+      })}
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ width: "48vw" }}>

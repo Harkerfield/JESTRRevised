@@ -16,6 +16,12 @@
   font-size: x-large;
   text-decoration-line: underline;
 }
+.InfoContent {
+  text-align: center;
+  padding: 10px;
+  margin: 5px;
+  font-size: x-large;
+}
 
 /* In your CSS file: */
 .app-container {

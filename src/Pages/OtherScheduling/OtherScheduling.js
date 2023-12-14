@@ -5,7 +5,7 @@ import MapComponent from "../../Components/Map/MapComponent.js";
 import FormWeekSelector from "../../Components/FormWeekSelector/FormWeekSelector.js";
 import FormTimeSelector from "../../Components/FormTimeSelector/FormTimeSelector.js";
 import FormUser from "../../Components/FormUser/FormUser.js";
-import ModalForm from "../../Components/FormModalSubmit/FormModalSubmit.js";
+import FormModalOtherSubmit from "../../Components/FormModalOtherSubmit/FormModalOtherSubmit.js";
 import ModalChildren from "../../Components/Modal/ModalChildren.js";
 import { useListCreateItem } from "../../hooks/useListCreateItem.js";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
@@ -151,17 +151,17 @@ function OtherScheduling() {
         {
           id: 1,
           Title: "CERU5",
-          serialNumber: "CERU5(SN13)",
-          systemType: "UMTE",
+          serialNumber: "Elite1",
+          systemType: "Elite LCTE",
           schedulableItem: "Yes",
-          deviceType: "TK1",
-          threat: "SA6",
-          mxCondition: "RED",
-          status: "A/W Helo",
-          ETIC: "30-Sep-23",
-          remarks: "CEAR Will not power up. Intermittent Communications",
+          deviceType: "X-Band",
+          threat: "SAX",
+          mxCondition: "GREEN",
+          status: "",
+          ETIC: "",
+          remarks: "",
           statusChangeDate: "Down 15 Aug 23",
-          operationalStatus: "RED",
+          operationalStatus: "GREEN",
         },
         {
           id: 2,
@@ -199,34 +199,7 @@ function OtherScheduling() {
         style: { textAlign: "center" },
         Cell: ({ value }) => <>{value}</>,
       },
-      {
-        Header: "Location",
-        accessor: "location",
-        Filter: ColumnFilter,
-        style: { textAlign: "center" },
-      },
-      {
-        Header: "Lat/Long",
-        accessor: (d) =>
-          `${convertDDtoDDM(d.pointLocationLat, "lat")}, ${convertDDtoDDM(
-            d.pointLocationLon,
-            "lon",
-          )}`, // Use an accessor function to get both values.
-        Filter: ColumnFilter,
-        style: { textAlign: "center" },
-        Cell: ({ value }) => (
-          <>
-            {value}
-            {/* <button
-              style={{ marginLeft: "5px" }}
-              onClick={(e) => handleCopy(e, value)}
-            >
-              Copy
-            </button> */}
-          </>
-        ),
-      },
-     
+
       {
         Header: "Remarks",
         accessor: (d) => {
@@ -242,12 +215,7 @@ function OtherScheduling() {
         Cell: ({ value }) => <>{value}</>,
       },
 
-      // {
-      //   Header: "Status Change Date",
-      //   accessor: "statusChangeDate",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' }
-      // },
+
       {
         Header: "Operational Status",
         accessor: "operationalStatus",
@@ -299,111 +267,121 @@ function OtherScheduling() {
 
   return (
     <div className="PageFormat">
-      <div className="InfoPanel">{config.otherSchedulingInfo}</div>
 
+        {config.otherSchedulingInfo.map((item, index) => {
 
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "48vw" }}>
-          {loading ? (
-            <>Loading...</>
-          ) : error ? (
+          return (
             <>
-              Error! {error}
-              <ThreatList
-                columns={columns}
-                data={backupData}
-                onSelectedRowsChange={handleSelectedRowsChange}
-              />
-            </>
-          ) : (
-            <>
-              <ThreatList
-                columns={columns}
-                data={filteredData}
-                onSelectedRowsChange={handleSelectedRowsChange}
-              />
-            </>
-          )}
-        </div>
-        <div style={{ width: "48vw" }}>
+              {index === 0 ?
+                <div className="InfoPanel">{item}</div>
+                :
+                <div className="InfoContent">{item}</div>
+              }</>
+          )
+        })}
+
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ width: "98VW" }}>
+            {loading ? (
+              <>Loading...</>
+            ) : error ? (
+              <>
+                Error! {error}
+                <ThreatList
+                  columns={columns}
+                  data={backupData}
+                  onSelectedRowsChange={handleSelectedRowsChange}
+                />
+              </>
+            ) : (
+              <>
+                <ThreatList
+                  columns={columns}
+                  data={filteredData}
+                  onSelectedRowsChange={handleSelectedRowsChange}
+                />
+              </>
+            )}
+          </div>
+          {/* <div style={{ width: "48vw" }}>
           <MapComponent points={selectedThreatData} />
+        </div> */}
         </div>
+
+        {selectedThreatData.length > 0 ? (
+          <button
+            onClick={openSchedulingModel}
+            style={{
+              width: "100%",
+              height: "50px",
+              backgroundColor: "green",
+              color: "white",
+            }}
+          >
+            Click here to schedule
+          </button>
+        ) : (
+          <button
+            onClick={(e) => e.preventDefault}
+            style={{
+              width: "100%",
+              height: "50px",
+              backgroundColor: "yellow",
+              color: "black",
+            }}
+          >
+            Please select atleast one threat to schedule
+          </button>
+        )}
+
+        {isModalChildrenOpen && (
+          <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
+            <div>{/* {error handling} */}</div>
+
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <FormUser
+                onFormSubmit={handleUserDataChange}
+                onErrors={(e) => {
+                  setFormIsValid(!e);
+                }}
+              />
+              <FormWeekSelector
+                onWeekSelected={handleSelectedDays}
+                onErrors={(e) => {
+                  setWeekErrors(!e);
+                }}
+              />
+              <FormTimeSelector
+                onTimeIntervalsChange={handleTimeIntervalsChange}
+                onErrors={(e) => {
+                  setTimeErrors(!e);
+                }}
+              />
+            </div>
+            <div style={{ height: "100%" }}>
+              <FormSchedulerTable
+                selectedThreatData={selectedThreatData}
+                selectedWeek={selectedWeek}
+                userTimes={userTimes}
+                onSaveData={handleSaveData}
+                formIsValid={formIsValid && weekErrors && timeErrors} //truthie / falsie
+              />
+            </div>
+            {isModalFormOpen && (
+              <FormModalOtherSubmit
+                data={{
+                  rowData: rowData,
+                  userTimes: userTimes,
+                  userData: userData,
+                }}
+                onClose={handleCloseModalForm}
+                onPush={handlePushData}
+              />
+            )}
+          </ModalChildren>
+        )}
       </div>
-
-      {selectedThreatData.length > 0 ? (
-        <button
-          onClick={openSchedulingModel}
-          style={{
-            width: "100%",
-            height: "50px",
-            backgroundColor: "green",
-            color: "white",
-          }}
-        >
-          Click here to schedule
-        </button>
-      ) : (
-        <button
-          onClick={(e) => e.preventDefault}
-          style={{
-            width: "100%",
-            height: "50px",
-            backgroundColor: "yellow",
-            color: "black",
-          }}
-        >
-          Please select atleast one threat to schedule
-        </button>
-      )}
-
-      {isModalChildrenOpen && (
-        <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
-          <div>{/* {error handling} */}</div>
-
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <FormUser
-              onFormSubmit={handleUserDataChange}
-              onErrors={(e) => {
-                setFormIsValid(!e);
-              }}
-            />
-            <FormWeekSelector
-              onWeekSelected={handleSelectedDays}
-              onErrors={(e) => {
-                setWeekErrors(!e);
-              }}
-            />
-            <FormTimeSelector
-              onTimeIntervalsChange={handleTimeIntervalsChange}
-              onErrors={(e) => {
-                setTimeErrors(!e);
-              }}
-            />
-          </div>
-          <div style={{ height: "100%" }}>
-            <FormSchedulerTable
-              selectedThreatData={selectedThreatData}
-              selectedWeek={selectedWeek}
-              userTimes={userTimes}
-              onSaveData={handleSaveData}
-              formIsValid={formIsValid && weekErrors && timeErrors} //truthie / falsie
-            />
-          </div>
-          {isModalFormOpen && (
-            <ModalForm
-              data={{
-                rowData: rowData,
-                userTimes: userTimes,
-                userData: userData,
-              }}
-              onClose={handleCloseModalForm}
-              onPush={handlePushData}
-            />
-          )}
-        </ModalChildren>
-      )}
-    </div>
-  );
+      );
 }
 
-export default OtherScheduling;
+      export default OtherScheduling;
