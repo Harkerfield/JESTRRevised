@@ -56,7 +56,7 @@ const App = () => {
           }}
           disabled={activeSection === "otherScheduling" ? true : false}
         >
-          SAM/MANPAD Scheduling
+          Movable Targets Scheduling
         </button>
         <button
           onClick={(e) => {
