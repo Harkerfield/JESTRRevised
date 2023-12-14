@@ -134,6 +134,14 @@
         "__metadata": {
           "type": "SP.Field"
         },
+        "Title": "serialNumber",
+        "FieldTypeKind": 2,
+        "StaticName": "serialNumber"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
         "Title": "systemType",
         "FieldTypeKind": 2,
         "StaticName": "systemType"
@@ -145,6 +153,70 @@
         "Title": "schedulableItem",
         "FieldTypeKind": 2,
         "StaticName": "schedulableItem"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "deviceType",
+        "FieldTypeKind": 2,
+        "StaticName": "deviceType"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "threat",
+        "FieldTypeKind": 2,
+        "StaticName": "threat"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "mxCondition",
+        "FieldTypeKind": 2,
+        "StaticName": "mxCondition"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "status",
+        "FieldTypeKind": 2,
+        "StaticName": "status"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "ETIC",
+        "FieldTypeKind": 2,
+        "StaticName": "ETIC"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "remarks",
+        "FieldTypeKind": 2,
+        "StaticName": "remarks"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "statusChangeDate",
+        "FieldTypeKind": 2,
+        "StaticName": "statusChangeDate"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "operationalStatus",
+        "FieldTypeKind": 2,
+        "StaticName": "operationalStatus"
       }
     ],
     "scheduleList": [
@@ -246,13 +318,44 @@
       }
     ]
   },
+  "admin": true,
   "debug": true,
-  "homeInfo": "home",
-  "emmiterSchedulingInfo": "emitter",
-  "otherSchedulingInfo": "other",
-  "viewScheduledEmittersInfo": "calendar",
-  "mapAndToolsInfo": "map",
-  "metricsInfo": "metrics",
-  "adminInfo": "admin \n info",
-  "debugInfo": "Heres the location of the source files: https://github.com/Harkerfield/JESTRRevised​"
+  "homeInfo": [
+    "Home",
+    "Welcome to the Joint Pacific Alaska Range Complex - Emitter Status and Training Request.",
+    "Please contact the 354 Range Squadron RST Shop at 377-XXXX for any issues",
+    "See you, space Cowboy"
+  ],
+  "emmiterSchedulingInfo": [
+    "Weekly Emitter Scheduling",
+    "Fill out information NLT 1200L Thursday prior to the requested week.",
+    "Amber/Red Status? Contact EW Operations Manager/GODFATHER (377-1718) for details/mission impact.",
+    "Contact EW Ops Manager/GODFATHER (377-1718) NLT 1600L day prior to training to get the latet status and discuss scenario details."
+ ],
+  "otherSchedulingInfo": [
+    "Movable Targets Request Form",
+    "Fill out information NLT 1200L Thursday prior to the requested week.",
+    "Amber/Red Status? Contact EW Operations Manager/GODFATHER (377-1718) for details/mission impact.",
+    "Contact EW Ops Manager/GODFATHER (377-1718) NLT 1600L day prior to training to get the latet status and discuss scenario details."
+
+  ],
+  "viewScheduledEmittersInfo": [
+    "Scheduled Events",
+    "See an Issue? Reach out to 354 RANS/RST"
+  ],
+  "mapAndToolsInfo": [
+    "👷 Map Area 🚧🏗️"
+  ],
+  "metricsInfo": [
+    "Metrics"
+  ],
+  "adminInfo": [
+    "Admin Section"
+  ],
+  "debugInfo": [
+    "I hope this tool is usefull...",
+    "Source files: https://github.com/Harkerfield/JESTRRevised​",
+    "J. Hartsfield, 354 RANS, the one with multiple hats and no position #...",
+    "01 July 2020 - 30 July 2024"
+  ]
 }
