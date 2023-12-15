@@ -19,7 +19,7 @@ function MovableThreatScheduling() {
   const [selectedWeek, setSelectedWeek] = useState([]);
   const [userData, setUserData] = useState([]);
 
-  const { data, loading, error } = useListGetItems(config.lists.threatList);
+  const { data, loading, error } = useListGetItems(config.lists.movableThreatList);
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSelectedRowsChange = (selectedRows) => {
