@@ -10,9 +10,9 @@ import ModalChildren from "../../Components/Modal/ModalChildren.js";
 import { useListCreateItem } from "../../hooks/useListCreateItem.js";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
-import "./OtherScheduling.css";
+import "./MovableThreatScheduling.css";
 
-function OtherScheduling() {
+function MovableThreatScheduling() {
   const config = useContext(ConfigContext);
   const [selectedThreatData, setselectedThreatData] = useState([]);
   const [userTimes, setUserTimes] = useState([]);
@@ -384,4 +384,4 @@ function OtherScheduling() {
       );
 }
 
-      export default OtherScheduling;
+      export default MovableThreatScheduling;

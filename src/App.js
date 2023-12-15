@@ -3,7 +3,7 @@ import CollapsibleHeader from "./Components/HeaderHorizontal/HeaderHorizontal.js
 
 import Home from "./Pages/Home/Home.js";
 import EmitterScheduling from "./Pages/EmitterScheduling/EmitterScheduling.js";
-import OtherScheduling from "./Pages/OtherScheduling/OtherScheduling.js";
+import MovableThreatScheduling from "./Pages/MovableThreatScheduling/MovableThreatScheduling.js";
 import ScheduledEmitters from "./Pages/ScheduledEmitters/ScheduledEmitters.js";
 import MapTools from "./Pages/MapTools/MapTools.js";
 import Metrics from "./Pages/Metrics/Metrics.js";
@@ -52,9 +52,9 @@ const App = () => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            setActiveSection("otherScheduling");
+            setActiveSection("movableThreatScheduling");
           }}
-          disabled={activeSection === "otherScheduling" ? true : false}
+          disabled={activeSection === "movableThreatScheduling" ? true : false}
         >
           Movable Targets Scheduling
         </button>
@@ -119,9 +119,9 @@ const App = () => {
           <EmitterScheduling />
         </div>
       )}
-      {activeSection === "otherScheduling" && (
+      {activeSection === "movableThreatScheduling" && (
         <div>
-          <OtherScheduling />
+          <MovableThreatScheduling />
         </div>
       )}
       {activeSection === "scheduledEmitters" && (
