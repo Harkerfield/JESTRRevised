@@ -150,39 +150,39 @@ function EmitterScheduling() {
       [
         {
           id: 1,
-          Title: "CERU5",
-          serialNumber: "CERU5(SN13)",
-          systemType: "UMTE",
+          Title: "ERROR",
+          serialNumber: "ERROR(SN13)",
+          systemType: "Unmanned",
           schedulableItem: "Yes",
           location: "Zulu-3 / OP 28.5",
-          range: "R2205",
+          range: "locError",
           pointLocationLat: "63.834875",
           pointLocationLon: "-145.820617",
           deviceType: "TK1",
           threat: "SA6",
           mxCondition: "RED",
-          status: "A/W Helo",
+          status: "Broken",
           ETIC: "30-Sep-23",
-          remarks: "CEAR Will not power up. Intermittent Communications",
+          remarks: "error",
           statusChangeDate: "Down 15 Aug 23",
-          operationalStatus: "RED",
+          operationalStatus: "GREEN",
         },
         {
           id: 2,
-          Title: "CERU99",
-          serialNumber: "CERU99(SN13)",
+          Title: "threat99",
+          serialNumber: "threat99(SN13)",
           systemType: "UMTdsaE",
           schedulableItem: "Yes",
           location: "Zuludsa-3 / OP 28.5",
-          range: "R2211",
+          range: "loc2Error",
           pointLocationLat: "63.834875",
           pointLocationLon: "-145.820617",
           deviceType: "TKdsa1",
           threat: "SdsaA6",
           mxCondition: "RED",
-          status: "A/W dsadsaHelo",
+          status: "",
           ETIC: "30-Sep-23",
-          remarks: "CEAdsadsaR Will not power up. Intermittent Communications",
+          remarks: "stuff",
           statusChangeDate: "Down 15 Aug 23",
           operationalStatus: "RED",
         },
@@ -363,12 +363,12 @@ function EmitterScheduling() {
       })}
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "48vw" }}>
+        <div style={{ width: "48vw", overflowY:"auto", overflowX:"auto"}}>
           {loading ? (
             <>Loading...</>
           ) : error ? (
             <>
-              Error! {error}
+              {/* Error! {error} */}
               <ThreatList
                 columns={columns}
                 data={backupData}
@@ -385,7 +385,8 @@ function EmitterScheduling() {
             </>
           )}
         </div>
-        <div style={{ width: "48vw" }}>
+        {/* Map */}
+        <div style={{ width: "48vw"  }}>
           <MapComponent points={selectedThreatData} />
         </div>
       </div>
@@ -410,6 +411,7 @@ function EmitterScheduling() {
             height: "50px",
             backgroundColor: "yellow",
             color: "black",
+            margin: "10px",
           }}
         >
           Please select atleast one threat to schedule

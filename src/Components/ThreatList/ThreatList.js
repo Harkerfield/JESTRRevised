@@ -203,7 +203,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
               setPageSize(Number(e.target.value));
             }}
           >
-            {[8, 10, 20, 30, 40, 50].map((pageSize) => (
+            {[5, 10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize} per page
               </option>

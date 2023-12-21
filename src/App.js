@@ -32,6 +32,7 @@ const App = () => {
     <div className="container af-background-blue">
       <CollapsibleHeader>
         <button
+          className="navButton"
           onClick={(e) => {
             e.preventDefault();
             setActiveSection(null);
@@ -41,6 +42,7 @@ const App = () => {
           Home
         </button>
         <button
+          className="navButton"
           onClick={(e) => {
             e.preventDefault();
             setActiveSection("emitterScheduling");
@@ -50,6 +52,7 @@ const App = () => {
           Emitter Scheduling
         </button>
         <button
+          className="navButton"
           onClick={(e) => {
             e.preventDefault();
             setActiveSection("movableThreatScheduling");
@@ -59,15 +62,17 @@ const App = () => {
           Movable Targets Scheduling
         </button>
         <button
+          className="navButton"
           onClick={(e) => {
             e.preventDefault();
             setActiveSection("scheduledEmitters");
           }}
           disabled={activeSection === "scheduledEmitters" ? true : false}
         >
-          View Scheduled Emitters Calendar
+          View Calendar Schedule
         </button>
         <button
+          className="navButton"
           onClick={(e) => {
             e.preventDefault();
             setActiveSection("mapTools");
@@ -77,6 +82,7 @@ const App = () => {
           Map and Tools
         </button>
         <button
+          className="navButton"
           onClick={(e) => {
             e.preventDefault();
             setActiveSection("metrics");
@@ -87,6 +93,8 @@ const App = () => {
         </button>
         {(settings.admin === true || settings.admin === true) && (
           <button
+          
+          className="navButton"
             onClick={(e) => {
               e.preventDefault();
               setActiveSection("admin");
@@ -98,6 +106,8 @@ const App = () => {
         )}
         {settings.debug === true && (
           <button
+          
+          className="navButton"
             onClick={(e) => {
               e.preventDefault();
               setActiveSection("debug");

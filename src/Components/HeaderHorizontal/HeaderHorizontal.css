@@ -3,8 +3,9 @@
 .menu-bar {
   background-color: #333;
   color: #fff;
-  height: 60px;
+
   display: flex;
+  padding: 5px;
   margin-bottom: 5px;
   justify-content: space-around;
   align-items: center;

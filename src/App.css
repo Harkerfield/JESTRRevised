@@ -3,6 +3,22 @@
   width: 100%;
 }
 
+
+header {
+  background-color: #f5f5f5;
+  padding: 10px;
+  text-align: center;
+}
+
+.navButton {
+  height: 100%;
+  margin: 0 10px;
+  padding: 5px 15px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .PageFormat {
   margin-left: 10px;
   background-color: rgba(255, 255, 255, 0.9);
@@ -17,6 +33,7 @@
   font-size: x-large;
   text-decoration-line: underline;
 }
+
 .InfoContent {
   text-align: center;
   padding: 10px;
@@ -50,6 +67,7 @@
 #titlerow {
   display: none !important;
 }
+
 /* .ms-pub-contentLayout{
   padding: 0 !important;
   margin: 0 !important;
