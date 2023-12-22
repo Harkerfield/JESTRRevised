@@ -76,8 +76,6 @@ const CalendarComponent = ({ data, loading, error }) => {
     [],
   );
 
-  
-
   const handleSelectEvent = (event) => {
     if (config.admin) {
       // Logic for admins to edit/delete time
@@ -165,7 +163,7 @@ const CalendarComponent = ({ data, loading, error }) => {
         events={filteredData}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: '85vh' }}
+        style={{ height: "85vh" }}
         onSelectEvent={(event) => console.log(event)}
         eventPropGetter={eventStyleGetter}
         components={{

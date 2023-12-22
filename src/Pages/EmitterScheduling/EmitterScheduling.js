@@ -311,7 +311,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -348,32 +348,66 @@ function EmitterScheduling() {
   const [timeErrors, setTimeErrors] = useState(true);
 
   return (
-
     <div className="PageFormat">
-      {config.emmiterSchedulingInfo.map((item, index) => {
+      <div>
+        <div key="info">
+          {config.emmiterSchedulingInfo.map((item, index) => {
+            return (
+              <>
+                {index === 0 ? (
+                  <div className="InfoPanel">{item}</div>
+                ) : (
+                  <div className="InfoContent">{item}</div>
+                )}
+              </>
+            );
+          })}
+        </div>
 
-        return (
-          <>
-            {index === 0 ?
-              <div className="InfoPanel">{item}</div>
-              :
-              <div className="InfoContent">{item}</div>
-            }</>
-        )
-      })}
+        {/* Map */}
+        <div key={"map"}>
+          <MapComponent points={selectedThreatData} />
+        </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "48vw", overflowY:"auto", overflowX:"auto"}}>
+        <div key="submitButton">
+          {selectedThreatData.length > 0 ? (
+            <button
+              onClick={openSchedulingModel}
+              style={{
+                width: "100%",
+                height: "50px",
+                backgroundColor: "green",
+                color: "white",
+              }}
+            >
+              Click here to schedule
+            </button>
+          ) : (
+            <button
+              onClick={(e) => e.preventDefault}
+              style={{
+                width: "100%",
+                height: "50px",
+                backgroundColor: "yellow",
+                color: "black",
+              }}
+            >
+              Please select at least one threat to schedule
+            </button>
+          )}
+        </div>
+
+        <div key="table" style={{ overflowY: "auto", overflowX: "auto" }}>
           {loading ? (
             <>Loading...</>
           ) : error ? (
             <>
-              {/* Error! {error} */}
               <ThreatList
                 columns={columns}
                 data={backupData}
                 onSelectedRowsChange={handleSelectedRowsChange}
               />
+              Error! {error}
             </>
           ) : (
             <>
@@ -385,38 +419,7 @@ function EmitterScheduling() {
             </>
           )}
         </div>
-        {/* Map */}
-        <div style={{ width: "48vw"  }}>
-          <MapComponent points={selectedThreatData} />
-        </div>
       </div>
-
-      {selectedThreatData.length > 0 ? (
-        <button
-          onClick={openSchedulingModel}
-          style={{
-            width: "100%",
-            height: "50px",
-            backgroundColor: "green",
-            color: "white",
-          }}
-        >
-          Click here to schedule
-        </button>
-      ) : (
-        <button
-          onClick={(e) => e.preventDefault}
-          style={{
-            width: "100%",
-            height: "50px",
-            backgroundColor: "yellow",
-            color: "black",
-            margin: "10px",
-          }}
-        >
-          Please select atleast one threat to schedule
-        </button>
-      )}
 
       {isModalChildrenOpen && (
         <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>

@@ -19,7 +19,9 @@ function MovableThreatScheduling() {
   const [selectedWeek, setSelectedWeek] = useState([]);
   const [userData, setUserData] = useState([]);
 
-  const { data, loading, error } = useListGetItems(config.lists.movableThreatList);
+  const { data, loading, error } = useListGetItems(
+    config.lists.movableThreatList,
+  );
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSelectedRowsChange = (selectedRows) => {
@@ -184,14 +186,6 @@ function MovableThreatScheduling() {
 
   const columns = useMemo(
     () => [
-      // { Header: "Title", accessor: "Title", Filter: ColumnFilter, style: { textAlign: 'center' }},
-      // {
-      //   Header: "Serial Number",
-      //   accessor: "serialNumber",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' }
-      // },
-
       {
         Header: "System Type/Threat",
         accessor: (d) => `${d.systemType}/${d.threat}`,
@@ -199,7 +193,6 @@ function MovableThreatScheduling() {
         style: { textAlign: "center" },
         Cell: ({ value }) => <>{value}</>,
       },
-
       {
         Header: "Remarks",
         accessor: (d) => {
@@ -214,8 +207,6 @@ function MovableThreatScheduling() {
         style: { textAlign: "center" },
         Cell: ({ value }) => <>{value}</>,
       },
-
-
       {
         Header: "Operational Status",
         accessor: "operationalStatus",
@@ -229,7 +220,7 @@ function MovableThreatScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -243,9 +234,6 @@ function MovableThreatScheduling() {
     ],
     [],
   );
-
-  // const { data, loading, error } = useListGetItems(config.lists.threatList);
-  //data.filter(item=> item.schedulableItem === "Yes" && (item.operationalStatus === "GREEN" || item.operationalStatus === "YELLOW" || item.operationalStatus === "RED" || item.operationalStatus === "AMBER") )
 
   useEffect(() => {
     if (data) {
@@ -267,121 +255,117 @@ function MovableThreatScheduling() {
 
   return (
     <div className="PageFormat">
-
-        {config.otherSchedulingInfo.map((item, index) => {
-
-          return (
-            <>
-              {index === 0 ?
-                <div className="InfoPanel">{item}</div>
-                :
-                <div className="InfoContent">{item}</div>
-              }</>
-          )
-        })}
-
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ width: "98VW" }}>
-            {loading ? (
-              <>Loading...</>
-            ) : error ? (
-              <>
-                Error! {error}
-                <ThreatList
-                  columns={columns}
-                  data={backupData}
-                  onSelectedRowsChange={handleSelectedRowsChange}
-                />
-              </>
+      {config.otherSchedulingInfo.map((item, index) => {
+        return (
+          <>
+            {index === 0 ? (
+              <div className="InfoPanel">{item}</div>
             ) : (
-              <>
-                <ThreatList
-                  columns={columns}
-                  data={filteredData}
-                  onSelectedRowsChange={handleSelectedRowsChange}
-                />
-              </>
+              <div className="InfoContent">{item}</div>
             )}
-          </div>
-          {/* <div style={{ width: "48vw" }}>
-          <MapComponent points={selectedThreatData} />
-        </div> */}
+          </>
+        );
+      })}
+
+      {selectedThreatData.length > 0 ? (
+        <button
+          onClick={openSchedulingModel}
+          style={{
+            width: "100%",
+            height: "50px",
+            backgroundColor: "green",
+            color: "white",
+          }}
+        >
+          Click here to schedule
+        </button>
+      ) : (
+        <button
+          onClick={(e) => e.preventDefault}
+          style={{
+            width: "100%",
+            height: "50px",
+            backgroundColor: "yellow",
+            color: "black",
+          }}
+        >
+          Please select at least one threat to schedule
+        </button>
+      )}
+
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "98VW" }}>
+          {loading ? (
+            <>Loading...</>
+          ) : error ? (
+            <>
+              <ThreatList
+                columns={columns}
+                data={backupData}
+                onSelectedRowsChange={handleSelectedRowsChange}
+              />
+              Error! {error}
+            </>
+          ) : (
+            <>
+              <ThreatList
+                columns={columns}
+                data={filteredData}
+                onSelectedRowsChange={handleSelectedRowsChange}
+              />
+            </>
+          )}
         </div>
-
-        {selectedThreatData.length > 0 ? (
-          <button
-            onClick={openSchedulingModel}
-            style={{
-              width: "100%",
-              height: "50px",
-              backgroundColor: "green",
-              color: "white",
-            }}
-          >
-            Click here to schedule
-          </button>
-        ) : (
-          <button
-            onClick={(e) => e.preventDefault}
-            style={{
-              width: "100%",
-              height: "50px",
-              backgroundColor: "yellow",
-              color: "black",
-            }}
-          >
-            Please select atleast one threat to schedule
-          </button>
-        )}
-
-        {isModalChildrenOpen && (
-          <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
-            <div>{/* {error handling} */}</div>
-
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <FormUser
-                onFormSubmit={handleUserDataChange}
-                onErrors={(e) => {
-                  setFormIsValid(!e);
-                }}
-              />
-              <FormWeekSelector
-                onWeekSelected={handleSelectedDays}
-                onErrors={(e) => {
-                  setWeekErrors(!e);
-                }}
-              />
-              <FormTimeSelector
-                onTimeIntervalsChange={handleTimeIntervalsChange}
-                onErrors={(e) => {
-                  setTimeErrors(!e);
-                }}
-              />
-            </div>
-            <div style={{ height: "100%" }}>
-              <FormSchedulerTable
-                selectedThreatData={selectedThreatData}
-                selectedWeek={selectedWeek}
-                userTimes={userTimes}
-                onSaveData={handleSaveData}
-                formIsValid={formIsValid && weekErrors && timeErrors} //truthie / falsie
-              />
-            </div>
-            {isModalFormOpen && (
-              <FormModalOtherSubmit
-                data={{
-                  rowData: rowData,
-                  userTimes: userTimes,
-                  userData: userData,
-                }}
-                onClose={handleCloseModalForm}
-                onPush={handlePushData}
-              />
-            )}
-          </ModalChildren>
-        )}
       </div>
-      );
+
+      {isModalChildrenOpen && (
+        <ModalChildren onClose={(e) => handleCloseModalChildren(e)}>
+          <div>{/* {error handling} */}</div>
+
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <FormUser
+              onFormSubmit={handleUserDataChange}
+              onErrors={(e) => {
+                setFormIsValid(!e);
+              }}
+            />
+            <FormWeekSelector
+              onWeekSelected={handleSelectedDays}
+              onErrors={(e) => {
+                setWeekErrors(!e);
+              }}
+            />
+            <FormTimeSelector
+              onTimeIntervalsChange={handleTimeIntervalsChange}
+              onErrors={(e) => {
+                setTimeErrors(!e);
+              }}
+            />
+          </div>
+          <div style={{ height: "100%" }}>
+            <FormSchedulerTable
+              selectedThreatData={selectedThreatData}
+              selectedWeek={selectedWeek}
+              userTimes={userTimes}
+              onSaveData={handleSaveData}
+              formIsValid={formIsValid && weekErrors && timeErrors} //truthie / falsie
+            />
+          </div>
+          {isModalFormOpen && (
+            <FormModalOtherSubmit
+              data={{
+                rowData: rowData,
+                userTimes: userTimes,
+                userData: userData,
+              }}
+              onClose={handleCloseModalForm}
+              onPush={handlePushData}
+            />
+          )}
+        </ModalChildren>
+      )}
+    </div>
+  );
 }
 
-      export default MovableThreatScheduling;
+export default MovableThreatScheduling;

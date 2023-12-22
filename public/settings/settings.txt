@@ -6,6 +6,9 @@
     "otherThreatList": "otherThreatList",
     "scheduleList": "scheduleList"
   },
+  "kml":{
+    "airspace": "/kml/Airspace.kml"
+  },
   "listColumn": {
     "threatList": [
       {

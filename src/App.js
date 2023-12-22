@@ -93,8 +93,7 @@ const App = () => {
         </button>
         {(settings.admin === true || settings.admin === true) && (
           <button
-          
-          className="navButton"
+            className="navButton"
             onClick={(e) => {
               e.preventDefault();
               setActiveSection("admin");
@@ -106,8 +105,7 @@ const App = () => {
         )}
         {settings.debug === true && (
           <button
-          
-          className="navButton"
+            className="navButton"
             onClick={(e) => {
               e.preventDefault();
               setActiveSection("debug");

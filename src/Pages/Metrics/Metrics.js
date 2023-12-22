@@ -145,19 +145,17 @@ const Metrics = () => {
 
   return (
     <div className="PageFormat">
-
       {config.metricsInfo.map((item, index) => {
-
         return (
           <>
-            {index === 0 ?
+            {index === 0 ? (
               <div className="InfoPanel">{item}</div>
-              :
+            ) : (
               <div className="InfoContent">{item}</div>
-            }</>
-        )
+            )}
+          </>
+        );
       })}
-
 
       <div style={{ width: "48vw" }}>
         {loading ? (

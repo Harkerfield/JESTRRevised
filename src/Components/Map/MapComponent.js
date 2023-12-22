@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { Map, View } from "ol";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer";
 import { XYZ, Vector as VectorSource } from "ol/source";
@@ -7,8 +7,8 @@ import { Point } from "ol/geom";
 import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import { Style, Text, Fill, Stroke, RegularShape } from "ol/style";
-import { extend } from "ol/extent";
 import { defaults as defaultInteractions } from "ol/interaction"; // Import default interactions
+import { ConfigContext } from "../../Provider/Context.js";
 
 import "ol/ol.css";
 import "./MapComponent.css";
@@ -36,7 +36,10 @@ const labelStyle = (feature) => {
 };
 
 const MapComponent = ({ points }) => {
+  const config = useContext(ConfigContext);
+
   points = points ? points : [];
+
   useEffect(() => {
     const worldImageryMap = new TileLayer({
       source: new XYZ({
@@ -45,18 +48,17 @@ const MapComponent = ({ points }) => {
       }),
     });
 
-    // const airspaceLayer = new VectorLayer({
-    //   name: 'airspace',
-    //   source: new VectorSource({
-    //     url: '  `${config.apiBaseUrl}CommonMapFiles/Airspace.kml',
-    //     format: new KML(),
-    //   }),
-    // });
+    const airspaceLayer = new VectorLayer({
+      name: "airspace",
+      source: new VectorSource({
+        url: `${config.kml.airspace}`,
+        format: new KML(),
+      }),
+    });
 
     const map = new Map({
-      // layers: [worldImageryMap, airspaceLayer], // Initialized with both layers
+      layers: [worldImageryMap, airspaceLayer], // Initialize with both layers
       interactions: defaultInteractions({ mouseWheelZoom: false }),
-      layers: [worldImageryMap], // Initialized with both layers
       target: "map",
       view: new View({
         center: fromLonLat([-146.44166473513687, 64.31714411488758]),
@@ -101,6 +103,7 @@ const MapComponent = ({ points }) => {
           [570, 500],
         );
     }
+
     return () => {
       // Cleanup on component unmount
       map.setTarget(null);
@@ -112,7 +115,7 @@ const MapComponent = ({ points }) => {
       <div
         id="map"
         className="map"
-        style={{ height: "80vh", minWidth: "50%" }}
+        style={{ height: "60vh", minWidth: "50%" }}
       ></div>
     </>
   );

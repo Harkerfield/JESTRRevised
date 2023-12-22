@@ -12,17 +12,16 @@ function ScheduledEmitters() {
 
   return (
     <div className="PageFormat">
-      
       {config.viewScheduledEmittersInfo.map((item, index) => {
-
         return (
           <>
-            {index === 0 ?
+            {index === 0 ? (
               <div className="InfoPanel">{item}</div>
-              :
+            ) : (
               <div className="InfoContent">{item}</div>
-            }</>
-        )
+            )}
+          </>
+        );
       })}
 
       <Calendar data={data} loading={loading} error={error} />

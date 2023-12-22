@@ -170,7 +170,7 @@ function MapTools() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -201,7 +201,7 @@ function MapTools() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -221,15 +221,15 @@ function MapTools() {
   return (
     <div className="PageFormat">
       {config.mapAndToolsInfo.map((item, index) => {
-
         return (
           <>
-            {index === 0 ?
+            {index === 0 ? (
               <div className="InfoPanel">{item}</div>
-              :
+            ) : (
               <div className="InfoContent">{item}</div>
-            }</>
-        )
+            )}
+          </>
+        );
       })}
 
       <div style={{ width: "95vw" }}>
