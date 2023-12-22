@@ -2,6 +2,7 @@ import React, { useMemo, useContext, useEffect, useState } from "react";
 import { useTable } from "react-table";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
+import scheduleTester from "../../testerData/scheduleTester.json"
 
 import { ConfigContext } from "../../Provider/Context.js";
 
@@ -33,25 +34,31 @@ const Metrics = () => {
     );
   }
 
+
+
   const backupData = useMemo(
-    () => [
-      {
-        equipmentRequested: "2312",
-        typeOfThreat: "1",
-        range: "fds",
-        location: "123",
-        requestStatus: "Approved",
-        notes: "dsa",
-        pocName: "dsa",
-        pocNumber: "dsa",
-        pocEmail: "dsa",
-        pocSquadron: "123",
-        start: "dsa",
-        end: "dsa",
-      },
-    ],
+    () => 
+    scheduleTester,
     [],
   );
+  
+  useEffect(() => {
+    if (data) {
+      // const filtered = data;
+      //TODO create filtered data
+      if (data.length > 0) {
+        setFilteredData(
+          data
+        );
+      } else if (error) {
+        setFilteredData(
+          backupData
+        );
+      }
+    }
+  }, [backupData, data, error]);
+
+
 
   const columns = useMemo(
     () => [
