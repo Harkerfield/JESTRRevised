@@ -12,6 +12,8 @@ import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 import "./MovableThreatScheduling.css";
 
+import movableTester from "../../testerData/movableTeter.json"
+
 function MovableThreatScheduling() {
   const config = useContext(ConfigContext);
   const [selectedThreatData, setselectedThreatData] = useState([]);
@@ -149,38 +151,8 @@ function MovableThreatScheduling() {
 
   const backupData = useMemo(
     () =>
-      [
-        {
-          id: 1,
-          Title: "ERROR",
-          serialNumber: "Elite1",
-          systemType: "Elite LCTE",
-          schedulableItem: "Yes",
-          deviceType: "X-Band",
-          threat: "SAX",
-          mxCondition: "GREEN",
-          status: "",
-          ETIC: "",
-          remarks: "",
-          statusChangeDate: "Down 15 Aug 23",
-          operationalStatus: "GREEN",
-        },
-        {
-          id: 2,
-          Title: "threat99",
-          serialNumber: "threat99(SN13)",
-          systemType: "UMTdsaE",
-          schedulableItem: "Yes",
-          deviceType: "TKdsa1",
-          threat: "SdsaA6",
-          mxCondition: "RED",
-          status: "",
-          ETIC: "30-Sep-23",
-          remarks: "stuff",
-          statusChangeDate: "Down 15 Aug 23",
-          operationalStatus: "RED",
-        },
-      ].filter((data) => data.schedulableItem === "Yes"),
+ 
+   movableTester.filter((data) => data.schedulableItem === "Yes"),
     [],
   );
 

@@ -83,7 +83,7 @@ function FormWeekSelector({ onWeekSelected, onErrors }) {
       <span>
         {new Date(currentYear, currentMonth).toLocaleString("default", {
           month: "long",
-        })}{" "}
+        })}
         {currentYear}
       </span>
       <button onClick={(e) => changeMonth(e, 1)}>Next Month</button>

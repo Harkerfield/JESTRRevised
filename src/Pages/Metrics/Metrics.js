@@ -157,7 +157,7 @@ const Metrics = () => {
         );
       })}
 
-      <div style={{ width: "48vw" }}>
+      <div>
         {loading ? (
           <>Loading...</>
         ) : error ? (
@@ -184,14 +184,14 @@ const Metrics = () => {
           <strong>Total Scheduled:</strong> {filteredData.length}
         </div>
         <div className="stats-item">
-          <strong>Approved:</strong>{" "}
+          <strong>Approved:</strong>
           {
             filteredData.filter((item) => item.requestStatus === "Approved")
               .length
           }
         </div>
         <div className="stats-item">
-          <strong>Rejected:</strong>{" "}
+          <strong>Rejected:</strong>
           {
             filteredData.filter((item) => item.requestStatus === "Rejected")
               .length
@@ -199,15 +199,15 @@ const Metrics = () => {
         </div>
 
         <div className="stats-item">
-          <strong>Unique Equip/Threat Scheduled:</strong>{" "}
+          <strong>Unique Equip/Threat Scheduled:</strong>
           {new Set(filteredData.map((item) => item.equipmentRequested)).size}
         </div>
         <div className="stats-item">
-          <strong>Unique Squadrons Scheduled:</strong>{" "}
+          <strong>Unique Squadrons Scheduled:</strong>
           {new Set(filteredData.map((item) => item.pocSquadron)).size}
         </div>
         <div className="stats-item">
-          <strong>Unique Locations Scheduled:</strong>{" "}
+          <strong>Unique Locations Scheduled:</strong>
           {new Set(filteredData.map((item) => item.location)).size}
         </div>
       </div>

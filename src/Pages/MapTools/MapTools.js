@@ -232,9 +232,9 @@ function MapTools() {
         );
       })}
 
-      <div style={{ width: "95vw" }}>
+      <div>
         <MapComponent points={selectedRowsInParent} />
-
+        <div style={{overflowX: "auto", maxWidth: "100vw"}}>
         {loading ? (
           <>Loading...</>
         ) : error ? (
@@ -255,6 +255,7 @@ function MapTools() {
             />
           </>
         )}
+        </div>
       </div>
     </div>
   );

@@ -129,8 +129,8 @@ const FormModalOtherSubmit = ({ data, onClose, onPush }) => {
                 {item.pocName} | {item.pocNumber} | {item.pocSquadron}
               </div>
               <div>
-                {item.equipmentRequested} | {startDate.toDateString("en-US")} |{" "}
-                {startDate.toLocaleTimeString("en-US", options)} -{" "}
+                {item.equipmentRequested} | {startDate.toDateString("en-US")} |
+                {startDate.toLocaleTimeString("en-US", options)} -
                 {endDate.toLocaleTimeString("en-US", options)}
               </div>
               <br />

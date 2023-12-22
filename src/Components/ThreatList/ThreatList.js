@@ -29,6 +29,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     canNextPage,
     setPageSize,
     pageOptions,
+    toggleAllRowsSelected, // Get this method from useTable
   } = useTable(
     { columns, data },
     useFilters,
@@ -73,22 +74,12 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     }
   }, [selectedRowIds, rows]);
 
+
   const toggleAllRows = () => {
-    const isSelectedAll =
-      selectedRows.length === rows.length &&
-      rows.every((row) => selectedRowIds[row.id]);
-
-    if (isSelectedAll) {
-      selectedRows.forEach((row) => {
-        row.toggleRowSelected(false);
-      });
-    } else {
-      rows.forEach((row) => {
-        row.toggleRowSelected(true);
-      });
-    }
+    toggleAllRowsSelected(
+      !(rows.length === Object.keys(selectedRowIds).length)
+    );
   };
-
   const toggleRow = (row) => {
     row.toggleRowSelected(!selectedRowIds[row.id]);
   };
@@ -166,28 +157,28 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
         <div>
           <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
             {"<<"}
-          </button>{" "}
+          </button>
           <button onClick={previousPage} disabled={!canPreviousPage}>
             {"<"}
-          </button>{" "}
+          </button>
           <button onClick={nextPage} disabled={!canNextPage}>
             {">"}
-          </button>{" "}
+          </button>
           <button
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
           >
             {">>"}
-          </button>{" "}
+          </button>
         </div>
         <div>
-          Page{" "}
+          Page
           <strong>
             {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
+          </strong>
         </div>
         <div>
-          | Go to page:{" "}
+          | Go to page:
           <input
             type="number"
             defaultValue={pageIndex + 1}
@@ -196,7 +187,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
               gotoPage(page);
             }}
             style={{ width: "50px" }}
-          />{" "}
+          />
           <select
             value={pageSize}
             onChange={(e) => {
