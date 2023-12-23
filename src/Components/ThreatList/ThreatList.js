@@ -74,10 +74,9 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     }
   }, [selectedRowIds, rows]);
 
-
   const toggleAllRows = () => {
     toggleAllRowsSelected(
-      !(rows.length === Object.keys(selectedRowIds).length)
+      !(rows.length === Object.keys(selectedRowIds).length),
     );
   };
   const toggleRow = (row) => {

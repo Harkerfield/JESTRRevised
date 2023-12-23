@@ -2,7 +2,7 @@ import React, { useMemo, useContext, useEffect, useState } from "react";
 import { useTable } from "react-table";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
-import scheduleTester from "../../testerData/scheduleTester.json"
+import scheduleTester from "../../testerData/scheduleTester.json";
 
 import { ConfigContext } from "../../Provider/Context.js";
 
@@ -13,6 +13,17 @@ const Metrics = () => {
 
   const { data, loading, error } = useListGetItems(config.lists.scheduleList);
   const [filteredData, setFilteredData] = useState([]);
+  const backupData = useMemo(() => scheduleTester, []);
+
+  useEffect(() => {
+    if (data) {
+      if (data.length > 0) {
+        setFilteredData(data);
+      } else if (error) {
+        setFilteredData(backupData);
+      }
+    }
+  }, [backupData, data, error]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     console.log(selectedRows);
@@ -33,32 +44,6 @@ const Metrics = () => {
       />
     );
   }
-
-
-
-  const backupData = useMemo(
-    () => 
-    scheduleTester,
-    [],
-  );
-  
-  useEffect(() => {
-    if (data) {
-      // const filtered = data;
-      //TODO create filtered data
-      if (data.length > 0) {
-        setFilteredData(
-          data
-        );
-      } else if (error) {
-        setFilteredData(
-          backupData
-        );
-      }
-    }
-  }, [backupData, data, error]);
-
-
 
   const columns = useMemo(
     () => [
@@ -164,27 +149,12 @@ const Metrics = () => {
         );
       })}
 
-      <div>
-        {loading ? (
-          <>Loading...</>
-        ) : error ? (
-          <>
-            Error! {error}
-            <ThreatList
-              columns={columns}
-              data={filteredData}
-              onSelectedRowsChange={handleSelectedRowsChange}
-            />
-          </>
-        ) : (
-          <>
-            <ThreatList
-              columns={columns}
-              data={filteredData}
-              onSelectedRowsChange={handleSelectedRowsChange}
-            />
-          </>
-        )}
+      <div style={{ overflowY: "auto", overflowX: "auto" }}>
+        <ThreatList
+          columns={columns}
+          data={filteredData}
+          onSelectedRowsChange={handleSelectedRowsChange}
+        />
       </div>
       <div className="stats">
         <div className="stats-item">

@@ -12,7 +12,7 @@ import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 import "./MovableThreatScheduling.css";
 
-import movableTester from "../../testerData/movableTeter.json"
+import movableTester from "../../testerData/movableTeter.json";
 
 function MovableThreatScheduling() {
   const config = useContext(ConfigContext);
@@ -25,6 +25,17 @@ function MovableThreatScheduling() {
     config.lists.movableThreatList,
   );
   const [filteredData, setFilteredData] = useState([]);
+  const backupData = useMemo(() => movableTester, []);
+
+  useEffect(() => {
+    if (data) {
+      if (data.length > 0) {
+        setFilteredData(data);
+      } else if (error) {
+        setFilteredData(backupData);
+      }
+    }
+  }, [backupData, data, error]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     setselectedThreatData(selectedRows);
@@ -149,13 +160,6 @@ function MovableThreatScheduling() {
     return `${direction}${degrees}° ${minutes}'`;
   };
 
-  const backupData = useMemo(
-    () =>
- 
-   movableTester.filter((data) => data.schedulableItem === "Yes"),
-    [],
-  );
-
   const columns = useMemo(
     () => [
       {
@@ -266,28 +270,11 @@ function MovableThreatScheduling() {
       )}
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "98VW" }}>
-          {loading ? (
-            <>Loading...</>
-          ) : error ? (
-            <>
-              <ThreatList
-                columns={columns}
-                data={backupData}
-                onSelectedRowsChange={handleSelectedRowsChange}
-              />
-              Error! {error}
-            </>
-          ) : (
-            <>
-              <ThreatList
-                columns={columns}
-                data={filteredData}
-                onSelectedRowsChange={handleSelectedRowsChange}
-              />
-            </>
-          )}
-        </div>
+        <ThreatList
+          columns={columns}
+          data={backupData}
+          onSelectedRowsChange={handleSelectedRowsChange}
+        />
       </div>
 
       {isModalChildrenOpen && (

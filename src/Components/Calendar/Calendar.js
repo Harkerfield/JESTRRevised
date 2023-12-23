@@ -10,8 +10,6 @@ const CalendarComponent = ({ data, loading, error }) => {
   const config = useContext(ConfigContext);
   const [filteredData, setFilteredData] = useState([]);
 
-
-
   const handleSelectEvent = (event) => {
     if (config.admin) {
       // Logic for admins to edit/delete time
@@ -47,9 +45,6 @@ const CalendarComponent = ({ data, loading, error }) => {
 
   useEffect(() => {
     if (data) {
-      // const filtered = data;
-      //TODO create filtered data
-
       setFilteredData(
         data.map((event) => ({
           ...event,
@@ -57,7 +52,6 @@ const CalendarComponent = ({ data, loading, error }) => {
           end: convertToDateObject(event.end),
         })),
       );
-
     }
   }, [, data, error]);
 

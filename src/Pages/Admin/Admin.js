@@ -1,8 +1,10 @@
-import React, { useState, useMemo, useContext } from "react";
+import React, { useState, useMemo, useContext, useEffect } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
 
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
+
+import scheduleTester from "../../testerData/threatsTester.json";
 
 function Admin() {
   const config = useContext(ConfigContext);
@@ -73,52 +75,23 @@ function Admin() {
     return `${direction}${degrees}° ${minutes}'`;
   };
 
+  const { data, loading, error } = useListGetItems(config.lists.threatList);
+  const [filteredData, setFilteredData] = useState([]);
+
   const backupData = useMemo(
-    () =>
-      [
-        {
-          id: 1,
-          Title: "ERROR",
-          serialNumber: "ERROR(SN13)",
-          systemType: "Unmanned",
-          schedulableItem: "Yes",
-          location: "Zulu-3 / OP 28.5",
-          range: "locError",
-          pointLocationLat: "63.834875",
-          pointLocationLon: "-145.820617",
-          deviceType: "TK1",
-          threat: "SA6",
-          mxCondition: "RED",
-          status: "Broken",
-          ETIC: "30-Sep-23",
-          remarks: "error",
-          statusChangeDate: "Down 15 Aug 23",
-          operationalStatus: "RED",
-        },
-        {
-          id: 2,
-          Title: "threat99",
-          serialNumber: "threat99(SN13)",
-          systemType: "UMTdsaE",
-          schedulableItem: "Yes",
-          location: "Zuludsa-3 / OP 28.5",
-          range: "loc2Error",
-          pointLocationLat: "63.834875",
-          pointLocationLon: "-145.820617",
-          deviceType: "TKdsa1",
-          threat: "SdsaA6",
-          mxCondition: "RED",
-          status: "",
-          ETIC: "30-Sep-23",
-          remarks: "stuff",
-          statusChangeDate: "Down 15 Aug 23",
-          operationalStatus: "RED",
-        },
-      ].filter((data) => data.schedulableItem === "Yes"),
+    () => scheduleTester.filter((data) => data.schedulableItem === "Yes"),
     [],
   );
 
-  const { data, loading, error } = useListGetItems(config.lists.threatList);
+  useEffect(() => {
+    if (data) {
+      if (data.length > 0) {
+        setFilteredData(data);
+      } else if (error) {
+        setFilteredData(backupData);
+      }
+    }
+  }, [backupData, data, error]);
 
   const columns = useMemo(
     () => [
@@ -223,26 +196,11 @@ function Admin() {
           );
         })}
       </div>
-      {loading ? (
-        <>Loading...</>
-      ) : error ? (
-        <>
-          Error! {error}
-          <ThreatList
-            columns={columns}
-            data={backupData}
-            onSelectedRowsChange={handleSelectedRowsChange}
-          />
-        </>
-      ) : (
-        <>
-          <ThreatList
-            columns={columns}
-            data={data}
-            onSelectedRowsChange={handleSelectedRowsChange}
-          />
-        </>
-      )}
+      <ThreatList
+        columns={columns}
+        data={backupData}
+        onSelectedRowsChange={handleSelectedRowsChange}
+      />
     </div>
   );
 }

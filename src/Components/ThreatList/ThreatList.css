@@ -1,11 +1,12 @@
+.tableContainer {
+  overflow-x: auto; /* Enables horizontal scrolling */
+  max-width: 100%; /* Sets the maximum width to prevent overflow */
+}
 
 .tableThreatsListContainer {
   width: 100%;
   height: 100%;
   background-color: rgb(255 255 255);
-  overflow-x: auto; /* Enables horizontal scrolling */
-  max-width: 100%; /* Sets the maximum width to prevent overflow */
-
 }
 
 .pagination {

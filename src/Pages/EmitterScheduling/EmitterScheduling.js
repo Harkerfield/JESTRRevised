@@ -11,7 +11,7 @@ import { useListCreateItem } from "../../hooks/useListCreateItem.js";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 
-import scheduleTester from "../../testerData/threatsTester.json"
+import scheduleTester from "../../testerData/threatsTester.json";
 import "./EmitterScheduling.css";
 
 function EmitterScheduling() {
@@ -148,26 +148,20 @@ function EmitterScheduling() {
   };
 
   const backupData = useMemo(
-    () =>
-      scheduleTester.filter((data) => data.schedulableItem === "Yes"),
+    () => scheduleTester.filter((data) => data.schedulableItem === "Yes"),
     [],
   );
 
   useEffect(() => {
     if (data) {
-      // const filtered = data;
-      //TODO create filtered data
       if (data.length > 0) {
-        setFilteredData(
-          data
-        );
+        setFilteredData(data);
       } else if (error) {
-        setFilteredData(
-          backupData
-        );
+        setFilteredData(backupData);
       }
     }
   }, [backupData, data, error]);
+
   const columns = useMemo(
     () => [
       // { Header: "Title", accessor: "Title", Filter: ColumnFilter, style: { textAlign: 'center' }},
@@ -289,7 +283,7 @@ function EmitterScheduling() {
                 padding: "0.5rem",
                 color:
                   value.toLowerCase() === "red" ||
-                    value.toLowerCase() === "green"
+                  value.toLowerCase() === "green"
                     ? "white"
                     : "black",
               }}
@@ -328,7 +322,7 @@ function EmitterScheduling() {
   return (
     <div className="PageFormat">
       <div>
-        <div key="info">
+        <div>
           {config.emmiterSchedulingInfo.map((item, index) => {
             return (
               <>
@@ -343,7 +337,7 @@ function EmitterScheduling() {
         </div>
 
         {/* Map */}
-        <div key={"map"}>
+        <div>
           <MapComponent points={selectedThreatData} />
         </div>
 
@@ -375,27 +369,12 @@ function EmitterScheduling() {
           )}
         </div>
 
-        <div key="table" style={{ overflowY: "auto", overflowX: "auto" }}>
-          {loading ? (
-            <>Loading...</>
-          ) : error ? (
-            <>
-              <ThreatList
-                columns={columns}
-                data={backupData}
-                onSelectedRowsChange={handleSelectedRowsChange}
-              />
-              Error! {error}
-            </>
-          ) : (
-            <>
-              <ThreatList
-                columns={columns}
-                data={filteredData}
-                onSelectedRowsChange={handleSelectedRowsChange}
-              />
-            </>
-          )}
+        <div style={{ overflowY: "auto", overflowX: "auto" }}>
+          <ThreatList
+            columns={columns}
+            data={backupData}
+            onSelectedRowsChange={handleSelectedRowsChange}
+          />
         </div>
       </div>
 
