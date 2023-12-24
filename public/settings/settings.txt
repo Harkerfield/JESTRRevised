@@ -3,7 +3,7 @@
   "folderLocation": "tester",
   "lists": {
     "threatList": "threatList",
-    "otherThreatList": "otherThreatList",
+    "movableThreatList": "movableThreatList",
     "scheduleList": "scheduleList"
   },
   "kml":{
@@ -66,6 +66,14 @@
         "Title": "pointLocationLon",
         "FieldTypeKind": 2,
         "StaticName": "pointLocationLon"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "pointLocationAlt",
+        "FieldTypeKind": 2,
+        "StaticName": "pointLocationAlt"
       },
       {
         "__metadata": {
@@ -318,6 +326,14 @@
         "Title": "end",
         "FieldTypeKind": 4,
         "StaticName": "end"
+      },
+      {
+        "__metadata": {
+          "type": "SP.Field"
+        },
+        "Title": "threatId",
+        "FieldTypeKind": 2,
+        "StaticName": "threatId"
       }
     ]
   },
@@ -347,7 +363,7 @@
     "See an Issue? Reach out to 354 RANS/RST"
   ],
   "mapAndToolsInfo": [
-    "👷 Map Area 🚧🏗️"
+    "Map Area"
   ],
   "metricsInfo": [
     "Metrics"

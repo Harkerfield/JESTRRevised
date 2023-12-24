@@ -1,22 +1,25 @@
-import React, { useContext, useMemo, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { ConfigContext } from "../../Provider/Context.js";
-
+import ModalChildren from "../Modal/ModalChildren.js";
 const localizer = momentLocalizer(moment); // Create a localizer using moment
 
 const CalendarComponent = ({ data, loading, error }) => {
   const config = useContext(ConfigContext);
   const [filteredData, setFilteredData] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const handleSelectEvent = (event) => {
-    if (config.admin) {
-      // Logic for admins to edit/delete time
-    } else if (event.creator) {
-      // Assuming there's a creator property on events to check
-      // Logic for event creators to edit title
-    }
+    setSelectedEvent(event);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedEvent(null);
   };
 
   const handleSelectSlot = (slotInfo, browserEvent) => {
@@ -73,7 +76,10 @@ const CalendarComponent = ({ data, loading, error }) => {
     // Custom component for rendering events
     return (
       <span>
-        <strong>{event.title}</strong> | {event.pocSquadron}
+        <strong>
+          {event.equipmentRequested}/{event.typeOfThreat}
+        </strong>{" "}
+        | {event.pocSquadron}
       </span>
     );
   };
@@ -86,12 +92,25 @@ const CalendarComponent = ({ data, loading, error }) => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: "85vh" }}
-        onSelectEvent={(event) => console.log(event)}
+        onSelectEvent={handleSelectEvent}
         eventPropGetter={eventStyleGetter}
         components={{
           event: CustomEvent, // Use custom event component
         }}
       />
+
+      {showModal && (
+        <ModalChildren onClose={handleCloseModal}>
+          {selectedEvent && (
+            <div>
+              <h3>{selectedEvent.title}</h3>
+              <p>Start: {selectedEvent.start.toString()}</p>
+              <p>End: {selectedEvent.end.toString()}</p>
+              {/* More event details here */}
+            </div>
+          )}
+        </ModalChildren>
+      )}
     </div>
   );
 };

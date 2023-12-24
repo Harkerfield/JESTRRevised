@@ -1,4 +1,4 @@
-import React, { useMemo, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTable } from "react-table";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
@@ -11,19 +11,25 @@ import "./Metrics.css";
 const Metrics = () => {
   const config = useContext(ConfigContext);
 
+  const [backupData, setBackupData] = useState([]);
+
   const { data, loading, error } = useListGetItems(config.lists.scheduleList);
   const [filteredData, setFilteredData] = useState([]);
-  const backupData = useMemo(() => scheduleTester, []);
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    if (data) {
+    setBackupData(scheduleTester);
+  }, []);
+
+  useEffect(() => {
+    if (data && !loading) {
       if (data.length > 0) {
         setFilteredData(data);
       } else if (error) {
         setFilteredData(backupData);
       }
     }
-  }, [backupData, data, error]);
+  }, [backupData, data, loading, error]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     console.log(selectedRows);
@@ -45,8 +51,8 @@ const Metrics = () => {
     );
   }
 
-  const columns = useMemo(
-    () => [
+  useEffect(() => {
+    const newColumns = [
       {
         Header: "equipmentRequested",
         accessor: "equipmentRequested",
@@ -119,9 +125,9 @@ const Metrics = () => {
         Filter: ColumnFilter,
         style: { textAlign: "center" },
       },
-    ],
-    [],
-  );
+    ];
+    setColumns(newColumns);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -133,7 +139,7 @@ const Metrics = () => {
         setFilteredData(backupData);
       }
     }
-  }, [backupData, data, error]);
+  }, [backupData, data, loading, error]);
 
   return (
     <div className="PageFormat">

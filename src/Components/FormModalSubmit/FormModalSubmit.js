@@ -53,11 +53,17 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
-                  equipmentRequested: staticFields.Title,
+                  Title:
+                    staticFields.threat +
+                    "/" +
+                    staticFields["System Type"] +
+                    "/" +
+                    staticFields.location,
+                  equipmentRequested: staticFields.threat,
                   typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
-                  // requestStatus: staticFields...
+                  threatId: staticFields.ID,
                   ...data.userData,
                 };
               });
@@ -73,11 +79,17 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
-                  equipmentRequested: staticFields.Title,
+                  Title:
+                    staticFields.threat +
+                    "/" +
+                    staticFields["System Type"] +
+                    "/" +
+                    staticFields.location,
+                  equipmentRequested: staticFields.threat,
                   typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
-                  // requestStatus: staticFields...
+                  threatId: staticFields.ID,
                   ...data.userData,
                 };
               });
@@ -134,8 +146,8 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                 {item.pocName} | {item.pocNumber} | {item.pocSquadron}
               </div>
               <div>
-                {item.equipmentRequested} | {startDate.toDateString("en-US")} |
-                {startDate.toLocaleTimeString("en-US", options)} -
+                {item.equipmentRequested} | {startDate.toDateString("en-US")} |{" "}
+                {startDate.toLocaleTimeString("en-US", options)} -{" "}
                 {endDate.toLocaleTimeString("en-US", options)}
               </div>
               <br />

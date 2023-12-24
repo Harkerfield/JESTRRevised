@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
 import "./MapTools.css";
@@ -10,6 +10,25 @@ import scheduleTester from "../../testerData/threatsTester.json";
 function MapTools() {
   const config = useContext(ConfigContext);
   const [selectedRowsInParent, setSelectedRowsInParent] = useState([]);
+
+  const [backupData, setBackupData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const { data, loading, error } = useListGetItems(config.lists.threatList);
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    setBackupData(scheduleTester);
+  }, []);
+
+  useEffect(() => {
+    if (data && !loading) {
+      if (data.length > 0) {
+        setFilteredData(data);
+      } else if (error) {
+        setFilteredData(backupData);
+      }
+    }
+  }, [backupData, data, loading, error]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     setSelectedRowsInParent(selectedRows);
@@ -77,26 +96,8 @@ function MapTools() {
     return `${direction}${degrees}° ${minutes}'`;
   };
 
-  const [filteredData, setFilteredData] = useState([]);
-  const { data, loading, error } = useListGetItems(config.lists.threatList);
-
-  const backupData = useMemo(
-    () => scheduleTester.filter((data) => data.schedulableItem === "Yes"),
-    [],
-  );
-
   useEffect(() => {
-    if (data) {
-      if (data.length > 0) {
-        setFilteredData(data);
-      } else if (error) {
-        setFilteredData(backupData);
-      }
-    }
-  }, [backupData, data, error]);
-
-  const columns = useMemo(
-    () => [
+    const newColumns = [
       { Header: "Title", accessor: "Title", Filter: ColumnFilter },
       {
         Header: "Serial Number",
@@ -186,9 +187,9 @@ function MapTools() {
             <div>{value}</div>
           ),
       },
-    ],
-    [],
-  );
+    ];
+    setColumns(newColumns);
+  }, []);
 
   return (
     <div className="PageFormat">
@@ -205,11 +206,13 @@ function MapTools() {
       })}
 
       <div>
-        <MapComponent points={selectedRowsInParent} />
+        <div>
+          <MapComponent points={selectedRowsInParent} />
+        </div>
         <div style={{ overflowX: "auto", maxWidth: "100vw" }}>
           <ThreatList
             columns={columns}
-            data={backupData}
+            data={filteredData}
             onSelectedRowsChange={handleSelectedRowsChange}
           />
         </div>

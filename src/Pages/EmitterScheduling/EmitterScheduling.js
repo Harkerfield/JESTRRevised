@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
 import FormSchedulerTable from "../../Components/FormSchedulerTable/FormSchedulerTable.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
@@ -20,9 +20,27 @@ function EmitterScheduling() {
   const [userTimes, setUserTimes] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [backupData, setBackupData] = useState([]);
 
   const { data, loading, error } = useListGetItems(config.lists.threatList);
   const [filteredData, setFilteredData] = useState([]);
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    setBackupData(
+      scheduleTester.filter((item) => item.schedulableItem === "Yes"),
+    );
+  }, []);
+
+  useEffect(() => {
+    if (data && !loading) {
+      if (data.length > 0) {
+        setFilteredData(data);
+      } else if (error) {
+        setFilteredData(backupData);
+      }
+    }
+  }, [backupData, data, loading, error]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     setselectedThreatData(selectedRows);
@@ -70,7 +88,9 @@ function EmitterScheduling() {
       const result = await createItem(config.lists.scheduleList, item);
       if (result) {
         console.log("Item created:", result);
+        alert("Accepted and added");
         handleCloseModalForm();
+        handleCloseModalChildren();
       }
     });
 
@@ -80,6 +100,9 @@ function EmitterScheduling() {
 
     if (errorPush) {
       console.log(errorPush);
+      alert("Error, reload and try again...");
+      handleCloseModalForm();
+      handleCloseModalChildren();
       return <p>Error: {errorPush}</p>;
     }
   };
@@ -147,31 +170,8 @@ function EmitterScheduling() {
     return `${direction}${degrees}° ${minutes}'`;
   };
 
-  const backupData = useMemo(
-    () => scheduleTester.filter((data) => data.schedulableItem === "Yes"),
-    [],
-  );
-
   useEffect(() => {
-    if (data) {
-      if (data.length > 0) {
-        setFilteredData(data);
-      } else if (error) {
-        setFilteredData(backupData);
-      }
-    }
-  }, [backupData, data, error]);
-
-  const columns = useMemo(
-    () => [
-      // { Header: "Title", accessor: "Title", Filter: ColumnFilter, style: { textAlign: 'center' }},
-      // {
-      //   Header: "Serial Number",
-      //   accessor: "serialNumber",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' }
-      // },
-
+    const newColumns = [
       {
         Header: "System Type/Threat",
         accessor: (d) => `${d.systemType}/${d.threat}`,
@@ -179,20 +179,6 @@ function EmitterScheduling() {
         style: { textAlign: "center" },
         Cell: ({ value }) => <>{value}</>,
       },
-
-      // { Header: "System Type", accessor: "systemType", Filter: ColumnFilter, style: { textAlign: 'center' } },
-      // {
-      //   Header: "Schedulable Item",
-      //   accessor: "schedulableItem",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' }
-      // },
-      // {
-      //   Header: "id",
-      //   accessor: "id",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: "center" },
-      // },
       {
         Header: "Location",
         accessor: "location",
@@ -220,35 +206,12 @@ function EmitterScheduling() {
           </>
         ),
       },
-      // { Header: "Device Type", accessor: "deviceType", Filter: ColumnFilter, style: { textAlign: 'center' }  },
-      // { Header: "Threat", accessor: "threat", Filter: ColumnFilter, style: { textAlign: 'center' } },
-      // {
-      //   Header: "Maintenance Condition",
-      //   accessor: "mxCondition",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' }
-      //   Cell: ({ value }) =>
-      //     value ? (
-      //       <div
-      //         style={{
-      //           backgroundColor: value.toLowerCase(),
-      //           padding: "0.5rem",
-      //           color:
-      //             value.toLowerCase() === "red" ||
-      //             value.toLowerCase() === "green"
-      //               ? "white"
-      //               : "black",
-      //         }}
-      //       >
-      //         {value}
-      //       </div>
-      //     ) : (
-      //       <div>{value}</div>
-      //     ),
-      // },
-      // { Header: "Status", accessor: "status", Filter: ColumnFilter, style: { textAlign: 'center' }  },
-      // { Header: "ETIC", accessor: "ETIC", Filter: ColumnFilter, style: { textAlign: 'center' } },
-      // { Header: "Remarks", accessor: "remarks", Filter: ColumnFilter, style: { textAlign: 'center' } },
+      {
+        Header: "Alt",
+        accessor: "pointLocationAlt",
+        Filter: ColumnFilter,
+        style: { textAlign: "center" },
+      },
       {
         Header: "Remarks",
         accessor: (d) => {
@@ -263,13 +226,6 @@ function EmitterScheduling() {
         style: { textAlign: "center" },
         Cell: ({ value }) => <>{value}</>,
       },
-
-      // {
-      //   Header: "Status Change Date",
-      //   accessor: "statusChangeDate",
-      //   Filter: ColumnFilter,
-      //   style: { textAlign: 'center' }
-      // },
       {
         Header: "Operational Status",
         accessor: "operationalStatus",
@@ -294,12 +250,9 @@ function EmitterScheduling() {
             <div>{value}</div>
           ),
       },
-    ],
-    [],
-  );
-
-  // const { data, loading, error } = useListGetItems(config.lists.threatList);
-  //data.filter(item=> item.schedulableItem === "Yes" && (item.operationalStatus === "GREEN" || item.operationalStatus === "YELLOW" || item.operationalStatus === "RED" || item.operationalStatus === "AMBER") )
+    ];
+    setColumns(newColumns);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -348,6 +301,7 @@ function EmitterScheduling() {
               style={{
                 width: "100%",
                 height: "50px",
+                marginLeft: "0px",
                 backgroundColor: "green",
                 color: "white",
               }}
@@ -360,6 +314,7 @@ function EmitterScheduling() {
               style={{
                 width: "100%",
                 height: "50px",
+                marginLeft: "0px",
                 backgroundColor: "yellow",
                 color: "black",
               }}
@@ -372,7 +327,7 @@ function EmitterScheduling() {
         <div style={{ overflowY: "auto", overflowX: "auto" }}>
           <ThreatList
             columns={columns}
-            data={backupData}
+            data={filteredData}
             onSelectedRowsChange={handleSelectedRowsChange}
           />
         </div>

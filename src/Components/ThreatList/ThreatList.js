@@ -38,16 +38,24 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
     useRowSelect,
   );
 
-  const previousPage = () => {
+  const previousPage = (e) => {
+    e.preventDefault();
     if (canPreviousPage) {
       gotoPage(pageIndex - 1);
     }
   };
 
-  const nextPage = () => {
+  const nextPage = (e) => {
+    e.preventDefault();
     if (canNextPage) {
       gotoPage(pageIndex + 1);
     }
+  };
+
+  const changePage = (e, page) => {
+    e.preventDefault();
+
+    gotoPage(page);
   };
 
   React.useEffect(() => {
@@ -154,17 +162,17 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
       </table>
       <div className="pagination">
         <div>
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          <button onClick={(e) => changePage(e, 0)} disabled={!canPreviousPage}>
             {"<<"}
           </button>
-          <button onClick={previousPage} disabled={!canPreviousPage}>
+          <button onClick={(e) => previousPage(e)} disabled={!canPreviousPage}>
             {"<"}
           </button>
-          <button onClick={nextPage} disabled={!canNextPage}>
+          <button onClick={(e) => nextPage(e)} disabled={!canNextPage}>
             {">"}
           </button>
           <button
-            onClick={() => gotoPage(pageCount - 1)}
+            onClick={(e) => changePage(e, pageCount - 1)}
             disabled={!canNextPage}
           >
             {">>"}
@@ -183,7 +191,7 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
             defaultValue={pageIndex + 1}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
+              changePage(e, page);
             }}
             style={{ width: "50px" }}
           />

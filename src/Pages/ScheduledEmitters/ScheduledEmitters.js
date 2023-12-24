@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Calendar from "../../Components/Calendar/Calendar.js";
 
 import { useListGetItems } from "../../hooks/useListGetItems.js";
@@ -9,21 +9,25 @@ import scheduleTester from "../../testerData/scheduleTester.json";
 function ScheduledEmitters() {
   const config = useContext(ConfigContext);
 
-  const [filteredData, setFilteredData] = useState([]);
+  const [backupData, setBackupData] = useState([]);
 
   const { data, loading, error } = useListGetItems(config.lists.scheduleList);
-
-  const backupData = useMemo(() => scheduleTester, []);
+  const [filteredData, setFilteredData] = useState([]);
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    if (data) {
+    setBackupData(scheduleTester);
+  }, []);
+
+  useEffect(() => {
+    if (data && !loading) {
       if (data.length > 0) {
         setFilteredData(data);
       } else if (error) {
         setFilteredData(backupData);
       }
     }
-  }, [backupData, data, error]);
+  }, [backupData, data, loading, error]);
 
   return (
     <div className="PageFormat">

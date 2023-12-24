@@ -11,9 +11,9 @@ const FormSchedulerTable = ({
   onSaveData,
   formIsValid,
 }) => {
-  // userTimes, userData, selectedWeek
   const [data, setData] = useState([]);
   const [dropdownSelections, setDropdownSelections] = useState({});
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
     setData(selectedThreatData);
@@ -26,39 +26,33 @@ const FormSchedulerTable = ({
     }));
   };
 
-  const columns = useMemo(
-    () => [
+  useEffect(() => {
+    const newColumns = [
       { Header: "Title", accessor: "Title" },
       { Header: "Range", accessor: "range" },
-      // { Header: "Id", accessor: "ID" },
       { Header: "System Type", accessor: "systemType" },
-      ...selectedWeek.map((item) => {
-        return {
-          Header: `${item["date"]}`,
-          accessor: `${item["day"]}`,
-          Cell: ({ row }) => {
-            const day = item["day"]; // Directly use item['day']
-            return (
-              <Dropdown
-                options={[
-                  "NONE",
-                  "All",
-                  ...userTimes.map((time) => `${time.start} - ${time.end}`),
-                ]}
-                placeholder="NONE"
-                onChange={(selected) => {
-                  // console.log(selected);
-                  handleDropdownChange(day, selected);
-                }}
-                value={dropdownSelections[day]}
-              />
-            );
-          },
-        };
-      }),
-    ],
-    [selectedWeek, userTimes],
-  );
+      ...selectedWeek.map((item) => ({
+        Header: `${item["date"]}`,
+        accessor: `${item["day"]}`,
+        Cell: ({ row }) => {
+          const day = item["day"];
+          return (
+            <Dropdown
+              options={[
+                "NONE",
+                "All",
+                ...userTimes.map((time) => `${time.start} - ${time.end}`),
+              ]}
+              placeholder="NONE"
+              onChange={(selected) => handleDropdownChange(day, selected)}
+              value={dropdownSelections[day]}
+            />
+          );
+        },
+      })),
+    ];
+    setColumns(newColumns);
+  }, [selectedWeek, userTimes]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });

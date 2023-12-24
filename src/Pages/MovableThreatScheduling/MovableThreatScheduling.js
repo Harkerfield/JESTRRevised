@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
 import FormSchedulerTable from "../../Components/FormSchedulerTable/FormSchedulerTable.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
@@ -21,21 +21,27 @@ function MovableThreatScheduling() {
   const [selectedWeek, setSelectedWeek] = useState([]);
   const [userData, setUserData] = useState([]);
 
+  const [backupData, setBackupData] = useState([]);
+
   const { data, loading, error } = useListGetItems(
     config.lists.movableThreatList,
   );
   const [filteredData, setFilteredData] = useState([]);
-  const backupData = useMemo(() => movableTester, []);
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    if (data) {
+    setBackupData(movableTester);
+  }, []);
+
+  useEffect(() => {
+    if (data && !loading) {
       if (data.length > 0) {
         setFilteredData(data);
       } else if (error) {
         setFilteredData(backupData);
       }
     }
-  }, [backupData, data, error]);
+  }, [backupData, data, loading, error]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     setselectedThreatData(selectedRows);
@@ -67,9 +73,11 @@ function MovableThreatScheduling() {
   };
 
   const handleCloseModalForm = () => {
+    handleSelectedDays([]);
     setIsModalFormOpen(false);
   };
   const handleCloseModalChildren = () => {
+    handleSelectedDays([]);
     setIsModalChildrenOpen(false);
   };
 
@@ -160,8 +168,8 @@ function MovableThreatScheduling() {
     return `${direction}${degrees}° ${minutes}'`;
   };
 
-  const columns = useMemo(
-    () => [
+  useEffect(() => {
+    const newColumns = [
       {
         Header: "System Type/Threat",
         accessor: (d) => `${d.systemType}/${d.threat}`,
@@ -207,9 +215,9 @@ function MovableThreatScheduling() {
             <div>{value}</div>
           ),
       },
-    ],
-    [],
-  );
+    ];
+    setColumns(newColumns);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -249,6 +257,7 @@ function MovableThreatScheduling() {
           style={{
             width: "100%",
             height: "50px",
+            marginLeft: "0px",
             backgroundColor: "green",
             color: "white",
           }}
@@ -261,6 +270,7 @@ function MovableThreatScheduling() {
           style={{
             width: "100%",
             height: "50px",
+            marginLeft: "0px",
             backgroundColor: "yellow",
             color: "black",
           }}
@@ -272,7 +282,7 @@ function MovableThreatScheduling() {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <ThreatList
           columns={columns}
-          data={backupData}
+          data={filteredData}
           onSelectedRowsChange={handleSelectedRowsChange}
         />
       </div>

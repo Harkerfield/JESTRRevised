@@ -1,9 +1,10 @@
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
 const useListGetItems = (listTitle) => {
   const config = useContext(ConfigContext);
   const [rawData, setRawData] = useState([]);
+  const [transformedData, setTransformedData] = useState([]); // State for transformed data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -38,13 +39,14 @@ const useListGetItems = (listTitle) => {
     fetchData();
   }, [url]);
 
-  // Using useMemo to only recompute the data if rawData changes
-  const data = useMemo(() => {
+  useEffect(() => {
     // Any data transformation logic can go here
-    return rawData;
+    // For example, you could map, filter, or otherwise process the rawData
+    const transformed = rawData; // Replace this with actual transformation logic
+    setTransformedData(transformed);
   }, [rawData]);
 
-  return { data, loading, error };
+  return { data: transformedData, loading, error };
 };
 
 export { useListGetItems };

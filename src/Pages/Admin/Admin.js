@@ -1,22 +1,20 @@
-import React, { useState, useMemo, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import ThreatList from "../../Components/ThreatList/ThreatList.js";
-
 import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
-
 import scheduleTester from "../../testerData/threatsTester.json";
 
 function Admin() {
   const config = useContext(ConfigContext);
   const [selectedRowsInParent, setSelectedRowsInParent] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [columns, setColumns] = useState([]);
 
   const handleSelectedRowsChange = (selectedRows) => {
     setSelectedRowsInParent(selectedRows);
   };
 
-  function ColumnFilter({
-    column: { filterValue, setFilter, filteredRows, id },
-  }) {
+  function ColumnFilter({ column: { filterValue, setFilter, id } }) {
     return (
       <input
         value={filterValue || ""}
@@ -29,72 +27,22 @@ function Admin() {
     );
   }
 
-  const handleCopy = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Ccopied to clipboard!");
-    } catch (err) {
-      console.error("Failed to copy text: ", err);
-    }
-  };
-
-  const convertDDtoDMS = (decimalDegree, type) => {
-    const absDD = Math.abs(decimalDegree);
-    const degrees = Math.floor(absDD);
-    const minutesValue = (absDD - degrees) * 60;
-    const minutes = Math.floor(minutesValue);
-    const seconds = ((minutesValue - minutes) * 60).toFixed(2);
-
-    let direction;
-    if (type === "lat") {
-      direction = decimalDegree >= 0 ? "N" : "S";
-    } else if (type === "lon") {
-      direction = decimalDegree >= 0 ? "E" : "W";
-    } else {
-      throw new Error("Type must be 'lat' or 'lon'");
-    }
-
-    return `${direction}${degrees}° ${minutes}' ${seconds}"`;
-  };
-
-  const convertDDtoDDM = (decimalDegree, type) => {
-    const absDD = Math.abs(decimalDegree);
-    const degrees = Math.floor(absDD);
-    const minutesValue = (absDD - degrees) * 60;
-    const minutes = minutesValue.toFixed(4); // 3 decimal places for minutes
-
-    let direction;
-    if (type === "lat") {
-      direction = decimalDegree >= 0 ? "N" : "S";
-    } else if (type === "lon") {
-      direction = decimalDegree >= 0 ? "E" : "W";
-    } else {
-      throw new Error("Type must be 'lat' or 'lon'");
-    }
-
-    return `${direction}${degrees}° ${minutes}'`;
-  };
-
   const { data, loading, error } = useListGetItems(config.lists.threatList);
-  const [filteredData, setFilteredData] = useState([]);
-
-  const backupData = useMemo(
-    () => scheduleTester.filter((data) => data.schedulableItem === "Yes"),
-    [],
-  );
 
   useEffect(() => {
-    if (data) {
+    if (data && !loading) {
       if (data.length > 0) {
         setFilteredData(data);
       } else if (error) {
-        setFilteredData(backupData);
+        setFilteredData(
+          scheduleTester.filter((data) => data.schedulableItem === "Yes"),
+        );
       }
     }
-  }, [backupData, data, error]);
+  }, [data, loading, error]);
 
-  const columns = useMemo(
-    () => [
+  useEffect(() => {
+    const newColumns = [
       { Header: "Title", accessor: "Title", Filter: ColumnFilter },
       {
         Header: "Serial Number",
@@ -174,9 +122,9 @@ function Admin() {
             <div>{value}</div>
           ),
       },
-    ],
-    [],
-  );
+    ];
+    setColumns(newColumns);
+  }, []);
 
   return (
     <div
@@ -184,23 +132,22 @@ function Admin() {
       style={{ justifyContent: "space-between", width: "95vw" }}
     >
       <div className="PageFormat">
-        {config.adminInfo.map((item, index) => {
-          return (
-            <>
-              {index === 0 ? (
-                <div className="InfoPanel">{item}</div>
-              ) : (
-                <div className="InfoContent">{item}</div>
-              )}
-            </>
-          );
-        })}
+        {config.adminInfo.map((item, index) => (
+          <div
+            key={index}
+            className={index === 0 ? "InfoPanel" : "InfoContent"}
+          >
+            {item}
+          </div>
+        ))}
       </div>
-      <ThreatList
-        columns={columns}
-        data={backupData}
-        onSelectedRowsChange={handleSelectedRowsChange}
-      />
+      <div style={{ overflowX: "auto", maxWidth: "100vw" }}>
+        <ThreatList
+          columns={columns}
+          data={filteredData}
+          onSelectedRowsChange={handleSelectedRowsChange}
+        />
+      </div>
     </div>
   );
 }

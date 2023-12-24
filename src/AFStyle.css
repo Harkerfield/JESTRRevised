@@ -236,23 +236,11 @@
   background-repeat: no-repeat;
 }
 
-.af-target-marker {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><polygon points="50,0 0,100 100,100"/></svg>');
-}
-
-.af-poi-marker {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="2" fill="red"/></svg>');
-}
-
-.af-custom-marker {
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect x="0" y="0" width="100" height="100" rx="10" ry="10" fill="blue"/></svg>');
-}
-
 /* Layout for Full, Left, and Right Sections */
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 90vh;
   /* 100% viewport height */
 }
 

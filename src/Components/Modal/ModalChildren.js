@@ -13,6 +13,7 @@ const ModalChildren = ({ children, onClose }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 999,
       }}
     >
       <div
@@ -34,7 +35,7 @@ const ModalChildren = ({ children, onClose }) => {
             color: "white",
           }}
         >
-          Cancel
+          Close
         </button>
         {children}
       </div>
