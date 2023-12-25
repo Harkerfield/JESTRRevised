@@ -49,10 +49,7 @@ const useListIPatchItem = () => {
           "X-RequestDigest": requestDigest,
         },
         body: JSON.stringify({
-          ...updatedData,
-          __metadata: {
-            type: `SP.Data.${caplistTitle}ListItem`,
-          },
+          ...updatedData
         }),
       });
 

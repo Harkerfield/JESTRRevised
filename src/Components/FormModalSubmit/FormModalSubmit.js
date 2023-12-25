@@ -55,17 +55,17 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
-                  // Title:
-                  //   staticFields.threat +
-                  //   "/" +
-                  //   staticFields["System Type"] +
-                  //   "/" +
-                  //   staticFields.location,
+                  Title:
+                    staticFields.threat +
+                    "/" +
+                    staticFields["System Type"] +
+                    "/" +
+                    staticFields.location,
                   equipmentRequested: staticFields.threat,
                   typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
-                  // threatId: staticFields.ID,
+                  threatId: staticFields.ID,
                   ...data.userData,
                 };
               });
@@ -83,17 +83,17 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
-                  // Title:
-                  //   staticFields.threat +
-                  //   "/" +
-                  //   staticFields["System Type"] +
-                  //   "/" +
-                  //   staticFields.location,
+                  Title:
+                    staticFields.threat +
+                    "/" +
+                    staticFields["System Type"] +
+                    "/" +
+                    staticFields.location,
                   equipmentRequested: staticFields.threat,
                   typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
-                  // threatId: staticFields.ID,
+                  threatId: staticFields.ID,
                   ...data.userData,
                 };
               });
