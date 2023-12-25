@@ -45,10 +45,12 @@ const FormModalOtherSubmit = ({ data, onClose, onPush }) => {
               // Handle the case where the time is "All"
               // Assuming 'data.userTimes' is an array of time ranges
               return data.userTimes.map(({ start, end }) => {
-                const isoStart = new Date(
-                  `${isoDate}T${start}:00`,
-                ).toISOString();
-                const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
+                const isoStart = new Date(`${isoDate}T${start}:00`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
+                const isoEnd = new Date(`${isoDate}T${end}:00`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
                 return {
                   start: isoStart,
                   end: isoEnd,
@@ -65,10 +67,12 @@ const FormModalOtherSubmit = ({ data, onClose, onPush }) => {
               // Handle the case where specific time ranges are provided
               const times = splitTimeRange(item[key]);
               return times.map(({ start, end }) => {
-                const isoStart = new Date(
-                  `${isoDate}T${start}:00`,
-                ).toISOString();
-                const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
+                const isoStart = new Date(`${isoDate}T${start}:00`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
+                const isoEnd = new Date(`${isoDate}T${end}:00`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
                 return {
                   start: isoStart,
                   end: isoEnd,

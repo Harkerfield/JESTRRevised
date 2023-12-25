@@ -73,7 +73,7 @@ const MapComponent = ({ points }) => {
     const airspaceLayer = new VectorLayer({
       name: "airspace",
       source: new VectorSource({
-        url: `${config.kml.airspace}`,
+        url: `${config.apiBaseUrl}${config.folderLocation}/${config.kml.airspace}`,
         format: new KML(),
       }),
     });

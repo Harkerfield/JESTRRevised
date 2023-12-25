@@ -1,5 +1,7 @@
 [
   {
+    "Id": 1,
+    "threatId": 1,
     "title": "Event 1",
     "start": "2023-11-27T18:00:00Z",
     "end": "2023-11-27T20:00:00Z",
@@ -15,6 +17,8 @@
     "pocSquadron": "Squadron Z"
   },
   {
+    "Id": 2,
+    "threatId": 1,
     "title": "Event 2",
     "start": "2023-11-27T17:00:00Z",
     "end": "2023-11-27T18:00:00Z",
@@ -30,6 +34,8 @@
     "pocSquadron": "Squadron A"
   },
   {
+    "Id": 3,
+    "threatId": 1,
     "title": "Event 3",
     "start": "2023-11-27T14:00:00Z",
     "end": "2023-11-27T18:00:00Z",
@@ -45,6 +51,8 @@
     "pocSquadron": "Squadron B"
   },
   {
+    "Id": 4,
+    "threatId": 1,
     "title": "Event 4",
     "start": "2023-11-27T13:00:00Z",
     "end": "2023-11-27T15:00:00Z",
@@ -60,6 +68,8 @@
     "pocSquadron": "Squadron C"
   },
   {
+    "Id": 4,
+    "threatId": 1,
     "equipmentRequested": "2312",
     "typeOfThreat": "1",
     "range": "fds",

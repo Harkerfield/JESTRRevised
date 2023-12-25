@@ -1,5 +1,3 @@
-// hooks/useListIPatchItem.js
-
 import { useState, useContext, useEffect } from "react";
 import { ConfigContext } from "../Provider/Context.js";
 
@@ -30,11 +28,15 @@ const useListIPatchItem = () => {
     };
 
     getRequestDigest();
-  }, []);
+  }, [config.apiBaseUrl]);
 
   const updateItem = async (listTitle, itemId, updatedData) => {
     setLoading(true);
     const url = `${config.apiBaseUrl}_api/web/lists/getbytitle('${listTitle}')/items(${itemId})`;
+    const firstLetter = listTitle.charAt(0);
+    const firstLetterCap = firstLetter.toUpperCase();
+    const remainingLetters = listTitle.slice(1);
+    const caplistTitle = firstLetterCap + remainingLetters;
 
     try {
       const response = await fetch(url, {
@@ -46,7 +48,12 @@ const useListIPatchItem = () => {
           "IF-MATCH": "*",
           "X-RequestDigest": requestDigest,
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify({
+          ...updatedData,
+          __metadata: {
+            type: `SP.Data.${caplistTitle}ListItem`,
+          },
+        }),
       });
 
       if (!response.ok) {

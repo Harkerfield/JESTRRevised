@@ -45,25 +45,27 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
               // Handle the case where the time is "All"
               // Assuming 'data.userTimes' is an array of time ranges
               return data.userTimes.map(({ start, end }) => {
-                const isoStart = new Date(
-                  `${isoDate}T${start}:00`,
-                ).toISOString();
-                const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
+                const isoStart = new Date(`${isoDate}T${start}`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
+                const isoEnd = new Date(`${isoDate}T${end}`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
                 return {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
-                  Title:
-                    staticFields.threat +
-                    "/" +
-                    staticFields["System Type"] +
-                    "/" +
-                    staticFields.location,
+                  // Title:
+                  //   staticFields.threat +
+                  //   "/" +
+                  //   staticFields["System Type"] +
+                  //   "/" +
+                  //   staticFields.location,
                   equipmentRequested: staticFields.threat,
                   typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
-                  threatId: staticFields.ID,
+                  // threatId: staticFields.ID,
                   ...data.userData,
                 };
               });
@@ -71,25 +73,27 @@ const FormModalSubmit = ({ data, onClose, onPush }) => {
               // Handle the case where specific time ranges are provided
               const times = splitTimeRange(item[key]);
               return times.map(({ start, end }) => {
-                const isoStart = new Date(
-                  `${isoDate}T${start}:00`,
-                ).toISOString();
-                const isoEnd = new Date(`${isoDate}T${end}:00`).toISOString();
+                const isoStart = new Date(`${isoDate}T${start}`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
+                const isoEnd = new Date(`${isoDate}T${end}`)
+                  .toISOString()
+                  .replace(/\.000Z$/, "Z");
                 return {
                   start: isoStart,
                   end: isoEnd,
                   // notes: notes,
-                  Title:
-                    staticFields.threat +
-                    "/" +
-                    staticFields["System Type"] +
-                    "/" +
-                    staticFields.location,
+                  // Title:
+                  //   staticFields.threat +
+                  //   "/" +
+                  //   staticFields["System Type"] +
+                  //   "/" +
+                  //   staticFields.location,
                   equipmentRequested: staticFields.threat,
                   typeOfThreat: staticFields["System Type"],
                   range: staticFields.range,
                   location: staticFields.location,
-                  threatId: staticFields.ID,
+                  // threatId: staticFields.ID,
                   ...data.userData,
                 };
               });

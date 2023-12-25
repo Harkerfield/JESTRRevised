@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "Id": 1,
     "Title": "ERROR",
     "serialNumber": "ERROR(SN13)",
     "systemType": "Unmanned",
@@ -20,7 +20,7 @@
     "operationalStatus": "GREEN"
   },
   {
-    "id": 2,
+    "Id": 2,
     "Title": "threat99",
     "serialNumber": "threat99(SN13)",
     "systemType": "UMTdsaE",

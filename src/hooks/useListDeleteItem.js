@@ -16,6 +16,7 @@ const useListDeleteItem = () => {
         const digestUrl = `${config.apiBaseUrl}_api/contextinfo`;
         const digestResponse = await fetch(digestUrl, {
           method: "POST",
+          credentials: "same-origin",
           headers: {
             Accept: "application/json;odata=verbose",
             "Content-Type": "application/json;odata=verbose",

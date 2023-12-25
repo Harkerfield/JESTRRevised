@@ -2,12 +2,16 @@
 
 /* calendar event */
 .calendar_default_event_inner {
-  background: #2e78d6;
+  background: #696969;
   color: #fff;
   border: none;
   border-radius: 5px;
   font-size: 10pt;
   padding: 5px;
   opacity: 0.8;
-  z-index: 990;
+  /* z-index: 990; */
+}
+
+.inputFormClass {
+  margin-bottom: 2px;
 }

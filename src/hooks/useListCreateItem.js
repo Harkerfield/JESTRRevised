@@ -20,7 +20,6 @@ const useListCreateItem = () => {
           },
         });
         const digestData = await digestResponse.json();
-
         setRequestDigest(digestData.d.GetContextWebInformation.FormDigestValue);
       } catch (error) {
         console.error("Error fetching __REQUESTDIGEST:", error);
@@ -34,18 +33,26 @@ const useListCreateItem = () => {
     setLoading(true);
     const url = `${config.apiBaseUrl}_api/web/lists/getbytitle('${listTitle}')/items`;
 
+    const firstLetter = listTitle.charAt(0);
+    const firstLetterCap = firstLetter.toUpperCase();
+    const remainingLetters = listTitle.slice(1);
+    const caplistTitle = firstLetterCap + remainingLetters;
+
     try {
       const response = await fetch(url, {
         method: "POST",
         credentials: "same-origin",
         headers: {
-          Accept: "application/json;odata=nometadata",
-          "Content-Type": "application/json;odata=nometadata",
+          Accept: "application/json;odata=verbose",
+          "Content-Type": "application/json;odata=verbose",
           "X-RequestDigest": requestDigest,
           "X-HTTP-Method": "POST",
         },
         body: JSON.stringify({
           ...itemData,
+          __metadata: {
+            type: `SP.Data.${caplistTitle}ListItem`,
+          },
         }),
       });
 
@@ -56,7 +63,6 @@ const useListCreateItem = () => {
       const data = await response.json();
       return data;
     } catch (err) {
-      console.log(err);
       setError(err.message);
       return null;
     } finally {
