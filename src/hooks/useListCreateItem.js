@@ -46,7 +46,7 @@ const useListCreateItem = () => {
           Accept: "application/json;odata=verbose",
           "Content-Type": "application/json;odata=verbose",
           "X-RequestDigest": requestDigest,
-          "X-HTTP-Method": "POST",
+          "X-HTTP-Method": "MERGE",
         },
         body: JSON.stringify({
           ...itemData,

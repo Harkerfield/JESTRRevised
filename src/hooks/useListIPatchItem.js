@@ -47,6 +47,7 @@ const useListIPatchItem = () => {
           "Content-Type": "application/json;odata=nometadata",
           "IF-MATCH": "*",
           "X-RequestDigest": requestDigest,
+          "X-HTTP-Method": "MERGE",
         },
         body: JSON.stringify({
           ...updatedData

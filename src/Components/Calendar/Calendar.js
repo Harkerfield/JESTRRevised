@@ -73,9 +73,15 @@ const CalendarComponent = ({ data, loading, error }) => {
     if (editedEvent) {
       try {
         const updatedData = {
-          title: editedEvent.title,
-          start: editedEvent.start,
-          end: editedEvent.end,
+          Title: editedEvent.title,
+          start: new Date(editedEvent.start)
+            .toISOString()
+            .replace(/\.000Z$/, "Z"),
+          end: new Date(editedEvent.end)
+            .toISOString()
+            .replace(/\.000Z$/, "Z"),
+          // start: editedEvent.start,
+          // end: editedEvent.end,
           equipmentRequested: editedEvent.equipmentRequested,
           typeOfThreat: editedEvent.typeOfThreat,
           range: editedEvent.range,
