@@ -13,6 +13,8 @@ export const ConfigProvider = ({ children }) => {
     setSettings(config);
   }, [config]);
 
+
+
   useEffect(() => {
     const settingsPath =
       process.env.NODE_ENV === "production"
@@ -38,7 +40,9 @@ export const ConfigProvider = ({ children }) => {
           },
           (error) => {
             console.error("Error checking admin status:", error);
-            data.admin = false; // Setting admin to true on error for debugging
+
+            data.admin = true; // Setting admin to true on error for debugging
+            // data.admin = data.admin ? data.admin : false; // Setting admin to true on error for debugging
             // console.log(data)
             setConfig(data);
           },

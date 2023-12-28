@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTable } from "react-table";
 import { useListGetItems } from "../../hooks/useListGetItems.js";
-import ThreatList from "../../Components/ThreatList/ThreatList.js";
+import ListCheckBox from "../../Components/ListCheckBox/ListCheckBox.js";
 import scheduleTester from "../../testerData/scheduleTester.json";
 
 import { ConfigContext } from "../../Provider/Context.js";
@@ -156,7 +156,7 @@ const Metrics = () => {
       })}
 
       <div style={{ overflowY: "auto", overflowX: "auto" }}>
-        <ThreatList
+        <ListCheckBox
           columns={columns}
           data={filteredData}
           onSelectedRowsChange={handleSelectedRowsChange}

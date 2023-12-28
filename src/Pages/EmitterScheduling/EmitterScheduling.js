@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import ThreatList from "../../Components/ThreatList/ThreatList.js";
+import ListCheckBox from "../../Components/ListCheckBox/ListCheckBox.js";
 import FormSchedulerTable from "../../Components/FormSchedulerTable/FormSchedulerTable.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
 import FormWeekSelector from "../../Components/FormWeekSelector/FormWeekSelector.js";
@@ -325,7 +325,7 @@ function EmitterScheduling() {
         </div>
 
         <div style={{ overflowY: "auto", overflowX: "auto" }}>
-          <ThreatList
+          <ListCheckBox
             columns={columns}
             data={filteredData}
             onSelectedRowsChange={handleSelectedRowsChange}

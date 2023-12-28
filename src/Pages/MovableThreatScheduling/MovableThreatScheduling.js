@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import ThreatList from "../../Components/ThreatList/ThreatList.js";
+import ListCheckBox from "../../Components/ListCheckBox/ListCheckBox.js";
 import FormSchedulerTable from "../../Components/FormSchedulerTable/FormSchedulerTable.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
 import FormWeekSelector from "../../Components/FormWeekSelector/FormWeekSelector.js";
@@ -12,7 +12,7 @@ import { useListGetItems } from "../../hooks/useListGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 import "./MovableThreatScheduling.css";
 
-import movableTester from "../../testerData/movableTeter.json";
+import movableTester from "../../testerData/movableTester.json";
 
 function MovableThreatScheduling() {
   const config = useContext(ConfigContext);
@@ -280,7 +280,7 @@ function MovableThreatScheduling() {
       )}
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <ThreatList
+        <ListCheckBox
           columns={columns}
           data={filteredData}
           onSelectedRowsChange={handleSelectedRowsChange}

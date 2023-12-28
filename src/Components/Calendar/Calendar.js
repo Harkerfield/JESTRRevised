@@ -86,12 +86,13 @@ const CalendarComponent = ({ data, loading, error }) => {
           typeOfThreat: editedEvent.typeOfThreat,
           range: editedEvent.range,
           location: editedEvent.location,
-          requestStatus: editedEvent.requestStatus,
+          requestStatus: fullControl ? editedEvent.requestStatus : "Pending",
           pocName: editedEvent.pocName,
           pocNumber: editedEvent.pocNumber,
           pocEmail: editedEvent.pocEmail,
           pocSquadron: editedEvent.pocSquadron,
           notes: editedEvent.notes,
+          threatId: editedEvent.threatId,
         };
 
         const result = await updateItem(
@@ -203,6 +204,9 @@ const CalendarComponent = ({ data, loading, error }) => {
               </div>
               <div>
                 <p>End: {moment(selectedEvent.end).format("LLL")}</p>
+              </div>
+              <div>
+                <p>Threat ID: {selectedEvent.threatId}</p>
               </div>
               <div>
                 <p>Equipment Requested: {selectedEvent.equipmentRequested}</p>
@@ -365,11 +369,22 @@ const CalendarComponent = ({ data, loading, error }) => {
                     />
                   </div>
                   <div className="inputFormClass">
-                    <label>Request Status:</label>
-                    <input
-                      type="text"
+                    <select
                       name="requestStatus"
                       value={editedEvent.requestStatus}
+                      onChange={handleChange}
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Rejected">Rejected</option>
+                    </select>
+                  </div>
+                  <div className="inputFormClass">
+                    <label>Threat Id:</label>
+                    <input
+                      type="text"
+                      name="threatId"
+                      value={editedEvent.threatId}
                       onChange={handleChange}
                     />
                   </div>

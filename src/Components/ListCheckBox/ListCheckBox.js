@@ -6,9 +6,9 @@ import {
   useSortBy,
   usePagination, // Import usePagination
 } from "react-table";
-import "./ThreatList.css";
+import "./ListCheckBox.css";
 
-const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
+const ListCheckBox = ({ columns, data, onSelectedRowsChange }) => {
   const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
@@ -213,4 +213,4 @@ const ThreatList = ({ columns, data, onSelectedRowsChange }) => {
   );
 };
 
-export default ThreatList;
+export default ListCheckBox;

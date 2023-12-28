@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import ThreatList from "../../Components/ThreatList/ThreatList.js";
+import ListCheckBox from "../../Components/ListCheckBox/ListCheckBox.js";
 import MapComponent from "../../Components/Map/MapComponent.js";
 import "./MapTools.css";
 
@@ -210,7 +210,7 @@ function MapTools() {
           <MapComponent points={selectedRowsInParent} />
         </div>
         <div style={{ overflowX: "auto", maxWidth: "100vw" }}>
-          <ThreatList
+          <ListCheckBox
             columns={columns}
             data={filteredData}
             onSelectedRowsChange={handleSelectedRowsChange}

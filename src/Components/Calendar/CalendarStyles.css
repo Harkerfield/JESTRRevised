@@ -12,6 +12,65 @@
   /* z-index: 990; */
 }
 
-.inputFormClass {
+/* .inputFormClass {
   margin-bottom: 2px;
+} */
+
+.inputFormClass {
+  display: flex;
+  flex-direction: column;
+  /* margin-bottom: 15px; */
+  margin-bottom: 2px;
+}
+
+.inputFormClass label {
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.inputFormClass input,
+.inputFormClass select,
+.inputFormClass textarea {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+
+  /* To ensure the width of the input fields is consistent */
+  width: 100%; 
+}
+
+.inputFormClass input:focus,
+.inputFormClass select:focus,
+.inputFormClass textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.inputFormClass input[type="text"],
+.inputFormClass input[type="email"],
+.inputFormClass input[type="datetime-local"] {
+  height: 40px; /* Adjust height for text inputs */
+}
+
+.inputFormClass textarea {
+  height: 100px; /* Adjust textarea height */
+}
+
+.inputFormClass button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.inputFormClass button:hover {
+  background-color: #0056b3;
 }
