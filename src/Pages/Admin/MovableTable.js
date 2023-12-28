@@ -136,7 +136,7 @@ const MovableTable = ({ onEdit, onDelete, onDeleteSuccess }) => {
 
     return (
         <div style={{ overflowX: "auto", maxWidth: "100vw" }}>
-            <div className="InfoPanel">Threat Data</div>
+            <div className="InfoPanel">Movable Data</div>
             <ListNoCheckBox
                 columns={columns}
                 data={filteredData}

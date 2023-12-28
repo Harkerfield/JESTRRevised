@@ -124,8 +124,6 @@ const ThreatTable = ({ onEdit, onDelete, onDeleteSuccess  }) => {
         }
     }, [backupData, data, loading, error]);
 
-
-    
     // Call this function after successful deletion
     const handleDeleteSuccess = (deletedItemId) => {
         const updatedData = filteredData.filter(item => item.ID !== deletedItemId);
@@ -143,7 +141,6 @@ const ThreatTable = ({ onEdit, onDelete, onDeleteSuccess  }) => {
             }
         }
     };
-
 
     return (
         <div style={{ overflowX: "auto", maxWidth: "100vw" }}>

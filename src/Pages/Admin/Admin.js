@@ -1,42 +1,59 @@
 import React, { useState, useContext, useEffect } from "react";
-import ListNoCheckBox from "../../Components/ListNoCheckBox/ListNoCheckBox.js";
-
 import { useListDeleteItem } from "../../hooks/useListDeleteItem.js";
-
-
 import ThreatTable from './ThreatTable.js';
 import MovableTable from './MovableTable.js';
-
-
 import { ConfigContext } from "../../Provider/Context.js";
-
 import CollapsibleHeader from "../../Components/HeaderHorizontal/HeaderHorizontal.js"
-
+import ModalChildren from "../../Components/Modal/ModalChildren.js"; // Your modal component
 
 function Admin() {
   const config = useContext(ConfigContext);
   const [selectedEdit, setSelectedEdit] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentListName, setCurrentListName] = useState("");
+
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
 
 
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Implement your update logic here
+    closeEditModal();
+    // Optionally, refresh table data
+  };
 
   const threatHandleEdit = (e, rowData) => {
+    setSelectedEdit(rowData);
+    setCurrentListName(config.lists.movableThreatList);
+    setIsEditModalOpen(true);
+    console.log(rowData)
     e.preventDefault();
     // Logic to handle edit
+    
     console.log("Edit:", rowData);
     setSelectedEdit(rowData);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setSelectedEdit({ ...selectedEdit, [e.target.name]: e.target.value });
   };
 
   const movableHandleEdit = (e, rowData) => {
+    setSelectedEdit(rowData);
+    setCurrentListName(config.lists.threatList);
+    setIsEditModalOpen(true);
     e.preventDefault();
     // Logic to handle edit
     console.log("Edit:", rowData);
     setSelectedEdit(rowData);
   };
 
-
   const { deleteItem, loading, error } = useListDeleteItem();
-
 
   const threatHandleDelete = async (itemId) => {
 
@@ -51,11 +68,6 @@ function Admin() {
 
   };
 
-  // if (window.confirm("Are you sure you want to delete this item?")) {
-  //   await deleteItem(config.lists.threatList, rowData.ID);
-  //   // You might also want to refresh the threatDataGET or handle the UI change after deletion
-  // }
-
   const movableHandleDelete = async (itemId) => {
     console.log("Delete:", itemId);
     try {
@@ -66,8 +78,6 @@ function Admin() {
       return false;
     }
   };
-
-
 
   return (
     <div className="PageFormat">
@@ -116,6 +126,52 @@ function Admin() {
         onEdit={movableHandleEdit}
         onDelete={movableHandleDelete}
       />
+
+
+{isEditModalOpen && (
+        <ModalChildren onClose={closeEditModal}>
+          <form onSubmit={handleSubmit}>
+          {currentListName === 'threatList' && (
+              // Fields specific to 'threat'
+              <>
+                <div><label>Serial Number</label><input type="text" name="serialNumber" value={selectedEdit.serialNumber || ''} onChange={handleChange} /></div>
+                <div><label>System Type</label><input type="text" name="systemType" value={selectedEdit.systemType || ''} onChange={handleChange} /></div>
+                <div><label>Schedulable Item</label><input type="text" name="schedulableItem" value={selectedEdit.schedulableItem || ''} onChange={handleChange} /></div>
+                <div><label>Location</label><input type="text" name="location" value={selectedEdit.location || ''} onChange={handleChange} /></div>
+                <div><label>Range</label><input type="text" name="range" value={selectedEdit.range || ''} onChange={handleChange} /></div>
+                <div><label>Latitude</label><input type="text" name="pointLocationLat" value={selectedEdit.pointLocationLat || ''} onChange={handleChange} /></div>
+                <div><label>Longitude</label><input type="text" name="pointLocationLon" value={selectedEdit.pointLocationLon || ''} onChange={handleChange} /></div>
+                <div><label>Altitude</label><input type="text" name="pointLocationAlt" value={selectedEdit.pointLocationAlt || ''} onChange={handleChange} /></div>
+                <div><label>Device Type</label><input type="text" name="deviceType" value={selectedEdit.deviceType || ''} onChange={handleChange} /></div>
+                <div><label>Threat</label><input type="text" name="threat" value={selectedEdit.threat || ''} onChange={handleChange} /></div>
+                <div><label>Maintenance Condition</label><select name="mxCondition" value={selectedEdit.mxCondition || ''} onChange={handleChange}><option value="red">Red</option><option value="green">Green</option><option value="yellow">Yellow</option></select></div>
+                <div><label>Status</label><input type="text" name="status" value={selectedEdit.status || ''} onChange={handleChange} /></div>
+                <div><label>ETIC</label><input type="text" name="ETIC" value={selectedEdit.ETIC || ''} onChange={handleChange} /></div>
+                <div><label>Remarks</label><input type="text" name="remarks" value={selectedEdit.remarks || ''} onChange={handleChange} /></div>
+                <div><label>Status Change Date</label><input type="date" name="statusChangeDate" value={selectedEdit.statusChangeDate || ''} onChange={handleChange} /></div>
+                <div><label>Operational Status</label><select name="operationalStatus" value={selectedEdit.operationalStatus || ''} onChange={handleChange}><option value="red">Red</option><option value="green">Green</option><option value="yellow">Yellow</option></select></div>
+              </>
+            )}
+            {currentListName === 'movableThreatList' && (
+              // Fields specific to 'movable'
+              <>
+                <div><label>Serial Number</label><input type="text" name="serialNumber" value={selectedEdit.serialNumber || ''} onChange={handleChange} /></div>
+                <div><label>System Type</label><input type="text" name="systemType" value={selectedEdit.systemType || ''} onChange={handleChange} /></div>
+                <div><label>Schedulable Item</label><input type="text" name="schedulableItem" value={selectedEdit.schedulableItem || ''} onChange={handleChange} /></div>
+                <div><label>Device Type</label><input type="text" name="deviceType" value={selectedEdit.deviceType || ''} onChange={handleChange} /></div>
+                <div><label>Threat</label><input type="text" name="threat" value={selectedEdit.threat || ''} onChange={handleChange} /></div>
+                <div><label>Maintenance Condition</label><select name="mxCondition" value={selectedEdit.mxCondition || ''} onChange={handleChange}><option value="red">Red</option><option value="green">Green</option><option value="yellow">Yellow</option></select></div>
+                <div><label>Status</label><input type="text" name="status" value={selectedEdit.status || ''} onChange={handleChange} /></div>
+                <div><label>ETIC</label><input type="text" name="ETIC" value={selectedEdit.ETIC || ''} onChange={handleChange} /></div>
+                <div><label>Remarks</label><input type="text" name="remarks" value={selectedEdit.remarks || ''} onChange={handleChange} /></div>
+                <div><label>Status Change Date</label><input type="date" name="statusChangeDate" value={selectedEdit.statusChangeDate || ''} onChange={handleChange} /></div>
+                <div><label>Operational Status</label><select name="operationalStatus" value={selectedEdit.operationalStatus || ''} onChange={handleChange}><option value="red">Red</option><option value="green">Green</option><option value="yellow">Yellow</option></select></div>
+              </>
+            )}
+            <button type="submit">Save Changes</button>
+          </form>
+        </ModalChildren>
+      )}
 
 
     </div>
