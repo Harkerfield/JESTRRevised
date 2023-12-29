@@ -4,17 +4,32 @@ import { useListGetItems } from '../../hooks/useListGetItems.js';
 import { ConfigContext } from '../../Provider/Context.js';
 import threatsTester from '../../testerData/threatsTester.json';
 
-const ThreatTable = ({ onEdit, onDelete, onDeleteSuccess  }) => {
+const ThreatTable = ({ onEdit, onDelete, refreshData, setRefreshData }) => {
     const config = useContext(ConfigContext);
 
     const [backupData, setBackupData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [columns, setColumns] = useState([]);
     const { data, loading, error } = useListGetItems(config.lists.threatList);
-    
+
     useEffect(() => {
         setBackupData(threatsTester);
     }, []);
+
+
+    useEffect(() => {
+        if (refreshData) {
+            console.log("Updated Data");
+            filteredData.forEach((item, index) => {
+                if (item.Id === refreshData.ID) {
+                    // Update the item in filteredData
+                    filteredData[index] = { ...item, ...refreshData };
+                }
+            });
+            setRefreshData(null);
+        }
+    }, [refreshData, setRefreshData]);
+
 
     function ColumnFilter({ column: { filterValue, setFilter, id } }) {
         return (
@@ -28,6 +43,9 @@ const ThreatTable = ({ onEdit, onDelete, onDeleteSuccess  }) => {
             />
         );
     }
+
+
+
 
     useEffect(() => {
         const newColumns = [

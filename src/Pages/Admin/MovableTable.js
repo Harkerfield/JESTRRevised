@@ -4,7 +4,7 @@ import { useListGetItems } from '../../hooks/useListGetItems.js';
 import { ConfigContext } from '../../Provider/Context.js';
 import movableTester from '../../testerData/movableTester.json';
 
-const MovableTable = ({ onEdit, onDelete, onDeleteSuccess }) => {
+const MovableTable = ({ onEdit, onDelete, refreshData, setRefreshData }) => {
     const config = useContext(ConfigContext);
 
     const [backupData, setBackupData] = useState([]);
@@ -15,6 +15,23 @@ const MovableTable = ({ onEdit, onDelete, onDeleteSuccess }) => {
     useEffect(() => {
         setBackupData(movableTester);
     }, []);
+
+
+    useEffect(() => {
+        if (refreshData) {
+            console.log("Updated Data");
+            filteredData.forEach((item, index) => {
+                if (item.Id === refreshData.ID) {
+                    // Update the item in filteredData
+                    filteredData[index] = { ...item, ...refreshData };
+                }
+            });
+            setRefreshData(null);
+        }
+    }, [refreshData, setRefreshData]);
+
+
+
 
     function ColumnFilter({ column: { filterValue, setFilter, id } }) {
         return (
@@ -113,8 +130,6 @@ const MovableTable = ({ onEdit, onDelete, onDeleteSuccess }) => {
         }
     }, [backupData, data, loading, error]);
 
-
-    
     // Call this function after successful deletion
     const handleDeleteSuccess = (deletedItemId) => {
         const updatedData = filteredData.filter(item => item.ID !== deletedItemId);
