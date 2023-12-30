@@ -10,7 +10,8 @@ import { none } from "ol/centerconstraint.js";
 import "./CalendarStyles.css";
 const localizer = momentLocalizer(moment); // Create a localizer using moment
 
-const CalendarComponent = ({ data, loading, error }) => {
+const CalendarComponent = ({ data, loading, error, onDateRangeChange }) => {
+
   const config = useContext(ConfigContext);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -21,6 +22,35 @@ const CalendarComponent = ({ data, loading, error }) => {
   const { checkPermissions } = useListItemPermissionCheck();
   const { updateItem } = useListIPatchItem();
   const [editedEvent, setEditedEvent] = useState(null);
+
+  // Initialize the date range to the current month (or any other default range)
+  useEffect(() => {
+    // Only set the default date range when data is null or undefined
+    if (!data) {
+      const startOfMonth = moment().startOf('month').toDate();
+      const endOfMonth = moment().endOf('month').toDate();
+      onDateRangeChange(startOfMonth, endOfMonth);
+    }
+  }, [onDateRangeChange, data]); // Add 'data' as a dependency
+
+  const handleRangeChange = (range) => {
+    let start, end;
+
+    if (Array.isArray(range)) {
+      start = range[0];
+      end = range[range.length - 1];
+    } else {
+      start = range.start;
+      end = range.end;
+    }
+
+    // Check if the range is different from the current data's range to avoid unnecessary calls
+    if (!data || data.length === 0 || data[0].start !== start || data[0].end !== end) {
+      onDateRangeChange(moment(start).startOf('day').toDate(), moment(end).endOf('day').toDate());
+    }
+  };
+
+
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -188,6 +218,7 @@ const CalendarComponent = ({ data, loading, error }) => {
         components={{
           event: CustomEvent, // Use custom event component
         }}
+        onRangeChange={handleRangeChange}
       />
 
       {showViewModal && (

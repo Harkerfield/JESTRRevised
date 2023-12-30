@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Calendar from "../../Components/Calendar/Calendar.js";
-
-import { useListGetItems } from "../../hooks/useListGetItems.js";
+import { useListCalendarGetItems } from "../../hooks/useListCalendarGetItems.js";
 import { ConfigContext } from "../../Provider/Context.js";
 import "./ScheduledEmitters.css";
 import scheduleTester from "../../testerData/scheduleTester.json";
@@ -10,14 +9,22 @@ function ScheduledEmitters() {
   const config = useContext(ConfigContext);
 
   const [backupData, setBackupData] = useState([]);
+  const [dateRange, setDateRange] = useState({ start: null, end: null });
 
-  const { data, loading, error } = useListGetItems(config.lists.scheduleList);
+  // Updated to include date range in the hook call
+  const { data, loading, error } = useListCalendarGetItems(config.lists.scheduleList, dateRange.start, dateRange.end);
+
   const [filteredData, setFilteredData] = useState([]);
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
     setBackupData(scheduleTester);
   }, []);
+
+  const handleDateRangeChange = (start, end) => {
+    // Update the state that stores the current date range
+    setDateRange({ start, end });
+  };
 
   useEffect(() => {
     if (data && !loading) {
@@ -28,6 +35,7 @@ function ScheduledEmitters() {
       }
     }
   }, [backupData, data, loading, error]);
+
 
   return (
     <div className="PageFormat">
@@ -43,7 +51,12 @@ function ScheduledEmitters() {
         );
       })}
 
-      <Calendar data={filteredData} loading={loading} error={error} />
+      <Calendar
+        data={filteredData}
+        loading={loading}
+        error={error}
+        onDateRangeChange={handleDateRangeChange} // Passing the handler to the Calendar component
+      />
     </div>
   );
 }

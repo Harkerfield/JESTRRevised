@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useListDeleteItem } from "../../hooks/useListDeleteItem.js";
 import { useListIPatchItem } from "../../hooks/useListIPatchItem.js"
+import { useListCreateItem } from "../../hooks/useListCreateItem.js"
 import ThreatTable from './ThreatTable.js';
 import MovableTable from './MovableTable.js';
 import { ConfigContext } from "../../Provider/Context.js";
@@ -14,69 +15,118 @@ function Admin() {
   const [currentListName, setCurrentListName] = useState("");
 
   const { updateItem, updateLoading, updateError } = useListIPatchItem(); // Use the custom hook
-
+  const { createItem, createItemLoading, createItemError } = useListCreateItem(); // Use the custom hook
 
   const [threatRefreshData, setThreatRefreshData] = useState(null);
   const [mobileRefreshData, setMobileRefreshData] = useState(null);
 
 
+  const [mobileViewType, setModalViewType] = useState(null);
+
   const closeEditModal = () => {
     setIsEditModalOpen(false);
   };
 
+  // useEffect(()=>{
+  //   console.log(selectedEdit)
+  // },[selectedEdit])
 
-
-  const handleSubmit = async (event) => {
+  const handleEditSubmit = async (event) => {
     event.preventDefault();
     const listName = currentListName === 'threatList' ? config.lists.threatList : config.lists.movableThreatList;
     try {
-      // setLoading(true); // Set loading state
       const result = await updateItem(listName, selectedEdit.Id, selectedEdit)
-
     } catch (error) {
       console.error("Error updating item:", error);
     } finally {
-      // setLoading(false); // Reset loading state
       if (!updateError) {
-
         console.log("Item updated successfully");
-        // Optionally refresh data here
         if (currentListName === 'threatList') {
           setThreatRefreshData(selectedEdit);
-
         } else {
           setMobileRefreshData(selectedEdit);
-
         }
       }
-
-
-      closeEditModal();;
+      closeEditModal();
+      setModalViewType(null);
     }
-
   };
 
-  const threatHandleEdit = (e, rowData) => {
-    setSelectedEdit(rowData);
-    setCurrentListName(config.lists.threatList);
-    setIsEditModalOpen(true);
-    e.preventDefault();
-    console.log("Edit:", rowData);
-
+  const handleCreateSubmit = async (event) => {
+    event.preventDefault();
+    const listName = currentListName === 'threatList' ? config.lists.threatList : config.lists.movableThreatList;
+    try {
+      const result = await createItem(listName, selectedEdit)
+      console.log(result)
+    } catch (error) {
+      console.error("Error updating item:", error);
+    } finally {
+      if (!createItemError) {
+        console.log("Item updated successfully");
+        if (currentListName === 'threatList') {
+          setThreatRefreshData(selectedEdit);
+        } else {
+          setMobileRefreshData(selectedEdit);
+        }
+      }
+      closeEditModal();
+      setModalViewType(null);
+    }
   };
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (mobileViewType === "edit") {
+      handleEditSubmit(event);
+    }
+    else if (mobileViewType === "create") {
+      handleCreateSubmit(event);
+    }
+  }
 
   const handleChange = (e) => {
     e.preventDefault();
     setSelectedEdit({ ...selectedEdit, [e.target.name]: e.target.value });
   };
 
-  const movableHandleEdit = (e, rowData) => {
-    setSelectedEdit(rowData);
-    setCurrentListName(config.lists.movableThreatList);
-    setIsEditModalOpen(true);
+
+  const threatHandleEdit = (e, rowData) => {
     e.preventDefault();
+    setSelectedEdit(rowData);
+    setCurrentListName(config.lists.threatList);
+    setModalViewType('edit')
+    setIsEditModalOpen(true);
     console.log("Edit:", rowData);
 
+  };
+
+  const movableHandleEdit = (e, rowData) => {
+    e.preventDefault();
+    setSelectedEdit(rowData);
+    setCurrentListName(config.lists.movableThreatList);
+    setModalViewType('edit');
+    setIsEditModalOpen(true);
+
+    console.log("Edit:", rowData);
+  };
+
+  const threatHandleCreate = (e) => {
+    e.preventDefault();
+    setSelectedEdit([]);
+    setCurrentListName(config.lists.threatList);
+    setModalViewType('create');
+    setIsEditModalOpen(true);
+    console.log("Create:", "todo");
+  };
+
+  const movableHandleCreate = (e) => {
+    e.preventDefault();
+    setSelectedEdit([]);
+    setCurrentListName(config.lists.movableThreatList);
+    setModalViewType('create');;
+    setIsEditModalOpen(true);
+    console.log("Create:", "todo");
   };
 
   const { deleteItem, deleteLoading, deleteError } = useListDeleteItem();
@@ -123,19 +173,15 @@ function Admin() {
       <CollapsibleHeader>
         <button
           className="navButton"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log("not integrated yet.")
-          }}
+          style={{ height: "50px", backgroundColor: "green", color: "black" }}
+          onClick={threatHandleCreate}
         >
           Add Emitter or Static
         </button>
         <button
           className="navButton"
-          onClick={(e) => {
-            e.preventDefault();
-            console.log("Not integrated yet.")
-          }}
+          style={{ height: "50px", backgroundColor: "green", color: "black" }}
+          onClick={movableHandleCreate}
         >
           Add Movable Threat
         </button>
@@ -150,6 +196,8 @@ function Admin() {
         setRefreshData={setThreatRefreshData}
       />
 
+      <br></br>
+
       <MovableTable
         onEdit={movableHandleEdit}
         onDelete={movableHandleDelete}
@@ -160,7 +208,9 @@ function Admin() {
 
       {isEditModalOpen && (
         <ModalChildren onClose={closeEditModal}>
-          <form onSubmit={handleSubmit}>
+
+          <form onSubmit={handleSubmit} >
+
             {currentListName === 'threatList' && (
               // Fields specific to 'threat'
               <>
@@ -175,8 +225,8 @@ function Admin() {
                 <div>
                   <label>Schedulable Item</label>
                   <select name="schedulableItem" value={selectedEdit.schedulableItem || ''} onChange={handleChange}>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                    <option value="YES">YES</option>
+                    <option value="NO">NO</option>
                   </select>
                 </div>
                 <div>
@@ -210,9 +260,9 @@ function Admin() {
                 <div>
                   <label>Maintenance Condition</label>
                   <select name="mxCondition" value={selectedEdit.mxCondition || ''} onChange={handleChange}>
-                    <option value="red">Red</option>
-                    <option value="green">Green</option>
-                    <option value="yellow">Yellow</option>
+                  <option value="RED">RED</option>
+                    <option value="GREEN">GREEN</option>
+                    <option value="YELLOW">YELLOW</option>
                   </select>
                 </div>
                 <div>
@@ -234,9 +284,9 @@ function Admin() {
                 <div>
                   <label>Operational Status</label>
                   <select name="operationalStatus" value={selectedEdit.operationalStatus || ''} onChange={handleChange}>
-                    <option value="red">Red</option>
-                    <option value="green">Green</option>
-                    <option value="yellow">Yellow</option>
+                  <option value="RED">RED</option>
+                    <option value="GREEN">GREEN</option>
+                    <option value="YELLOW">YELLOW</option>
                   </select>
                 </div>
               </>
@@ -255,8 +305,8 @@ function Admin() {
                 <div>
                   <label>Schedulable Item</label>
                   <select name="schedulableItem" value={selectedEdit.schedulableItem || ''} onChange={handleChange}>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
+                  <option value="YES">YES</option>
+                    <option value="NO">NO</option>
                   </select>
                 </div>
                 <div>
@@ -270,9 +320,9 @@ function Admin() {
                 <div>
                   <label>Maintenance Condition</label>
                   <select name="mxCondition" value={selectedEdit.mxCondition || ''} onChange={handleChange}>
-                    <option value="red">Red</option>
-                    <option value="green">Green</option>
-                    <option value="yellow">Yellow</option>
+                  <option value="RED">RED</option>
+                    <option value="GREEN">GREEN</option>
+                    <option value="YELLOW">YELLOW</option>
                   </select>
                 </div>
                 <div>
@@ -294,14 +344,14 @@ function Admin() {
                 <div>
                   <label>Operational Status</label>
                   <select name="operationalStatus" value={selectedEdit.operationalStatus || ''} onChange={handleChange}>
-                    <option value="red">Red</option>
-                    <option value="green">Green</option>
-                    <option value="yellow">Yellow</option>
+                    <option value="RED">RED</option>
+                    <option value="GREEN">GREEN</option>
+                    <option value="YELLOW">YELLOW</option>
                   </select>
                 </div>
               </>
             )}
-            <button type="submit">Save Changes</button>
+            <button style={{ height: "50px", width: "100%", backgroundColor: "green", color: "black" }} type="submit">Save Changes</button>
           </form>
         </ModalChildren>
       )}

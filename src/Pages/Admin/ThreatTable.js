@@ -19,17 +19,30 @@ const ThreatTable = ({ onEdit, onDelete, refreshData, setRefreshData }) => {
 
     useEffect(() => {
         if (refreshData) {
-            console.log("Updated Data");
-            filteredData.forEach((item, index) => {
-                if (item.Id === refreshData.ID) {
-                    // Update the item in filteredData
-                    filteredData[index] = { ...item, ...refreshData };
+            console.log("Trying to update data");
+            console.log(refreshData);
+    
+            let found = false;
+            const updatedData = filteredData.map(item => {
+                if (item.Id === refreshData.Id) {
+                    console.log("Found and updating");
+                    found = true;
+                    return { ...item, ...refreshData };
                 }
+                return item;
             });
+    
+            if (!found) {
+                console.log("Not found and adding");
+                setFilteredData([refreshData, ...filteredData]);
+            } else {
+                setFilteredData(updatedData);
+            }
+    
             setRefreshData(null);
         }
-    }, [refreshData, setRefreshData]);
-
+    }, [refreshData, filteredData, setRefreshData]);
+    
 
     function ColumnFilter({ column: { filterValue, setFilter, id } }) {
         return (

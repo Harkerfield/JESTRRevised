@@ -223,7 +223,7 @@ function MovableThreatScheduling() {
     if (data) {
       const filtered = data.filter(
         (item) =>
-          item.schedulableItem === "Yes" &&
+          item.schedulableItem === "YES" &&
           (item.operationalStatus === "GREEN" ||
             item.operationalStatus === "YELLOW" ||
             item.operationalStatus === "RED" ||

@@ -28,7 +28,7 @@ function EmitterScheduling() {
 
   useEffect(() => {
     setBackupData(
-      scheduleTester.filter((item) => item.schedulableItem === "Yes"),
+      scheduleTester.filter((item) => item.schedulableItem === "YES"),
     );
   }, []);
 
@@ -258,7 +258,7 @@ function EmitterScheduling() {
     if (data) {
       const filtered = data.filter(
         (item) =>
-          item.schedulableItem === "Yes" &&
+          item.schedulableItem === "YES" &&
           (item.operationalStatus === "GREEN" ||
             item.operationalStatus === "YELLOW" ||
             item.operationalStatus === "RED" ||
