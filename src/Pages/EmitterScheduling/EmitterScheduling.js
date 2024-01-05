@@ -310,7 +310,7 @@ function EmitterScheduling() {
             </button>
           ) : (
             <button
-              onClick={(e) => e.preventDefault}
+              onClick={(e) => e.preventDefault()}
               style={{
                 width: "100%",
                 height: "50px",
