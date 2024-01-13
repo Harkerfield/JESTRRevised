@@ -4,6 +4,9 @@ import AdminChecker from "./AdminChecker.js";
 import SharePointUploader from "../../hooks/SharePointUploader.js";
 import { ConfigContext } from "../../Provider/Context.js";
 
+import CoordinateConverter from "../../Components/Map/CoordinateConverter.js";
+
+
 const Debug = () => {
   const config = useContext(ConfigContext);
   return (
@@ -24,6 +27,9 @@ const Debug = () => {
       <ListChecker />
       <AdminChecker />
       <SharePointUploader />
+
+      <CoordinateConverter />
+
     </div>
   );
 };
