@@ -85,7 +85,7 @@ const ThreatTable = ({ onEdit, onDelete, refreshData, setRefreshData }) => {
                 accessor: "pointLocationLon",
                 Filter: ColumnFilter,
             },
-            { Header: "Device Type", accessor: "deviceType", Filter: ColumnFilter },
+            { Header: "Device Band", accessor: "deviceBand", Filter: ColumnFilter },
             { Header: "Threat", accessor: "threat", Filter: ColumnFilter },
             {
                 Header: "Maintenance Condition",

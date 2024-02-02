@@ -215,6 +215,10 @@ function Admin() {
               // Fields specific to 'threat'
               <>
                 <div>
+                  <label>Threat Name</label>
+                  <input type="text" name="Title" value={selectedEdit.Title || ''} onChange={handleChange} />
+                </div>
+                <div>
                   <label>Serial Number</label>
                   <input type="text" name="serialNumber" value={selectedEdit.serialNumber || ''} onChange={handleChange} />
                 </div>
@@ -250,8 +254,8 @@ function Admin() {
                   <input type="text" name="pointLocationAlt" value={selectedEdit.pointLocationAlt || ''} onChange={handleChange} />
                 </div>
                 <div>
-                  <label>Device Type</label>
-                  <input type="text" name="deviceType" value={selectedEdit.deviceType || ''} onChange={handleChange} />
+                  <label>Device Band</label>
+                  <input type="text" name="deviceBand" value={selectedEdit.deviceBand || ''} onChange={handleChange} />
                 </div>
                 <div>
                   <label>Threat</label>
@@ -260,7 +264,7 @@ function Admin() {
                 <div>
                   <label>Maintenance Condition</label>
                   <select name="mxCondition" value={selectedEdit.mxCondition || ''} onChange={handleChange}>
-                  <option value="RED">RED</option>
+                    <option value="RED">RED</option>
                     <option value="GREEN">GREEN</option>
                     <option value="YELLOW">YELLOW</option>
                   </select>
@@ -284,7 +288,7 @@ function Admin() {
                 <div>
                   <label>Operational Status</label>
                   <select name="operationalStatus" value={selectedEdit.operationalStatus || ''} onChange={handleChange}>
-                  <option value="RED">RED</option>
+                    <option value="RED">RED</option>
                     <option value="GREEN">GREEN</option>
                     <option value="YELLOW">YELLOW</option>
                   </select>
@@ -294,6 +298,10 @@ function Admin() {
             {currentListName === 'movableThreatList' && (
               // Fields specific to 'movable'
               <>
+                <div>
+                  <label>Threat Name</label>
+                  <input type="text" name="Title" value={selectedEdit.Title || ''} onChange={handleChange} />
+                </div>
                 <div>
                   <label>Serial Number</label>
                   <input type="text" name="serialNumber" value={selectedEdit.serialNumber || ''} onChange={handleChange} />
@@ -305,13 +313,13 @@ function Admin() {
                 <div>
                   <label>Schedulable Item</label>
                   <select name="schedulableItem" value={selectedEdit.schedulableItem || ''} onChange={handleChange}>
-                  <option value="YES">YES</option>
+                    <option value="YES">YES</option>
                     <option value="NO">NO</option>
                   </select>
                 </div>
                 <div>
-                  <label>Device Type</label>
-                  <input type="text" name="deviceType" value={selectedEdit.deviceType || ''} onChange={handleChange} />
+                  <label>Device Band</label>
+                  <input type="text" name="deviceBand" value={selectedEdit.deviceBand || ''} onChange={handleChange} />
                 </div>
                 <div>
                   <label>Threat</label>
@@ -320,7 +328,7 @@ function Admin() {
                 <div>
                   <label>Maintenance Condition</label>
                   <select name="mxCondition" value={selectedEdit.mxCondition || ''} onChange={handleChange}>
-                  <option value="RED">RED</option>
+                    <option value="RED">RED</option>
                     <option value="GREEN">GREEN</option>
                     <option value="YELLOW">YELLOW</option>
                   </select>

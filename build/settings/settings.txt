@@ -79,9 +79,9 @@
         "__metadata": {
           "type": "SP.Field"
         },
-        "Title": "deviceType",
+        "Title": "deviceBand",
         "FieldTypeKind": 2,
-        "StaticName": "deviceType"
+        "StaticName": "deviceBand"
       },
       {
         "__metadata": {
@@ -169,9 +169,9 @@
         "__metadata": {
           "type": "SP.Field"
         },
-        "Title": "deviceType",
+        "Title": "deviceBand",
         "FieldTypeKind": 2,
-        "StaticName": "deviceType"
+        "StaticName": "deviceBand"
       },
       {
         "__metadata": {
